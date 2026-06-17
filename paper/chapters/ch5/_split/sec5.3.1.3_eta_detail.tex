@@ -1,0 +1,139 @@
+%% [분량보존 복원] η 평상시·비상시 활용 상세 (구 부록 H.2~H.4): 향상전략·위기정책·로드맵
+\subsubsection{성숙도 단계별 향상 전략}
+\label{app:maturity-strategy}
+
+각 성숙도 단계에서 다음 단계로 향상하기 위한 구체적 전략을 기술한다.
+핵심은 관측성 강화($E_{O,bnd}$ 증가)와 불확실성 저감($E_{U,bnd}$ 감소)의
+두 레버를 단계에 맞게 적용하는 것이다.
+
+\chg{1단계(Initial)에서 2단계(Repeatable)로의 기반 구축 단계에서는 기본 모니터링 도구 도입(가용성
+모니터링, 기본 알림), BCM 정책 문서 및 복구 절차서(runbook) 초안 작성, BIA 최초 수행을 통한 RTO
+기준값($R_0$) 설정, RPO 기준값 설정, BCM 전담 책임자 지정을 수행하며, 목표는 $\eta < 1.5$ 안정화이다.}
+
+\chg{2단계(Repeatable)에서 3단계(Defined)로의 체계화 단계에서는 관측성 3축(로그, 메트릭, 트레이스) 중
+2개 이상 확보, 장애 대응 절차 표준화 및 정기 훈련(연 2회 이상), MTTR 측정과 추적 시작을 통한
+$O_{\text{raw}}$ 데이터 수집, 에스컬레이션 기준 및 보고 체계 문서화를 수행하며, 목표는 $\eta < 1.0$($\DRTO \leq R_0$)이다.}
+
+\chg{3단계(Defined)에서 4단계(Managed)로의 정량화 단계에서는 실시간 $\DRTO/R_0$ 모니터링을 위한 $\eta$
+대시보드 구축, $k_O$ 변화 추적을 통한 관측성 투자 ROI 측정, 불확실성 원인별 분류 체계 수립(가우시안 vs
+파레토 유형), 사후 분석을 통한 절차 개선 피드백 루프 정착을 수행하며, 목표는 $\eta < 0.8$ 유지(에스컬레이션
+Green 영역)이다.}
+
+\chg{4단계(Managed)에서 5단계(Optimized)로의 최적화 단계에서는 AIOps 기반 자동 장애 탐지와 진단, 복구
+체계 구축, 카오스 엔지니어링(Chaos Engineering) 정기 수행, 향후 $\eta$ 추이 예측 및 선제 대응을 위한
+$\eta$ 예측 모형 운영, 극단 시나리오(C3) 전용 대응을 위한 CVaR$_{99}$ 기반 자원 배분을 수행하며, 목표는
+$\eta < 0.6$ 달성 및 유지이다.}
+
+
+\subsubsection{위기시 정책 활용 방안}
+\label{app:crisis-policy}
+
+\chg{국가 위기경보 연동 $\eta$ 임계값 자동 조정은}
+국가 위기경보가 상향될 때 조직 내부의 에스컬레이션 민감도를
+자동으로 높여 선제 대응하는 정책이다.
+\nref{위기경보 4단계에 따른 $\eta$ 임계값 조정 규칙은 \tabref{tab:app-policy-adjustment}와 같다.}
+
+\begin{table}[htbp]
+\centering
+\caption{국가 위기경보 연동 $\eta$ 임계값 조정 정책}
+\label{tab:app-policy-adjustment}
+\small
+\newcolumntype{W}{>{\raggedright\arraybackslash}p{0.42\textwidth}}
+\begin{tabularx}{\textwidth}{c c X W}
+\toprule
+\textbf{위기경보} & \textbf{임계값 조정} & \textbf{근거} & \textbf{조정 후 기준} \\
+\midrule
+관심(Blue) & 기본값 유지 &
+  일상 운영 &
+  Green $\eta < 0.8$,\; Yellow $0.8 \leq \eta < 1.0$,\; Orange $1.0 \leq \eta < 1.5$,\; Red $\eta \geq 1.5$ \\
+\addlinespace
+주의(Yellow) & 각 $-0.1$ &
+  외부 위험 증가 &
+  Green $\eta < 0.7$,\; Yellow $0.7 \leq \eta < 0.9$,\; Orange $0.9 \leq \eta < 1.4$,\; Red $\eta \geq 1.4$ \\
+\addlinespace
+경계(Orange) & 각 $-0.2$ &
+  위기 가능성 높음 &
+  Green $\eta < 0.6$,\; Yellow $0.6 \leq \eta < 0.8$,\; Orange $0.8 \leq \eta < 1.3$,\; Red $\eta \geq 1.3$ \\
+\addlinespace
+심각(Red) & 즉시 Red &
+  대규모 위기 &
+  $\eta$와 무관하게 BCP 전면 가동, 전 등급 Red 적용 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\chg{위기 유형별 $\eta$ 가중 모형은}
+재난 유형에 따라 $\eta$ 구성 요소(관측성 vs 불확실성)에 가중치를 부여한다.
+\nref{재난 4유형별 $O\!:\!U$ 가중 비율과 대응 전략 초점은 \tabref{tab:app-crisis-type-weight}에 정리하였다.}
+
+\begin{table}[htbp]
+\centering
+\caption{위기 유형별 대응 전략 가중 모델}
+\label{tab:app-crisis-type-weight}
+\small
+\begin{tabularx}{\textwidth}{l c c X}
+\toprule
+\textbf{위기 유형} & \textbf{$O$ 비중} & \textbf{$U$ 비중} & \textbf{대응 전략 초점} \\
+\midrule
+사이버 공격 & 높음 (70\%) & 보통 (30\%) &
+  SIEM/EDR 강화, 탐지·진단 역량 집중 \\
+\addlinespace
+자연재해 & 보통 (40\%) & 높음 (60\%) &
+  물리적 피해 불확실성 대비, 대체 사이트 확보 \\
+\addlinespace
+감염병 & 보통 (50\%) & 높음 (50\%) &
+  원격 운영 역량 + 인력 가용성 불확실성 동시 대응 \\
+\addlinespace
+공급망 중단 & 낮음 (30\%) & 높음 (70\%) &
+  외부 불확실성 지배. 다중 공급원 확보, 재고 완충 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\chg{에스컬레이션 이력 기반 성숙도 KPI로서,}
+위기시 에스컬레이션 이력은 평상시 성숙도 개선의 데이터로 환류된다.
+\chg{주요 KPI는 네 가지이다. Green 체류 비율은 전체 운영 시간 대비 $\eta < 0.8$ 비율로 성숙도가 높을수록
+증가하며, 에스컬레이션 빈도는 월간 Yellow 이상 발생 횟수로 감소 추세가 성숙도 향상을 의미하고, 복귀
+시간은 Orange/Red에서 Green으로의 복귀 소요 평균 시간으로 단축이 복구 역량 향상을 뜻하며, Red 도달률은
+위기(Red) 등급 발생 빈도로 감소가 극단 대비 역량 향상을 나타낸다.}
+
+이러한 KPI를 월간/분기별로 경영진에 보고함으로써
+BCM 투자의 효과를 정량적으로 증명할 수 있다.
+
+
+\subsubsection{$\eta$ \chg{평상시와 비상시} 활용 체계 도입 로드맵}
+\label{app:eta-roadmap}
+
+\nref{$\eta$ 기반 BCM 체계의 단계별 도입 일정과 주요 활동은 \tabref{tab:app-roadmap}에 정리하였다.}
+
+\begin{table}[htbp]
+\centering
+\caption{$\eta$ 평상시·비상시 활용 체계 도입 로드맵}
+\label{tab:app-roadmap}
+\small
+\begin{tabularx}{\textwidth}{c l X}
+\toprule
+\textbf{단계} & \textbf{기간} & \textbf{주요 활동} \\
+\midrule
+준비 & 1--2개월 &
+  BIA 수행 $\to$ $R_0$ 설정. 관측성 데이터 수집 시작.
+  $\eta$ 산출 파일럿 구축. 자가 진단 최초 실시 \\
+\addlinespace
+파일럿 & 3--4개월 &
+  핵심 시스템 1--2개에 $\eta$ 대시보드 적용.
+  에스컬레이션 기준 시범 운영. 국가 위기경보 연동 테스트 \\
+\addlinespace
+확산 & 5--8개월 &
+  전사 확대 적용. 성숙도 자가 진단 분기별 정기화.
+  에스컬레이션 이력 KPI 보고 시작 \\
+\addlinespace
+최적화 & 9--12개월 &
+  AIOps 연동. $\eta$ 예측 모형 운영.
+  위기 유형별 가중 모델 적용. 산업별 벤치마크 비교 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+

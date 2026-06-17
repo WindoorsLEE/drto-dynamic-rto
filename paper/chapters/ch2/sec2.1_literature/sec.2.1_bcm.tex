@@ -1,0 +1,99 @@
+\section{BCM(업무연속성관리)}
+\label{sec:lit-bcm}
+%% ===================================================================
+
+\chg{본 연구가 다루는 RTO가 자리하는 제도적 맥락을 분명히 하기 위해, BCM의 개념과 역사적 발전, 국제 표준 체계, 그리고 RTO가 도출되는 BIA 절차를 차례로 검토한다.}
+
+\chg{본 연구에서 사용하는 BCM과 BCMS의 의미를 구분하여 밝혀 둔다. BCM(Business
+Continuity Management)은 조직이 재해와 장애, 위협으로부터 핵심 업무를
+지속하고 복구하기 위한 관리 활동과 개념 전반을 가리킨다. 이에 비해
+BCMS(Business Continuity Management System)는 이러한 BCM 활동을
+정책과 절차, 자원, 문서, 평가의 형태로 체계화한 경영 시스템을 가리키며,
+ISO 22301:2019 인증의 직접 대상이 된다. 따라서 본 연구는 일반적 활동이나
+개념을 가리킬 때는 BCM을, 정형화된 시스템이나 표준, 인증을 가리킬 때는 BCMS를
+사용하여 일관되게 구분한다.}
+\citet{herbane2010disaster}는 BCM의 역사적 발전 과정을 세 단계로 구분하였다.
+첫째, 1970--1980년대의 IT 재해복구(Disaster Recovery) 중심 단계에서는 데이터 백업과
+시스템 이중화 등 기술적 복구에 초점을 두었다.
+둘째, 1990년대에는 업무영향분석(Business Impact Analysis, BIA)의 도입과 함께
+IT를 넘어 전사적 업무 프로세스로 관리 범위가 확대되었다.
+셋째, 2000년대 이후에는 \citet{bhamra2011resilience}이 정리한
+\textbf{조직 복원력}(organizational resilience) 관점에서
+BCM을 전략적 경영 기능으로 통합하는 방향으로 진화하였다.
+
+이러한 발전의 제도적 결실로서 영국 BSI는 2006년에 BS~25999를 발표하여
+BCM의 국가 표준 단계의 핵심 프레임워크를 제시하였다\citep{bs25999}.
+이후 국제표준화기구(ISO)는 2012년에 \nrev{ISO 22301:2012}를 제정하였으며,
+2019년에 개정판을 공표하여 현재의 국제 표준으로 자리매김하였다.
+\nrev{ISO 22301:2019}는 BCMS의 수립, 구현, 유지 및
+지속적 개선을 위한 요구사항을 규정하며, Plan--Do--Check--Act(PDCA) 주기에
+기반한 관리체계를 요구한다.
+\nrev{ISO 22313:2020}은 이에 대한 실행 지침서로서 BIA 수행 방법과
+복구 전략 수립 절차를 구체적으로 안내한다.
+
+\figref{fig:bcm-pdca}\refpo{fig:bcm-pdca}{은}{는} \nrev{ISO 22301:2019}의 PDCA 주기에서
+RTO가 결정되는 위치를 도식화한 것이다. 정적 RTO는 Do(운영) 단계의 BIA에서 한 번
+결정되어 다음 BIA까지 고정되는 반면, 본 연구의 $\DRTO$는 운영과 모니터링이
+이루어지는 Do--Check 구간에서 실시간으로 파악된다.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[
+    phase/.style={draw, semithick, rounded corners=8pt, minimum width=34mm, minimum height=16mm,
+                  align=center, font=\small, inner sep=4pt},
+    cyc/.style={-{Stealth[length=3.2mm]}, very thick, gray!55!black},
+    annot/.style={draw=red!55, fill=red!7, semithick, rounded corners=4pt,
+                  align=center, font=\footnotesize, inner sep=5pt},
+    darr/.style={-{Stealth[length=2.8mm]}, very thick, dashed, red!70!black}
+  ]
+    % --- PDCA 순환 (시계방향: 상→우→하→좌) ---
+    \node[phase, fill=blue!10]   (plan)  at (0,  2.6) {\textbf{Plan}\\[1pt]\footnotesize BCMS 수립};
+    \node[phase, fill=green!13]  (do)    at (4.2, 0) {\textbf{Do}\\[1pt]\footnotesize BIA 수행\\\footnotesize \textbf{정적 RTO 결정}};
+    \node[phase, fill=yellow!22] (check) at (0, -2.6) {\textbf{Check}\\[1pt]\footnotesize 모니터링, 측정};
+    \node[phase, fill=orange!14] (act)   at (-4.2, 0) {\textbf{Act}\\[1pt]\footnotesize 지속적 개선};
+    \node[font=\small\bfseries, align=center] at (0,0) {ISO 22301:2019\\PDCA 주기};
+    \draw[cyc] (plan.east)  to[bend left=22] (do.north);
+    \draw[cyc] (do.south)   to[bend left=22] coordinate[midway] (dc) (check.east);
+    \draw[cyc] (check.west) to[bend left=22] (act.south);
+    \draw[cyc] (act.north)  to[bend left=22] (plan.west);
+    % --- 정적 RTO vs 본 연구의 DRTO (우측 분리 배치, 직각 연결) ---
+    \node[annot] (static) at (9.3, 2.6)
+      {\textbf{정적 RTO}\\BIA에서 결정};
+    \draw[darr] (static.west) -| (do.north);
+    \node[annot, fill=red!11] (drto) at (9.3, -2.6)
+      {\textbf{본 연구: $\DRTO$}\\운영--모니터링 중\\실시간 동적 파악};
+    \draw[darr] (drto.west) -| (dc);
+  \end{tikzpicture}
+  \caption{\nrev{ISO 22301:2019} PDCA 주기 기반 RTO 결정 위치}
+  \label{fig:bcm-pdca}
+\end{figure}
+
+
+BIA는 BCMS의 핵심 구성 요소로서 중단 사태가 조직에 미치는 영향을 분석하고,
+핵심 업무 기능의 복구 우선순위와 목표 복구 시간을 결정하는 기초를 제공한다
+\citep{cerullo2004bcp, snedaker2013bcdr}.
+\citet{gibb2006bcm}은 BIA 결과가 조직의 복구 전략과 자원 배분에 직접적으로 연결되어야
+함을 강조하며, 정보관리 관점에서의 BCM 프레임워크를 제안하였다.
+
+RTO는 중단 사태 발생 이후 핵심 업무 기능을
+사전에 정의된 수준까지 복구하는 데 소요되는 목표 시간을 의미한다.
+\nrev{ISO 22301:2019}에서는 RTO를 ``제품이나 서비스의 납품 또는 수행, 활동의 재개,
+또는 자원의 복구가 이루어져야 하는 시점까지의 기간''으로 정의한다.
+미국 NIST SP~800-34~Rev.~1에서는 RTO를 ``시스템 중단 이후 시스템과 관련 자원이
+복구되어야 하는 최대 허용 시간''으로 규정하고 있다\citep{nist800-34r1}.
+
+MTPD는 조직이 중단 사태를
+견딜 수 있는 최대 허용 기간을 의미하며, RTO는 반드시 MTPD 이내에 설정되어야 한다.
+즉, $\text{RTO} \leq \text{MTPD}$의 관계가 성립한다\nrev{(ISO 22313, 2020; \citeauthor{snedaker2013bcdr}, \citeyear{snedaker2013bcdr})}.
+\citet{hiles2010bcm}은 BIA에서 도출된 MTPD가 RTO 설정의 상한 기준임을
+강조하였다.
+
+국내 BCM 연구는 \chg{BIA, 위험평가, 평가지표} 측면에서 점진적 진전을 이루었으나, RTO의 동적 설정 문제는 다루지 않았다.
+\citet{cheung2019quickhit}는 BIA 및 위험평가를
+효율적으로 수행하기 위한 Quick-Hit 프레임워크를 제안하여 BCMS 도입 초기의
+실무적 장벽을 낮추고자 하였다. \citet{jang2021bcms}은 BCMS의 위험평가가
+경영성과에 미치는 영향을 실증 분석하여 BCM과 조직 성과 간의
+정(+)의 관계를 확인하였으며, \citet{jung2023bcms}은 BCMS의 체계적 평가를 위한
+평가지표를 개발하여 국내 조직의 BCM 성숙도 진단에 기여하였다.
+
+\chg{이처럼 BCM 연구는 체계 도입과 성과 평가로 꾸준히 확장되어 왔으나, 그 핵심 통제 변수인 RTO를 어떻게 설정할 것인가의 문제는 여전히 정적 관점에 머물러 있다. 다음 절에서는 이 정적 RTO 설정이 지닌 구조적 한계를 살펴본다.}

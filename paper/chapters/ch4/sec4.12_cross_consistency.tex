@@ -1,0 +1,261 @@
+
+
+%% ===================================================================
+\section[\texorpdfstring{Lee and Cheung(2026)}{Lee and Cheung(2026)}과의 교차 정합성]{\vrev{\citet{lee2026drto}과의 교차 정합성}}
+\label{sec:ch5_kci_cross}
+%% ===================================================================
+
+본 연구의 $\DRTO$ 프레임워크는 \citet{lee2026drto}에서 수립한
+관측성 기반 모델 구축, 바운딩 기법 비교, 최적 곡률 도출의 성과를
+토대로 구축되었다.
+\chg{\citet{lee2026drto}에서 확립한 수식과 데이터, 결론}이 본 연구의
+이중 채널 확장(C2, C3)에서도 일관되게 승계되려면,
+연구 단계 간 교차 정합성(cross-consistency)이 필수적이다.
+본 절에서는 \chg{\citet{lee2026drto}과} 본 논문 간 진행 구조 및 교차 정합성을 분석한다.
+
+\citet{lee2026drto}은 C0$\to$C1 관측성 모델(\chg{선형과 시그모이드}),
+바운딩 비교, $\kappa$ 최적화의 세 단계를 통합하여 출판하였다.
+본 연구에서는 이를 기반으로 가우시안 불확실성(C2)과
+파레토 C3 분석을 \jrev{4.2--4.3절}에서 직접 수행하였다.
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{연구 단계별 진행 구조}}
+\label{subsec:ch5_kci_progression}
+%% -------------------------------------------------------------------
+
+$\DRTO$ 프레임워크는 C0$\to$C1의 공통 경로에서
+C2(가우시안)와 C3(파레토)로 분기하는 4개 조건 체계를
+5개 연구 단계로 구성된다.
+이 중 단계 1--3은 \citet{lee2026drto}로 출판되었고,
+단계 4--5는 본 논문 \jrev{4.1--4.10절(실험)} 및 \jrev{4.12절(교차분석)}에서 수행하였다.
+
+\chg{단계 1은 관측성 기반 선형 모델로서 \citet{lee2026drto}에 해당한다. C0$\to$C1 전환에서
+$\DRTO_{\text{C1}} = R_0 \cdot (1 - k_O \cdot O_{\text{raw}})$의 선형 근사 모델을 도입하여 관측성이 복구
+시간을 단축시키는 기본 메커니즘을 규명하였으며, 핵심 결과는 $\bar{\eta}_{\text{C1}} = 0.853$, Cohen's
+$d = -1.180$이다. 단계 2는 바운딩 비교이다. 선형 모델과 시그모이드
+바운딩 모델을 비교 분석하여, 단계 1의 선형 모델이 $|z_O| \leq 0.2$ 영역에서 시그모이드의 유효한 근사임을
+보이되 극단 입력에서의 물리적 경계 위반(음의 $\DRTO$) 가능성을 지적하고 개별 시그모이드 바운딩 모델의
+우월성을 입증하였다. 단계 3은 $\kappa$ 최적화이다. 곡률 매개변수 $\kappa$의
+최적값을 도출하되 실무 유의성($f_1$), 비포화($f_2$), 효과 크기($f_3$), 설명력($f_4$)의 네 기준을 복합하여
+$\kappa^{*} = 1.2$를 도출하였으며, $\kappa = 1.2$에서 다기준 종합점수 \jrev{$F(\kappa^{*}) = 1.000$}이
+최대임을 보였다. 단계 4는 가우시안 불확실성 분석으로서 본 논문 \jrev{\chref{ch:results}}에 해당한다.
+C0$\to$C1$\to$C2 체계에서 관측성과 불확실성을 각각 고유한 물리적 범위에서 개별 바운딩하는 핵심 기법을
+정식화하고 $R_{\max} = 24.0$h, $k_U = 1 - k_O$ 등 이중 채널 구조를 도입하여, 가우시안
+불확실성(\jrev{$U_{\text{raw}}^{(G)} \sim N(3,1)$}) 하에서 $n = 10{,}000$ 시뮬레이션을 수행하였으며, 핵심
+결과는 C1 $R^2 = 1.000$, C2 $R^2 = 0.998$, $\bar{\eta}_{\text{C2}} = 1.682$이다. 끝으로 단계 5는 파레토
+분석 및 C2--C3 교차비교로서 본 논문 제3장과 4장에 해당한다. C0$\to$C1$\to$C3 체계와 C2--C3 구조적
+비교를 위해 단계 4의 가우시안 분포를 파레토 분포(\jrev{$U_{\text{raw}}^{(P)} \sim 6 \cdot \mathrm{Pareto}(3)$})로
+대체하여 중꼬리 불확실성 하의 $\DRTO$ 거동을 분석하고(\jrev{4.3절}) 가우시안(C2)과 파레토(C3)의 구조적
+차이를 교차 분석하였으며(\jrev{4.7절과 4.10절}), 핵심 결과는 $\bar{\eta}_{\text{C3}} = 1.514$, C3
+$R^2 = 0.858$, P85.8 교차점, $\mathrm{CVaR}_{99}$ $+24.0\%$, Tail/Core $k_O$ 비율 $= 0.52$배이다.}
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{교차 정합성 매트릭스}}
+\label{subsec:ch5_kci_matrix}
+%% -------------------------------------------------------------------
+
+\jrev{\tabref{tab:ch5_kci_cross_matrix}\refpo{tab:ch5_kci_cross_matrix}{은}{는}} 연구 단계별 교차 정합성을
+주요 검증 항목별로 정리한 것이다.
+단계 1--3은 선행연구\citep{lee2026drto}에 해당하고,
+단계 4--5는 본 논문 \jrev{4.1--4.10절}에서 수행한 분석이다.
+
+\begin{table}[htbp]
+  \centering
+  \caption{\jrev{연구 단계 간 교차 정합성 매트릭스}}
+  \label{tab:ch5_kci_cross_matrix}
+  \footnotesize
+  \setlength{\tabcolsep}{3pt}
+  \begin{tabularx}{\textwidth}{
+      >{\raggedright}p{1.8cm}
+      >{\centering}p{1.6cm}
+      >{\centering}p{1.9cm}
+      >{\centering}p{1.5cm}
+      >{\centering}p{1.8cm}
+      >{\centering}p{1.8cm}
+      >{\raggedright\arraybackslash}X}
+    \toprule
+    \textbf{검증 항목} & \textbf{단계 1} & \textbf{단계 2} & \textbf{단계 3} & \textbf{단계 4} & \textbf{단계 5} & \textbf{정합성} \\
+    & \multicolumn{3}{c}{\scriptsize \chg{\citep{lee2026drto}}} & \multicolumn{2}{c}{\scriptsize (본 논문)} & \\
+    \midrule
+    기본 수식 & 선형 & 선형$\to$시그 & 시그모이드 & 개별 바운딩 & 개별 바운딩 &
+      선형$\subset$시그모이드 확인 \\
+    \addlinespace
+    $R_0 = 6.0$h & \cmark & \cmark & \cmark & \cmark & \cmark &
+      전 단계 동일 \\
+    \addlinespace
+    $R_{\max} = 24.0$h & --- & --- & --- & \cmark & \cmark &
+      단계 4에서 최초 도입 \\
+    \addlinespace
+    $\kappa = 1.2$ & --- & --- & \cmark & \cmark & \cmark &
+      단계 3 도출, 이후 적용 \\
+    \addlinespace
+    시드 체계 & 42 & 42 & 42 & 42(비중첩) & 42(비중첩) &
+      마스터 시드 동일 \\
+    \addlinespace
+    $n = 10{,}000$ & \cmark & \cmark & \cmark & \cmark & \cmark &
+      전 단계 동일 \\
+    \addlinespace
+    $\bar{\eta}_{\text{C1}}$ & 0.853 & 0.853 & 0.853 & 0.853 & 0.853 &
+      전 단계 동일 \\
+    \addlinespace
+    P85.8 교차점 & --- & --- & --- & --- & \cmark &
+      단계 5에서 발견·분석 \\
+    \addlinespace
+    $0.52$배 감쇠 & --- & --- & --- & --- & \cmark &
+      단계 5에서 발견·해명 \\
+    \addlinespace
+    순서 준수율 (C1$\leq$C$x$) & \makecell{100\%\\(C1$\leq$C0)} & --- & --- & \makecell{99.87\%\\(C1$\leq$C2)} & \makecell{100\%\\(C1$\leq$C3)} &
+      유형별 일관 \\
+    \addlinespace
+    전진 선택 & --- & --- & --- & $k_O$ & $U$ &
+      지배 변수 전환 \\
+    \addlinespace
+    LASSO & --- & --- & --- & \makecell{$R^2\!=\!.995$\\(5변수)} & \makecell{$R^2\!=\!.852$\\(6변수)} &
+      C2 간명, C3 복잡 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\noindent
+교차 정합성 검증의 핵심 결과는 다음과 같다.
+
+\chg{먼저 수식 체계의 일관적 확장을 보면,}
+\citet{lee2026drto}의 선형 모델 $\DRTO = R_0 \cdot (1 - k_O \cdot O)$는
+본 논문의 개별 시그모이드 바운딩 모델에서 $|z_O| \ll 1$ 일 때
+$S(z_O) \approx z_O$로 근사하면 정확히 복원된다.
+즉, 선형 모델은 시그모이드 바운딩 모델의 1차 근사
+(first-order approximation)이며, 양 모델의 C1 예측값은
+$|\Delta\eta| < 0.003$ 수준으로 일치한다.
+이 관계는 \chg{\citet{lee2026drto}의} 바운딩 비교(단계 2)에서 명시적으로 분석되어
+두 모델 간 전환의 이론적 정당성을 제공한다.
+
+\chg{다음으로 데이터 기반의 수치 정합을 보면,}
+모든 연구 단계가 동일한 마스터 시드(42), 표본 크기($n = 10{,}000$),
+기본 복구시간($R_0 = 6.0$h)을 사용하여
+$\bar{\eta}_{\text{C1}} = 0.853$이 전 단계에서 일치한다.
+\chg{\citet{lee2026drto}에서} $\kappa = 1.2$가 도출된 이후 본 논문의 \chg{C2와 C3} 분석에서
+동일한 $\kappa$ 값이 적용되어, 연구 단계 간 파라미터 일관성이 보장된다.
+
+\chg{이어 발견의 누적적 심화를 보면,}
+본 논문의 C2 분석(단계 4)에서 이중 채널(관측성+불확실성) 구조가 처음 정식화되고,
+C3 분석(단계 5)에서 파레토 분포를 적용하여 P85.8 교차점과 $0.52$배 이중채널 감쇠가
+\chg{발견되고 해명되는} 누적적 심화 구조를 갖는다.
+C3의 $\mathrm{CVaR}_{99}$ $+24.0\%$ 결과는 C2의 가우시안 분석 결과와
+대비되며, 극단 영역에서의 격차를 새로운 지표(CVaR)로 정량화한 것이다.
+
+\chg{끝으로 변수 선택 방법의 교차 검증을 보면,}
+C2 분석(단계 4)과 C3 분석(단계 5) 모두에서 전진 선택법과 LASSO 정규화를
+적용하였으며, 양 방법이 공통으로 $k_O \cdot O$와 $U$를 핵심 변수로 선택하여
+방법 간 일관성이 확인되었다.
+LASSO의 $\lambda = 0.01$ 수준에서 C2($R^2 = 0.995$, 5변수)가
+C3($R^2 = 0.852$, 6변수)보다 더 간명한 구조를 보이는 것은,
+가우시안 분포의 규칙적 구조가 파레토의 비선형성보다
+2차 다항식으로 효과적으로 근사됨을 교차 확인한 것이다.
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{한계-해결 연쇄 구조}}
+\label{subsec:limitation_resolution}
+%% -------------------------------------------------------------------
+
+$\DRTO$ 프레임워크의 연구 단계는 각 단계의 한계가 다음 단계의 연구 동기가 되는
+\textbf{순차적 한계-해결 연쇄(limitation-resolution chain)} 구조를 형성한다.
+\jrev{\tabref{tab:limitation_chain}\refpo{tab:limitation_chain}{은}{는}} 이 연쇄 연구단계의 5단계를 정리한 것이다.
+
+\begin{table}[htbp]
+  \centering
+  \caption{\jrev{연구 단계별 한계-해결 연쇄}}
+  \label{tab:limitation_chain}
+  \small
+  \begin{tabularx}{\textwidth}{c >{\raggedright}p{4.5cm} >{\raggedright\arraybackslash}X}
+    \toprule
+    \textbf{단계} & \textbf{발생 단계의 한계} & \textbf{다음 단계에서 해결 및 그 해결 수단} \\
+    \midrule
+    단계 1 & $\text{DRTO} \to 0$ 비현실적 (선형 모델) & 시그모이드 바운딩 $S(z) \in (-1,1)$ \\
+    단계 2 & $\kappa$ 미결정 (바운딩) & 격자 탐색 $\to$ $\kappa^* = 1.2$ \\
+    단계 3 & 단일 채널 ($\kappa$ 최적화) & 불확실성 채널 $E_{U,\text{bnd}}$ 추가 \\
+    단계 4 & 경꼬리 한계 (C2 분석) & 파레토 분포 \\
+    단계 5 & 단일분포·합성데이터 (C3 분석) & 통합 분석, 실무 적용, 전문가 검증 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+5단계 연쇄가 \chg{\citet{lee2026drto}에서} 본 논문까지 단절 없이 연결되며,
+각 단계의 한계 진술이 다음 단계의 동기에 정확히 반영됨을 확인하였다.
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{매개변수 승계 일관성}}
+\label{subsec:param_inheritance}
+%% -------------------------------------------------------------------
+
+\jrev{\tabref{tab:param_inheritance}\refpo{tab:param_inheritance}{은}{는}} 연구 단계에 걸친 핵심 매개변수의
+승계 경로를 추적한 것이다.
+
+\begin{table}[htbp]
+  \centering
+  \caption{\jrev{매개변수 승계 추적표}}
+  \label{tab:param_inheritance}
+  \small
+  \begin{tabular}{l ccc cc}
+    \toprule
+    & \multicolumn{3}{c}{\textbf{\citet{lee2026drto}}} & \multicolumn{2}{c}{\textbf{본 연구}} \\
+    \cmidrule(lr){2-4} \cmidrule(lr){5-6}
+    \textbf{매개변수} & \textbf{단계 1} & \textbf{단계 2} & \textbf{단계 3} & \textbf{단계 4} & \textbf{단계 5} \\
+    \midrule
+    $R_0$ & 6.0h & 6.0h & 6.0h & 6.0h & 6.0h \\
+    $n$ & 10,000 & 10,000 & 10,000 & 10,000 & 10,000 \\
+    seed ($O$) & 42 & 42 & 42 & 42 & 42 \\
+    seed ($k_O$) & 20042 & 20042 & 20042 & 20042 & 20042 \\
+    $\kappa$ & --- & 가변 & 1.2 & 1.2 & 1.2 \\
+    $R_{\max}$ & --- & --- & --- & 24.0h & 24.0h \\
+    $S(z)$ 정의 & --- & $\frac{2}{1+e^{-z}}-1$ & 동일 & 동일 & 동일 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+모든 매개변수가 도입 시점 이후 일관되게 승계되고 있다.
+$\kappa$는 \chg{\citet{lee2026drto}의 단계 3에서} 확정($\kappa^* = 1.2$)된 후
+본 논문의 \chg{C2와 C3} 분석에서 변경 없이 사용되며,
+$R_{\max}$는 본 논문의 C2 분석(단계 4)에서 최초 도입($24.0$h $= 4R_0$)된 후
+C3 분석(단계 5)에서 동일값이 적용된다.
+비중첩 시드 대역(O: [0--9999], $k_O$: [20000--29999], $U^{(G)}$: [30000--39999],
+$U^{(P)}$: [40000--49999])으로 인해 상관계수 $|r| < 0.02$가 보장된다.
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{교차검증 종합 결과}}
+\label{subsec:comprehensive_pass}
+%% -------------------------------------------------------------------
+
+연구 전체에 대해 \chg{연구모형과 본문, 온톨로지 분석, 기준값}(statistics.json)
+간 \chg{수치와 수식 그리고 용어}의 정합성을 교차 검증한 결과,
+\textbf{총 303개 검증 항목이 모두 통과(PASS)}하였다(\jrev{\tabref{tab:303_pass}}).
+
+\begin{table}[htbp]
+  \centering
+  \caption{\jrev{연구 단계별 종합 교차검증 결과}}
+  \label{tab:303_pass}
+  \small
+  \begin{tabular}{l l ccc}
+    \toprule
+    \textbf{출처} & \textbf{연구 단계} & \textbf{검증 항목} & \textbf{합격} & \textbf{판정} \\
+    \midrule
+    \multirow{3}{*}{\citet{lee2026drto}}
+    & 단계 1 (관측성 기반 선형) & 48 & 48 & PASS \\
+    & 단계 2 (바운딩 기법 비교) & 72 & 72 & PASS \\
+    & 단계 3 (곡률 최적화)     & 55 & 55 & PASS \\
+    \midrule
+    \multirow{2}{*}{\jrev{본 논문 4장}}
+    & 단계 4 (가우시안 불확실성) & 64 & 64 & PASS \\
+    & 단계 5 (파레토 불확실성)  & 64 & 64 & PASS \\
+    \midrule
+    & \textbf{합계}           & \textbf{303} & \textbf{303} & \textbf{PASS} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+이 검증은 수식 기호 일치, 매개변수 값 일치, 통계량 일치(소수점 규약 준수),
+\chg{가설과 조건} 정의 일치를 포함하며, \chg{\citet{lee2026drto}와} 본 논문 간의
+논리적 일관성과 데이터 신뢰성을 보증한다.

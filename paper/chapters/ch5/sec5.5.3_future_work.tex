@@ -1,0 +1,144 @@
+%% ===================================================================
+\section{\vrev{향후 연구 방향}}
+\label{sec:conclusion-future}
+%% ===================================================================
+
+본 연구의 한계를 토대로 \jrev{5개} 향후 연구 방향을 다음과 같이 제안한다.
+
+
+\chg{첫째, 실제 조직 데이터 기반 현장 검증이다.}
+본 연구는 시뮬레이션 기반 검증에 초점을 맞추었으며, 실제 조직 환경에서의
+현장 실험(field test)을 수반하지 않았다.
+제조업, 금융업, IT 서비스 등 산업별 대표 조직을 선정하여
+실제 장애 이벤트에서의 복구 시간을 수집하고,
+시뮬레이션에서 예측한 $\eta$ 값과의 일치도를 검증함으로써
+모델의 외적 타당성(external validity)을 확보해야 한다.
+특히 관측성 지표($O(t)$)의 실시간 수집 방법론과
+불확실성 추정을 위한 장애 이력 데이터베이스 구축 방안을 구체화하여,
+$\DRTO$의 실무적 운용 기반을 마련할 필요가 있다.
+
+
+\chg{둘째, 시간 동역학(temporal dynamics) 및 상태공간 모형으로의 확장이다.}
+현행 $\DRTO$ 모델에서 $R_0$, $R_{\max}$, $\kappa$는 고정값으로 설정되어 있다.
+이를 시간 변동 함수\chg{(}$R_0(t)$, $\kappa(t)$\chg{)}로 확장하여
+조직의 BCM 성숙도 변화와 환경 변동을 모델에 내생적으로 반영할 수 있다.
+상태공간 모형(state-space model)의 관점에서 $\DRTO$의 시간적 진화를
+형식화하면, 관측성과 불확실성의 동적 상호작용을
+시간 축 위에서 추적할 수 있는 이론적 기반이 마련된다.
+특히 이산 시간 상태 전이 행렬을 통해
+C0$\to$C1$\to$C2(가우시안) 및 C0$\to$C1$\to$C3(파레토)의
+분기 경로를 동적 체제 전환(dynamic regime switching)~\citep{hamilton1989regime}으로
+모형화하는 확장이 가능하다.
+
+
+\chg{셋째, 칼만 필터(Kalman filter) 통합이다.}
+상태공간 모형의 자연스러운 확장으로서, 칼만 필터를 $\DRTO$ 프레임워크에
+통합하여 입력 변수($O(t)$, $U(t)$)의 노이즈를 실시간으로 여과하고
+최적 상태 추정을 수행할 수 있다.
+장애 이벤트 관측 시마다 예측-갱신(predict-update) 사이클을 통해
+$\DRTO$를 적응적으로 교정하는 자기 교정(self-calibrating) 메커니즘은,
+관측성 지표의 측정 오차와 불확실성 추정의 편향을 체계적으로 보정할 수 있다.
+확장 칼만 필터(EKF) 또는 언센티드 칼만 필터(UKF)를 적용하면
+시그모이드 바운딩의 비선형성을 직접 처리할 수 있으며,
+이는 $\DRTO$의 실시간 운용 정확도를 향상시킬 것이다.
+
+
+\chg{넷째, \frev{분포 환경 적합성}의 \frev{직접 검증}이다.}
+\jrev{본 연구는 \chg{\citet{lee2026drto}}의 $\kappa^{*}=1.2$를 새로운 분포 환경에 적용한 후 9개 가설(H2--H10) PASS의 통합 해석으로 \frev{운영 적합성을 시사하였다} (4.13절 \frev{분포 환경 적합성} 종합 명제). 그러나 \chg{\citet{lee2026drto}}의 4기준 종합점수 $F(\kappa) = f_1 \cdot f_2 \cdot f_3 \cdot f_4$ (\chg{실무 유의성, 비포화, 효과 크기, 설명력})는 C1 조건 기반으로 정의되어 C2/C3 조건에서 직접 격자 탐색에 부적합하다는 학술적 한계를 내포한다. 향후 연구에서는 분포 환경 무관 다기준 종합점수의 재정의와 C2/C3 조건에서의 직접 격자 탐색을 통해 $\kappa^{*}$의 환경별 최적값 비교를 수행함으로써, 본 연구의 종합 명제를 직접적 검증으로 보완할 수 있다.}
+
+
+\chg{다섯째, 다중 조직 BCM 및 적응적 $\kappa$ 강화학습이다.}
+단일 조직의 $\DRTO$에서 확장하여, 복수의 조직이 상호 의존적 공급망을
+형성하는 다중 조직 수준의 $\DRTO$ 모형을 개발할 수 있다.
+시스템 간 장애 전파(cascading failure) 효과, 공유 자원 경쟁,
+복구 우선순위 최적화를 개별 시그모이드 바운딩의 다차원 확장을 통해 모형화한다.
+나아가 강화학습(reinforcement learning)을 적용하여
+$\kappa$를 환경 변화에 따라 적응적으로 조정하는 메커니즘을 구축할 수 있다.
+조직의 장애 이력과 복구 성과를 보상(reward) 신호로 활용하면,
+$\kappa$가 \chg{조직과 산업, 그리고 시점}에 최적화된 값으로
+자동 수렴하는 자기 최적화(self-optimizing) 프레임워크의 실현이 가능하다.
+
+\vspace{0.5em}
+
+\p{[}그림~\vref{fig:ch7-achievement-map}\p{]}는 본 연구의 연구 성과 구조를
+문제 인식에서 해결 방안, 핵심 성과로 이어지는 흐름으로 시각화한 것이다.
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+    probbox/.style={draw, rounded corners=5pt, fill=red!8, minimum width=34mm,
+                    minimum height=12mm, align=center, font=\footnotesize,
+                    line width=0.6pt},
+    solbox/.style={draw, rounded corners=5pt, fill=blue!8, minimum width=34mm,
+                   minimum height=12mm, align=center, font=\footnotesize,
+                   line width=0.6pt},
+    outbox/.style={draw, rounded corners=5pt, fill=green!8, minimum width=34mm,
+                   minimum height=12mm, align=center, font=\footnotesize,
+                   line width=0.6pt},
+    catbox/.style={draw, rounded corners=8pt, inner sep=6pt, line width=0.8pt},
+    conn/.style={-{Stealth[length=2.5mm]}, thick, black},
+    catlbl/.style={font=\small\bfseries, anchor=south},
+]
+
+% --- 문제 인식 (왼쪽) ---
+\node[probbox] (p1) at (0, 3.0) {관측성 미반영\\(정적 RTO)};
+\node[probbox] (p2) at (0, 1.5) {불확실성 미정량화\\(worst-case 한정)};
+\node[probbox] (p3) at (0, 0.0) {극단 사건 미모형화\\(정규분포 전제)};
+
+% --- 해결 방안 (중앙) ---
+\node[solbox] (s1) at (5.5, 3.0) {개별 시그모이드\\바운딩 모델};
+\node[solbox] (s2) at (5.5, 1.5) {\frev{분포 환경 적합성}\\종합 명제 도출};
+\node[solbox] (s3) at (5.5, 0.0) {C0$\to$C3 점진적\\4단계 프레임워크};
+
+% --- 핵심 성과 (오른쪽) ---
+\node[outbox] (o1) at (11, 3.6) {$\DRTO \in (0, R_{\max})$\\경계 보장};
+\node[outbox] (o2) at (11, 2.1) {H1--H10 전원 채택\\$R^2_{(2\mathrm{q})} \geq 0.95$};
+\node[outbox] (o3) at (11, 0.6) {꼬리 감쇠 $0.52$배\\CVaR$_{99}$ $+24.0\%$};
+\node[outbox] (o4) at (11, -0.9) {전문가 4.46/5.0\\$\alpha = 0.89$};
+
+% --- 카테고리 박스 (배경 레이어) ---
+\begin{scope}[on background layer]
+  \node[catbox, fit=(p1)(p2)(p3), draw=red!50, fill=red!2] (pcat) {};
+  \node[catbox, fit=(s1)(s2)(s3), draw=blue!50, fill=blue!2] (scat) {};
+  \node[catbox, fit=(o1)(o2)(o3)(o4), draw=green!50!black, fill=green!2] (ocat) {};
+\end{scope}
+
+% --- 카테고리 라벨 ---
+\node[catlbl, text=black] at (pcat.north) {문제 인식};
+\node[catlbl, text=black] at (scat.north) {해결 방안};
+\node[catlbl, text=black] at (ocat.north) {핵심 성과};
+
+% --- 연결선 ---
+\draw[conn] (p1.east) -- (s1.west);
+\draw[conn] (p2.east) -- (s2.west);
+\draw[conn] (p3.east) -- (s3.west);
+
+\draw[conn] (s1.east) -- (o1.west);
+\draw[conn] (s2.east) -- (o2.west);
+\draw[conn] (s3.east) -- (o3.west);
+\draw[conn, dashed] (s1.east) -- (o2.west);
+\draw[conn, dashed] (s3.east) -- (o4.west);
+
+\end{tikzpicture}%
+}% end resizebox
+\caption{문제 인식에서 해결 방안, 핵심 성과로 이어지는 연구 성과 구조도}
+\label{fig:ch7-achievement-map}
+\end{figure}
+
+
+\vspace{1.5em}
+
+결론적으로, 본 연구는 업무연속성관리 분야에서 정적 RTO의 근본적 한계를
+극복하는 $\DRTO$ 프레임워크를 제안하고,
+개별 시그모이드 바운딩 모델\jrev{(\chg{\citet{lee2026drto}}의 $\kappa^{*} = 1.2$ 전제 채택)},
+꼬리 감쇠 발견($0.52$배), P85.8 CDF 교차점 규명(CVaR$_{99}$ $+24.0\%$),
+6단계 다층 검증(전문가 4.46/5.0, \jrev{10/10} 가설 채택)\jrev{,
+그리고 \textbf{\jrev{\frev{분포 환경 적합성}} 종합 명제 도출}}이라는
+\chg{이론적이고 방법론적인} 기여를 달성하였다.
+향후 실제 조직 데이터 기반 현장 검증, 상태공간 모형과 칼만 필터의 통합,
+\jrev{\frev{분포 환경 적합성}의 \frev{직접 검증}(환경 무관 다기준 종합점수 재정의),}
+다중 조직 BCM 확장, 그리고 적응적 $\kappa$ 강화학습을 통해
+$\DRTO$ 프레임워크가 조직의 사업연속성 역량을 실질적으로 강화하는
+정량적 도구로 발전하기를 기대한다.
+

@@ -1,0 +1,320 @@
+
+
+%% ===================================================================
+\section{\vrev{가우시안 vs.\ 파레토 불확실성 종합 비교 분석}}
+\label{sec:ch5_c2_c3_synthesis}
+%% ===================================================================
+
+\jrev{4.2절(C2)·4.3절(C3)}에서 C2(가우시안)와 C3(파레토) 조건의 개별 실험 결과를 각각 검토하였으며,
+두 조건의 핵심 지표를 \jrev{\tabref{tab:c2_c3_key_metrics}}에서 직접 대비하였다.
+본 절에서는 이를 바탕으로 두 불확실성 유형의 구조적 차이를 종합적으로 분석하고,
+이후 절(효과 크기, 회귀 설명력, 이중채널 감쇠)의 교차분석으로 연결하는
+통합적 시각을 제공한다.
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{분포 특성과 $\eta$ 분포의 구조적 차이}}
+\label{subsec:c2c3_distribution}
+%% -------------------------------------------------------------------
+
+가우시안과 파레토 불확실성은 동일한 기댓값 $E[U_{\text{raw}}] = 3.0$을
+공유하지만, 분포의 형태적 특성에서 근본적으로 상이하다.
+\jrev{\tabref{tab:c2_c3_distribution_properties}\refpo{tab:c2_c3_distribution_properties}{은}{는}} 두 분포의 이론적 특성과
+이로부터 유도되는 $\eta$ 분포의 구조적 차이를 정리한 것이다.
+
+\begin{table}[htbp]
+  \centering
+  \caption{\jrev{C2 vs.\ C3 불확실성 분포의 구조적 특성 비교}}
+  \label{tab:c2_c3_distribution_properties}
+  \small
+  \begin{tabular}{l cc l}
+    \toprule
+    \textbf{특성} & \textbf{C2 (가우시안)} & \textbf{C3 (파레토)} & \textbf{함의} \\
+    \midrule
+    분포 & $N(3, 1)$ & \jrev{$6 \cdot \mathrm{Pareto}(3)$} & 동일 평균, 상이 형태 \\
+    기댓값 $E[U]$ & 3.0 & 3.0 & 동일 \\
+    분산 $\mathrm{Var}[U]$ & 1.0 & \jrev{27.0} & \jrev{C3가 가우시안의 27배} \\
+    왜도(Skewness) & 0 & 양 & C3 우측 비대칭 \\
+    첨도(Kurtosis) & 3 (정규) & $\infty$ & C3 극단값 빈도 높음 \\
+    꼬리 감쇠 & 지수적 $e^{-x^2/2}$ & 멱법칙 $x^{-\alpha}$ & C3의 꼬리 질적 차이 \\
+    \midrule
+    $\bar{\eta}$ & 1.682 & 1.514 & C2가 평균적으로 높음 \\
+    $\mathrm{SD}(\eta)$ & 0.615 & 0.791 & C3가 분산 $1.29$배 \\
+    $\eta_{\max}$ & 3.443 & 4.000 & C3가 $R_{\max}$ 포화 접근 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+이 비교에서 핵심적인 관찰은 다음과 같다.
+\textbf{첫째}, 가우시안의 유한 분산($\mathrm{Var} = 1.0$)은
+$\eta$의 예측 가능한 변동을 생성하는 반면,
+\jrev{파레토의 큰 분산($\mathrm{Var} = 27$, 가우시안의 27배)}은 표본 수준에서 높은 $\mathrm{SD}(\eta) = 0.791$과
+$\eta_{\max} = 4.000$ (= $R_{\max}/R_0$)에 근접하는 극단값으로 발현한다.
+\textbf{둘째}, C2의 평균이 C3보다 높은($1.682 > 1.514$) 이유는
+가우시안의 대칭적 종형 분포가 평균 근방에 밀도를 집중시키는 반면,
+파레토의 우측 비대칭이 평균을 좌측으로 편향시키기 때문이다.
+이 ``평균에서의 역전''은 분포의 첨도와 왜도 차이에서 비롯되며,
+극단 영역에서의 $\eta$ 행동은 정반대의 양상을 보인다.
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{백분위별 $\eta$ 비교(분포 교차 구조)}}
+\label{subsec:c2c3_percentile}
+%% -------------------------------------------------------------------
+
+\jrev{\tabref{tab:c2_c3_percentile}\refpo{tab:c2_c3_percentile}{은}{는}} C2와 C3의 $\eta$ 백분위 값을
+주요 분위수에서 비교한 것이다. 이 표는 두 분포의 교차 구조를
+체계적으로 보여준다.
+
+\begin{table}[htbp]
+  \centering
+  \caption{\jrev{C2 vs.\ C3 효율성 비율 $\eta$의 백분위별 비교 ($n = 10{,}000$)}}
+  \label{tab:c2_c3_percentile}
+  \small
+  \begin{tabular}{l rr r l}
+    \toprule
+    \textbf{백분위} & \textbf{C2 $\eta$} & \textbf{C3 $\eta$} &
+    \textbf{$\Delta$(C3$-$C2)} & \textbf{우위 조건} \\
+    \midrule
+    P10 & 0.897 & 0.786 & $-0.112$ & C2 $>$ C3 \\
+    P25 & 1.183 & 0.964 & $-0.219$ & C2 $>$ C3 \\
+    P50 (중앙값) & 1.645 & 1.230 & $-0.415$ & C2 $>$ C3 \\
+    P75 & 2.141 & 1.842 & $-0.299$ & C2 $>$ C3 \\
+    P85 & 2.395 & 2.371 & $-0.024$ & C2 $\approx$ C3 \\
+    \textbf{P85.8} & \textbf{2.42} & \textbf{2.42} & $\approx$\textbf{0.000} & \textbf{교차점} \\
+    P90 & 2.541 & 2.772 & $+0.231$ & C3 $>$ C2 \\
+    P95 & 2.731 & 3.319 & $+0.588$ & C3 $>$ C2 \\
+    P99 & 3.059 & 3.880 & $+0.821$ & C3 $>$ C2 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+이 백분위 분석에서 세 가지 구조적 특성이 관찰된다.
+
+\chg{첫째, P85.8 이하의 가우시안 우위 영역에서는} 전체 표본의 85.8\%에 해당하는 일상적 운영 범위에서
+C2의 $\eta$가 C3보다 일관되게 높다. 이 영역에서 가우시안의 대칭적 분포가 평균 근방에 밀도를 집중시켜,
+불확실성 프리미엄이 파레토보다 체계적으로 큰 값을 산출하며, 중앙값 기준 C2와 C3의 격차는 $0.415$에
+달한다. \chg{둘째, 약 P85.8의 교차점에서는} 두 분포의 $\eta$ 백분위가 교차한다. 이 교차점은
+``일상적 변동''과 ``극단적 변동''을 분리하는 자연적 경계이며, 이후 분할 회귀 분석(\jrev{\subsecref{subsec:ch5_split_regression}})의
+분리 기준으로 사용된다. \chg{셋째, P85.8 이상에서는 파레토 우위가 급격히 확대되어} 교차점 이상에서
+C3의 $\eta$가 C2를 초과하며, 격차는 상위 백분위로 갈수록 비선형적으로 확대된다. $\Delta$(C3$-$C2) 값이
+P90에서 $+0.231$, P99에서 $+0.821$로 증가하여, 극단 영역에서 파레토 꼬리가 $\DRTO$를 $R_{\max}$에
+근접시키는 효과를 보여준다.
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{회귀 계수의 직접 비교(분포별 변수 영향력 차이)}}
+\label{subsec:c2c3_regression_coefficients}
+%% -------------------------------------------------------------------
+
+\jrev{\tabref{tab:c2_c3_regression_comparison}\refpo{tab:c2_c3_regression_comparison}{은}{는}} C2와 C3의 1차 다중 회귀 계수를
+직접 비교한 것이다.
+
+\begin{table}[htbp]
+  \centering
+  \caption{\jrev{C2 vs.\ C3 1차 다중 회귀 계수 직접 비교}}
+  \label{tab:c2_c3_regression_comparison}
+  \small
+  \begin{tabular}{l rr r l}
+    \toprule
+    \textbf{변수} & \textbf{C2 계수} & \textbf{C3 계수} &
+    \textbf{비율 (C3/C2)} & \textbf{해석} \\
+    \midrule
+    절편 $\hat{\beta}_0$ & $+2.024$ & $+2.018$ & 1.00 & 기준수준 동일 \\
+    $k_O$ & $-1.869$ & $-1.408$ & 0.75 & C3에서 관측성 효과 감쇠 \\
+    $O$ & $-0.281$ & $-0.249$ & 0.89 & C3에서 관측성 기여 약간 감쇠 \\
+    $U$ & $+0.248$ & $+0.112$ & 0.45 & C3에서 선형 기여 감소 \\
+    \midrule
+    $R^2$ & 0.948 & 0.695 & 0.73 & C3의 비선형성으로 설명력 감소 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+회귀 계수 비교에서 도출되는 핵심 패턴은 다음과 같다.
+\chg{첫째, 관측성 변수($k_O$, $O$)의 계수가 감쇠한다. C3에서 $k_O$의 계수가 C2 대비 $0.75$배, $O$의
+계수가 $0.89$배로 감쇠되는데, 이는 파레토 불확실성이 존재하는 환경에서 관측성의 복구 단축 효과가
+체계적으로 약화됨을 의미한다. 나아가 C3 내부에서 P85.8 분할 회귀를 수행하면 Core($k_O = -0.798$) 대비
+Tail($k_O = -0.415$)에서 $0.52$배의 추가 감쇠가 관측되어(\jrev{\subsecref{subsec:ch5_split_regression}}),
+극단 영역으로 갈수록 관측성 효과가 단계적으로 약화되는 구조적 현상임을 확인한다. 둘째, 불확실성
+변수($U$)의 선형 계수가 감소하되 비선형 항이 지배한다. C3에서 $U$의 1차 회귀 계수가 C2 대비 $0.45$배로
+오히려 감소하는데, 이는 파레토 분포의 극단값이 시그모이드 포화 영역에서 비선형적으로 작용하여 선형 회귀
+계수가 $U$의 실제 영향력을 과소 추정하기 때문이다. 그러나 전진 선택법에서 C3가 $U$를 1순위로 진입시키는
+것은(\jrev{\subsecref{subsec:ch5_dominant_variable}}) $U$의 기여가 $U^2$, $k_O \cdot U$ 등 비선형 항을 통해
+작용함을 보여주며, 실제로 C3에서 $U$ 관련 변수($U$, $U^2$, $k_O \cdot U$)가 전진 선택 상위 4개 중 3개를
+차지한다. 셋째, 설명력 격차가 존재한다. 1차 다중 회귀 $R^2$가 C2의 $0.948$에서 C3의 $0.695$로 $0.253$만큼
+하락하는데, 이 격차는 파레토 분포의 비선형 꼬리 구조가 선형 모형으로 포착되지 않는 변동을 생성하기
+때문이며, 2차교호작용 모형에서 C2($R^2 = 0.998$)와 C3($R^2 = 0.858$)의 격차가 $0.140$으로 축소되지만
+여전히 잔존한다.}
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{이중축(Dual-Axis) 불확실성 관리 체계의 종합 해석}}
+\label{subsec:c2c3_dual_axis}
+%% -------------------------------------------------------------------
+
+C2와 C3의 종합 비교에서 도출되는 핵심 결론은
+\textbf{두 불확실성 유형이 상호 배타적이 아닌 상호 보완적}이라는 것이다.
+
+\chg{이는 세 측면에서 구체화된다. 첫째, 일상적 운영 축(C2 기반)으로서, 전체 표본의 85.8\%에 해당하는
+일상적 변동 범위에서는 가우시안 분포(C2)가 높은 예측력($R^2 = 0.948$)과 관측성 중심의 간명한 관리 구조를
+제공하며, 이 영역에서 BCM 전략의 핵심은 관측성 투자에 의한 복구 시간 단축이다. 둘째, 극단 위험 축(C3
+기반)으로서, 상위 14.2\%의 극단 영역에서는 파레토 분포(C3)가 가우시안보다 현실적인 위험 평가를 제공하는데,
+$\mathrm{CVaR}_{99}$ 기준 C3가 C2 대비 $+24.0\%$ 높은 값을 보이며 이 영역에서 BCM 전략의 핵심은 불확실성
+자체의 정량화와 꼬리 위험 관리이다. 셋째, P85.8 교차점의 전략적 의미로서, P85.8은 두 축을 분리하는 자연적
+경계이며 조직은 자신의 불확실성 프로파일이 P85.8 이하(일상적)인지 이상(극단적)인지를 진단하여 적절한
+분포를 선택할 수 있다. 이 이중축 체계는 \jrev{\secref{sec:practical-implications}}에서 2단계 운영
+프레임워크와 산업별 가이드라인으로 구체화된다.}
+
+\jrev{\figref{fig:c2_c3_synthesis}\refpo{fig:c2_c3_synthesis}{은}{는}} C2와 C3의 $\eta$ 분포 및
+P85.8 교차점을 종합적으로 시각화한 것이다.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=0.92\textwidth,
+      height=8cm,
+      xlabel={효율성 비율 $\eta$},
+      ylabel={확률밀도},
+      xmin=0.3, xmax=4.2,
+      ymin=0, ymax=1.35,
+      ymajorgrids=true,
+      xmajorgrids=true,
+      grid style={dashed, black},
+      legend style={at={(0.5,-0.18)}, anchor=north, font=\small,
+                    legend columns=2, /tikz/every even column/.append style={column sep=8pt}},
+      legend cell align=left,
+      ]
+      % Core/Tail 배경 영역 색상 (옅게 조정 — 영역 1/2/3 표시와 양립)
+      \fill[green!10] (axis cs:0.3,0) rectangle (axis cs:2.42,1.35);
+      \fill[red!8] (axis cs:2.42,0) rectangle (axis cs:4.2,1.35);
+
+      % 영역 1/2/3 경계 수직 점선 (η=1.33, η=2.96, PDF 이중 교차점)
+      \draw[black, dashdotted, thick] (axis cs:1.33, 0) -- (axis cs:1.33, 1.05);
+      \draw[black, dashdotted, thick] (axis cs:2.96, 0) -- (axis cs:2.96, 1.05);
+      \node[font=\tiny, black, fill=white, inner sep=1pt]
+        at (axis cs:1.33, 1.08) {$\eta\!=\!1.33$};
+      \node[font=\tiny, black, fill=white, inner sep=1pt]
+        at (axis cs:2.96, 1.08) {$\eta\!=\!2.96$};
+
+      % C2 (Gaussian): 스무딩된 히스토그램 데이터 (200 bins, σ=2)
+      \addplot[blue!70!black, thick, no markers]
+        table[x=eta, y=pdf_C2] {figures/data/pdf_c2_c3.dat};
+      \addlegendentry{C2 (Gaussian, solid)}
+
+      % C3 (Pareto): 스무딩된 히스토그램 데이터 (200 bins, σ=2)
+      \addplot[red!70!black, thick, dashed, no markers]
+        table[x=eta, y=pdf_C3] {figures/data/pdf_c2_c3.dat};
+      \addlegendentry{C3 (Pareto, dashed)}
+
+      % 영역 1/2/3 라벨 (영역 중앙 상단, 굵은 글씨)
+      \node[font=\small\bfseries, black, align=center,
+            fill=yellow!20, inner sep=3pt, rounded corners=2pt,
+            draw=black, thin, anchor=west]
+        at (axis cs:0.32, 0.95)
+        {영역 1\\$(\eta\!<\!1.33)$\\\scriptsize C3$>$C2};
+      \node[font=\small\bfseries, black, align=center,
+            fill=yellow!20, inner sep=3pt, rounded corners=2pt,
+            draw=black, thin]
+        at (axis cs:2.145, 0.95)
+        {영역 2\\$(1.33\!\leq\!\eta\!\leq\!2.96)$\\\scriptsize C2$>$C3};
+      \node[font=\small\bfseries, black, align=center,
+            fill=yellow!20, inner sep=3pt, rounded corners=2pt,
+            draw=black, thin]
+        at (axis cs:3.55, 0.65)
+        {영역 3\\$(\eta\!>\!2.96)$\\\scriptsize C3$>$C2 (heavy-tail)};
+
+      % P85.8 수직선 (η ≈ 2.42, CDF 교차점)
+      \draw[black, dashed, thick] (axis cs:2.42, 0) -- (axis cs:2.42, 1.25);
+      \node[font=\footnotesize, fill=white, inner sep=2pt, rounded corners=1pt]
+        at (axis cs:2.42, 1.30) {\textbf{P85.8} (CDF 교차)};
+
+      % R0 baseline
+      \draw[black, dotted, thick] (axis cs:1.0, 0) -- (axis cs:1.0, 1.25);
+      \node[font=\scriptsize, black, fill=white, inner sep=1pt]
+        at (axis cs:1.0, 1.30) {$\eta = 1.0$ ($\DRTO = R_0$)};
+
+      % Core 영역 주석 (좌측 하단, 영역 1/2 라벨과 충돌 방지)
+      \node[font=\tiny, green!50!black, align=center,
+            fill=green!5, inner sep=2pt, rounded corners=1pt,
+            draw=green!40!black, thin]
+        at (axis cs:0.50, 0.20) {Core\\($\leq$ P85.8)};
+
+      % Tail 영역 주석 (우측 하단)
+      \node[font=\tiny, red!60!black, align=center,
+            fill=red!5, inner sep=2pt, rounded corners=1pt,
+            draw=red!40!black, thin]
+        at (axis cs:3.80, 0.15) {Tail\\($>$ P85.8)};
+
+      % 통계 주석 (우상단, 위치 조정)
+      \node[font=\scriptsize, align=left, fill=white, inner sep=3pt,
+            rounded corners=2pt, draw=black, thin]
+        at (axis cs:0.85, 0.35)
+        {$\bar{\eta}_{\text{C2}} = 1.682$, SD $= 0.615$\\
+         $\bar{\eta}_{\text{C3}} = 1.514$, SD $= 0.791$};
+
+      % 꼬리 확장 화살표
+      \draw[-{Stealth}, red!60, thick]
+        (axis cs:3.7, 0.06) -- (axis cs:4.1, 0.01);
+      \node[font=\tiny, red!70!black, anchor=south] at (axis cs:3.9, 0.07)
+        {$\eta \to 4.0$};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{C2 vs.\ C3 $\eta$ 분포 종합 비교}
+  \label{fig:c2_c3_synthesis}
+\end{figure}
+
+\noindent
+\chg{그림은 시뮬레이션 $n = 10{,}000$의 200구간 히스토그램을 $\sigma = 2$로 스무딩한 것으로, PDF 이중
+교차점 $\eta = 1.33$과 $\eta = 2.96$(점쇄선)이 분포를 영역 1($\eta < 1.33$, C3 우세), 영역
+2($1.33 \leq \eta \leq 2.96$, C2 우세), 영역 3($\eta > 2.96$, C3 heavy-tail)로 분할한다. 이는 CDF
+교차점 P85.8($\eta \approx 2.42$, 파선)을 기준으로 한 Core/Tail 분류(옅은 녹색과 적색 배경)와는 별개의
+분류이며, C3의 우측 꼬리가 $\eta \to 4.0$($= R_{\max}/R_0$)까지 확장되는 것이 파레토 불확실성의 구조적
+특성이다.}
+\jrev{\figref{fig:c2_c3_synthesis}}에서 C2와 C3의 확률밀도 곡선은
+$\eta \approx 1.33$과 $\eta \approx 2.96$에서 두 번 교차하며,
+이 \textbf{이중 교차(dual crossing)} 구조는
+파레토 분포의 ``양극단 집중'' 특성을 반영한다.
+\jrev{\tabref{tab:pdf_dual_crossing}\refpo{tab:pdf_dual_crossing}{은}{는}} 두 교차점이 분리하는 세 영역의
+확률 비중과 그 해석을 정리한 것이다.
+
+\begin{table}[htbp]
+  \centering
+  \caption{\jrev{C2 vs.\ C3 확률밀도 이중 교차 구조}}
+  \label{tab:pdf_dual_crossing}
+  \small
+  \begin{tabular}{cl c c >{\raggedright\arraybackslash}p{3.8cm}}
+    \toprule
+    & \textbf{범위} & \textbf{우세} &
+    \textbf{확률 비중} & \textbf{해석} \\
+    \midrule
+    영역 1 & $\eta < 1.33$ & C3 $>$ C2 &
+    C3: 55.6\% vs.\ C2: 33.0\% &
+    파레토의 좌측 편향 (낮은 $\eta$에 밀집) \\
+    영역 2 & $1.33 \leq \eta \leq 2.96$ & C2 $>$ C3 &
+    C2: 64.1\% vs.\ C3: 35.1\% &
+    가우시안의 종형 대칭 (중간값에 밀집) \\
+    영역 3 & $\eta > 2.96$ & C3 $>$ C2 &
+    C3: 8.1\% vs.\ C2: 1.7\% &
+    파레토의 heavy-tail (극단값) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\chg{표에서 확률은 각 영역에서의 확률밀도 적분값(면적 비중)이며, CDF 교차점(P85.8, $\eta \approx 2.42$)은
+영역 2 내부에서 발생하여 영역 2에서 C2의 누적 초과분이 영역 1의 C3 초과분을 상쇄하는 지점에 해당한다.}
+
+\noindent
+이 이중 교차 구조에서 세 가지 함의가 도출된다.
+\textbf{첫째}, 영역 1에서 C3의 확률이 C2보다 $22.6\%$p 높다는 것은
+파레토 불확실성 환경에서 $\eta < 1.33$ (즉 $\DRTO < 1.33 R_0$)의
+비교적 낮은 복구 시간이 출현할 확률이 가우시안보다 체계적으로 높음을 의미한다.
+\textbf{둘째}, 영역 2에서 C2가 $29.0\%$p 우세한 것은
+가우시안의 종형 분포가 중간 $\eta$ 범위에 밀도를 집중시켜,
+``전형적인'' 복구 시간의 예측 가능성이 높음을 보여준다.
+\textbf{셋째}, 영역 3에서 C3의 확률이 C2의 $4.8$배($8.1\%$ vs.\ $1.7\%$)인 것은
+극단적으로 긴 복구 시간($\eta > 2.96$, 즉 $\DRTO > 17.8$h)의 출현 빈도가
+분포 유형에 따라 질적으로 상이함을 확인한다.
+이 영역 3의 비대칭이 $\mathrm{CVaR}_{99}$ 격차(C3가 C2 대비 $+24.0\%$)의
+직접적 원인이며, \jrev{\secref{sec:ch5_dual_channel}}의 이중채널 감쇠 메커니즘으로
+연결된다.

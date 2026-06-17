@@ -1,0 +1,25 @@
+# LaTeX 빌드 산출물
+paper/*.aux
+paper/*.bbl
+paper/*.bcf
+paper/*.blg
+paper/*.fdb_latexmk
+paper/*.fls
+paper/*.lof
+paper/*.log
+paper/*.lot
+paper/*.out
+paper/*.run.xml
+paper/*.toc
+paper/*.xdv
+paper/*.pdf
+paper/**/*.aux
+
+# 대용량 중간 산출물 (재생성 가능, 기준값은 statistics.json만 커밋)
+data/calc_data/**/simulation_results.csv
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/

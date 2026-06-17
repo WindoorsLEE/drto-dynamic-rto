@@ -1,0 +1,243 @@
+
+
+%% [본문 이관] 구 부록 J: 하위 변수 조작화 및 가상 기업 적용 예시 (참고용)
+\subsection{\syncr{하위 변수 조작화 및 가상 기업 적용 예시}}
+\label{app:operationalization}
+
+\syncr{\subsubsection{본 절의 성격과 한계}}
+
+\syncr{\textbf{본 절은 $\DRTO$ 프레임워크의 실무 적용 방향성을 보여주기 위한
+참고용 예시이다.} 제시된 하위 지표의 구성, 가중치, 측정 도구 매핑,
+가상 기업 수치는 \textbf{실증적으로 검증되지 않았으며}, 중견 제조업 일반
+특성에서 추정한 \textbf{조건적 시나리오}(illustrative case~\citep{yin2018case})에
+해당한다. 이를 규범적 가이드라인 또는 검증된 방법론으로 해석하지 말 것을 당부한다.}
+
+\syncr{본문에서 제시한 $\DRTO$ \chg{모델과 시뮬레이션 결과, 전문가 검증}은 본 연구의
+공식적 기여이나, 본 절의 조작화와 시나리오는 \textbf{향후 연구를 위한
+탐색적 제안}에 그친다. 각 하위 지표의 심리측정학적 타당도, 가중치의
+산업별 튜닝, 원시 지표의 측정 도구별 \chg{정확도와 편향}, 현장 데이터 기반
+\chg{수렴 및 예측} 타당도는 본 연구의 범위를 벗어나며 후속 연구에서 독립적으로
+검증되어야 한다.}
+
+\syncr{\subsubsection{조작화의 필요성과 정지점 원칙}}
+
+\syncr{$\DRTO$ 모델의 주 변수인 관측성($O_{\text{raw}}$, $k_O$)과 불확실성($U$)은
+수식적으로는 정의되어 있으나, 실제 조직에서 이들을 어떻게 산출할 것인가는
+추가 조작적 정의가 필요하다. 조작화는 원칙적으로 하위 변수의 하위 변수로
+무한 분해될 수 있으므로, 어느 수준에서 정지할 것인가의 \textbf{정지점
+(stopping point)} 문제가 발생한다.}
+
+\syncr{본 절은 측정이론의 고전적 원칙을 따라, 해당 하위 지표가 현장의
+\textbf{기존 운영 시스템}(APM 도구, SIEM 도구, 장애 이력 데이터베이스,
+CVE 공개 데이터베이스, 자산 대장 등)\textbf{에서 직접 \chg{관측되고 기록되는} 원시값}에
+도달하면 그 이하의 분해는 본 연구의 범위 밖으로 간주한다. 이는
+\synct{bagozzi1998general}의 ``observable primitive'' 정지 규칙,
+\synct{bollen1989structural}의 effect indicator 이론, 그리고
+\nrev{ISO/IEC 25010:2011}의 원자 지표 표준화 원칙에 부합한다~\citep{iso25010}.}
+
+\syncr{\chg{다만} 본 정지 규칙은 일반적 원칙을 따른 것이며,
+개별 원시 지표의 심리측정학적 타당도는 측정 도구별로 별도 검증이 필요하다.}
+
+\syncr{\subsubsection{관측성 $O_{\text{raw}}$ 조작화 예시}}
+
+\syncr{관측성 원시값 $O_{\text{raw}} \in [0,1]$는 응용 성능 모니터링(APM)과 보안 \chg{정보 및 이벤트}
+관리(SIEM)의 두 차원으로 분해 가능하다.}
+
+\syncr{\chg{APM 차원은 $O_{\text{APM}} = w_1 R_{\text{avail}} + w_2 (1-R_{\text{error}}) + w_3 R_{\text{perf}}$로 정의한다.}}
+
+\syncr{\chg{SIEM 차원은 $O_{\text{SIEM}} = v_1 (1-E_{\text{high}}) + v_2 (1-T_{\text{mttr}})$로 정의한다.}}
+
+\syncr{\chg{두 차원의 합성은 $O_{\text{raw}} = \alpha \cdot O_{\text{APM}} + (1-\alpha) \cdot O_{\text{SIEM}}$이며, 본 예시에서 $\alpha = 0.7$로 가정한다.}}
+
+\syncr{제1계층 원시 지표는 \tabref{tab:app-operationalization}에 정리하였다.}
+
+\begin{table}[htbp]
+\centering
+\caption{\syncr{\chg{관측성과 불확실성, $k_O$}의 1차 조작화 예시 (참고용)}}
+\label{tab:app-operationalization}
+\small
+\syncr{\begin{tabularx}{\textwidth}{l l X l}
+\toprule
+\textbf{주 변수} & \textbf{1차 차원} & \textbf{원시 지표 (정지점)} & \textbf{측정 출처} \\
+\midrule
+\multirow{5}{*}{$O_{\text{raw}}$} &
+\multirow{3}{*}{$O_{\text{APM}}$} &
+  $R_{\text{avail}}$: 가용시간/총시간 & APM 도구 로그 \\
+& & $R_{\text{error}}$: 오류건수/총요청수 & APM 도구 로그 \\
+& & $R_{\text{perf}}$: 목표응답/평균응답 & APM 도구 로그 \\
+\cmidrule(l){2-4}
+& \multirow{2}{*}{$O_{\text{SIEM}}$} &
+  $E_{\text{high}}$: 미대응 고위험 이벤트 비율 & SIEM 도구 \\
+& & $T_{\text{mttr}}$: 평균 탐지시간(정규화) & SIEM 도구 \\
+\midrule
+\multirow{2}{*}{\jrev{$U_{\text{raw}}$}} &
+  $U_{\text{hist}}$ & $\ln(P99/\jrev{\overline{T}})$ of 복구시간 & 장애 이력 DB \\
+& $U_{\text{ext}}$ & \jrev{CVE CVSS 평균} & NVD/MITRE ATT\&CK \\
+\midrule
+$k_O$ & (단일) & 모니터링 커버리지율 & 자산 대장 \\
+\bottomrule
+\end{tabularx}}
+\end{table}
+
+\syncr{\chg{다만} 가중치 $w_i$, $v_i$, $\alpha$는 본 예시에서
+등가중 또는 0.7로 임의 가정하였으며, \chg{산업별과 조직별} 최적값은 향후 연구에서
+실증 검증되어야 한다.}
+
+\syncr{\subsubsection{불확실성 \imod{$U$}{$U_{\text{raw}}$} 조작화 예시}}
+
+\syncr{불확실성 \jrev{$U_{\text{raw}}$}는 과거 장애 이력 기반 $U_{\text{hist}}$와 외부 위협 지수 기반
+$U_{\text{ext}}$의 두 차원으로 분해 가능하다\jrev{(두 하위 지표 모두 $[0, \infty)$
+범위로 본 연구 모델의 $U_{\text{raw}}$ 정의와 일치)}한다.}
+
+\syncr{\chg{과거 장애 기반 지표는 $U_{\text{hist}} = \ln\!\left(P99_{\text{recover}} / \overline{T}_{\text{recover}}\right) \jrev{\in [0, \infty)}$로, 복구시간 분포의 꼬리 두께를 로그 스케일로 정량화하며 장애 이력 DB에서 직접 산출한다.}}
+
+\syncr{\chg{외부 위협 기반 지표는 $U_{\text{ext}} = \text{CVSS}_{\text{avg}} \jrev{\in [0, \infty)}$로, 최근 12개월 관련 CVE의 CVSS 점수 평균이며 NVD/MITRE ATT\&CK 공개 DB에서 산출한다.} \jrev{표준 CVSS v3.1은 $[0, 10]$이지만 조직 내부 위협 가중치 적용 시 10 초과 가능하다.}}
+
+\syncr{\chg{두 차원의 합성은 \jrev{$U_{\text{raw}}$} $= \beta \cdot U_{\text{hist}} + (1-\beta) \cdot U_{\text{ext}}$이며, 본 예시에서 $\beta = 0.6$으로 가정한다.}}
+
+\syncr{\chg{다만} 조직별 이력 DB 구축 수준이 상이하므로 $U_{\text{hist}}$
+산출의 신뢰도는 조직마다 다를 수 있다. 신설 조직 또는 이력 부족 조직의
+경우 $\beta$를 낮추거나 업종 평균을 사용하는 보정이 필요하다. \jrev{또한
+$U_{\text{hist}}$와 $U_{\text{ext}}$는 각각 독립적으로 가우시안 또는 파레토
+분포를 따를 수 있으며(조합 시 $2 \times 2 = 4$가지 분포 시나리오 가능),
+본 연구 조건 C2/C3는 양 극단(전량 가우시안 / 전량 파레토)만 다룬다.
+혼합 분포 시나리오의 실증은 향후 연구 과제이다.}}
+
+\syncr{\subsubsection{관측성 가중치 $k_O$ 조작화 예시}}
+
+\syncr{관측성 가중치 $k_O \in [0,1]$은 조직이 관측성에 얼마나 투자했는지를
+나타내는 감도 계수로, 본 예시에서는 \textbf{모니터링 커버리지율}로 다음과 같이 단순화한다\chg{.}}
+
+\syncr{$k_O = \frac{\text{감시 대상 자산 수}}{\text{전체 핵심 자산 수}}$}
+
+\syncr{자산 대장에서 직접 산출되는 원시값이며, 감시 대상 자산은 APM/SIEM 도구에
+등록된 엔드포인트 또는 프로세스를 기준으로 한다.}
+
+\syncr{\chg{다만} 커버리지율은 ``감시의 폭''만을 측정하며, ``감시의
+깊이''(로그 수집 상세도, 알람 정확도)는 별도 지표로 보완되어야 한다.
+본 예시는 최소 구성만 제시한다.}
+
+\syncr{\subsubsection{가상 기업 라이프사이클 적용 시나리오}}
+
+\syncr{``(주)한빛정밀''(가상기업명, 동명의 실제 기업과 무관)은
+수도권 산업단지에 소재한 중견 제조업체(반도체 부품 정밀가공, 직원 420명,
+연매출 1,200억 원 규모)로 가정하여 다음과 같이 시나리오를 작성한다. \nrev{ISO 22301:2019} 인증 준비 단계이며,
+APM(Datadog)과 SIEM(Splunk)을 \chg{구축하여 운영한다}.}
+
+\syncr{\chg{1단계인 평상시 진단(T-365일)에서는} 연간 BCMS 성숙도 평가 시점의 원시 지표를 다음과 같이
+$R_{\text{avail}} = 0.994$, $R_{\text{error}} = 0.015$, $R_{\text{perf}} = 0.82$,
+$E_{\text{high}} = 0.08$, $T_{\text{mttr}} = 0.65$, 커버리지율 $= 0.72$.}
+
+\syncr{합성 결과는 다음과 같다\chg{.} $O_{\text{APM}} = 0.933$, $O_{\text{SIEM}} = 0.785$,
+$O_{\text{raw}} = 0.889$, $k_O = 0.72$, $U = 0.55$로 산출되어
+$\eta \approx 1.05$ (Level 2 Repeatable) 판정. 모니터링 커버리지 확대 및
+미대응 이벤트 축소가 개선 필요 영역으로 도출.}
+
+\syncr{\chg{2단계인 평상시 개선 활동(T-365일부터 T-1일)에서는} 분기별 복구 훈련 도입, 모니터링 자산 확대(커버리지율 0.72 → 0.88),
+SIEM 튜닝($E_{\text{high}}$ 0.08 → 0.03), 장애 이력 DB 정비 수행.
+금년 재평가\chg{에서} $\eta \approx 0.82$\chg{를 달성하여} \textbf{Level 4 Managed}로 \chg{향상되었다}.
+월별 $\eta$ 추이를 경영진 대시보드에 정착.}
+
+\syncr{\chg{3단계인 위기 발생 및 에스컬레이션(T+0h--T+6h)의} 가상 시나리오는 생산라인 제어 PLC 장애와 보조 전원계통 이상
+(인명 피해 없음, 설비 손상만 발생). 시간대별 $\eta$ 추이와 등급 변화는
+\tabref{tab:app-lifecycle-eta}에 정리.}
+
+\begin{table}[htbp]
+\centering
+\caption{\syncr{가상 기업 4단계 라이프사이클 $\eta$ 추이 (참고 시나리오)}}
+\label{tab:app-lifecycle-eta}
+\small
+\syncr{\begin{tabularx}{\textwidth}{c l X c c}
+\toprule
+\textbf{시각} & \textbf{단계} & \textbf{상황} & \textbf{$\eta$} & \textbf{등급} \\
+\midrule
+$T{-}365$d & 1단계 진단 & 초기 상태 (Level 2) & 1.05 & Yellow \\
+$T{-}1$d & 2단계 개선 후 & 모니터링 확대 + SIEM 튜닝 (Level 4) & 0.82 & Green \\
+\midrule
+$T{+}0$h & 3단계 정상 & 사건 직전 & 0.82 & Green \\
+$T{+}1$h & 3단계 탐지 & PLC 장애 탐지 & 1.15 & Orange \\
+$T{+}2$h & 3단계 확산 & 전원계통 이상 확산 & 1.48 & Orange \\
+$T{+}3$h & 3단계 정점 & 복구 불확실성 급등 & 1.62 & \textbf{Red} \\
+$T{+}4$h & 3단계 전환 & 외부 지원 투입 & 1.45 & Orange \\
+$T{+}6$h & 3단계 부분복구 & 주요 지표 안정화 & 1.08 & Yellow \\
+\midrule
+$T{+}72$h & 4단계 환류 & 사후 분석 후 재평가 & 0.84 & Green \\
+\bottomrule
+\end{tabularx}}
+\end{table}
+
+\syncr{에스컬레이션\chg{은} $T{+}1$h(Orange)\chg{에} \chg{복구팀과 부서장} 자동 통지\chg{로 발동되어,}
+$T{+}3$h(Red) 경영진 \chg{긴급 보고와 BCP 전면 가동을 거쳐,} $T{+}4$h 국가 위기경보 체계
+연동 검토\chg{로 단계화된다}(\subsubsecref{app:crisis-policy} 참조).}
+
+\syncr{\chg{4단계인 복구와 환류(T+24h--T+72h)의} 사후 분석에서는 실제 복구 시간 $T_{\text{actual}} = 8.2$h vs $\DRTO$ 예측 7.6h
+→ 상대 오차 $E_r = 7.3\%$ (수용 범위). $O(t)$ 사각지대로 전원계통 센서
+커버리지 부족을 식별하고, 성숙도 ``Managed → Optimized'' 이행 로드맵에
+반영. 이번 사건을 $U_{\text{hist}}$ DB에 환류하여 익년 진단의 입력으로 사용.}
+
+\syncr{\chg{다만} 본 시나리오의 모든 수치는 중견 제조업 일반 특성에서
+추정한 \textbf{조건적 예시}이며, 실제 기업의 실적 데이터가 아니다.
+개별 조직의 적용 시 파라미터 재산출과 민감도 분석이 필수적이다.}
+
+\syncr{\subsubsection{원시 지표별 측정 도구 매핑 예시}}
+
+\syncr{\chg{앞의 관측성 $O_{\text{raw}}$, 불확실성 $U_{\text{raw}}$, 가중치 $k_O$ 조작화 예시에서 정의한} 원시 지표별 대표 측정 도구 매핑은
+\tabref{tab:app-tool-mapping}에 정리하였다. 본 매핑은 \textbf{참고용}이며,
+특정 도구의 추천이 아니다.}
+
+\begin{table}[htbp]
+\centering
+\caption{\syncr{원시 지표별 측정 도구 매핑 예시 (참고용, 도구 권장 아님)}}
+\label{tab:app-tool-mapping}
+\small
+\syncr{\begin{tabularx}{\textwidth}{l l X}
+\toprule
+\textbf{원시 지표} & \textbf{측정 도구 유형} & \textbf{대표 도구 (참고)} \\
+\midrule
+$R_{\text{avail}}$, $R_{\text{error}}$, $R_{\text{perf}}$ & APM & Datadog, New Relic, Prometheus+Grafana, Dynatrace \\
+\addlinespace
+$E_{\text{high}}$, $T_{\text{mttr}}$ & SIEM & Splunk, IBM QRadar, ArcSight, Elastic SIEM \\
+\addlinespace
+$U_{\text{hist}}$ & 장애 이력 DB & ServiceNow IRM, Jira Service Management, 자체 ITSM \\
+\addlinespace
+$U_{\text{ext}}$ & 위협 인텔리전스 & NVD, MITRE ATT\&CK, Recorded Future, CrowdStrike \\
+\addlinespace
+$k_O$ & 자산 대장/CMDB & ServiceNow CMDB, Device42, Lansweeper \\
+\bottomrule
+\end{tabularx}}
+\end{table}
+
+\nrev{ISO/IEC 25010:2011} \syncr{품질 모델의 Reliability(신뢰성),
+Performance Efficiency(성능), Security(보안) 하위 속성이 각 원시 지표와
+자연스럽게 대응되므로, 국제 표준 품질 지표 프레임워크와의 연계가 가능하다.}
+
+\syncr{\chg{다만} 상기 도구는 예시이며, 조직의 기존 \chg{인프라와 예산, 규제}
+환경에 따라 대체 선택이 필요하다.}
+
+\syncr{\subsubsection{한계 종합 및 향후 실증 과제}}
+
+\syncr{본 절의 조작화와 시나리오는 참고용 예시이며, 다음 네 영역에서
+후속 실증 연구가 필요하다.}
+
+\syncr{\chg{첫째, 가중치 실증 튜닝이다.} $w_i$, $v_i$, $\alpha$, $\beta$를 \chg{산업별과
+조직 규모별}로 조정하는 다중 회귀 또는 최적화 연구가 필요하며,
+본 예시는 등가중 또는 임의 고정값을 사용하였다.}
+
+\syncr{\chg{둘째, 측정 도구 신뢰도이다.} 각 원시 지표의 측정 도구별 \chg{정확도와 편향}
+검증이 필요하며, APM/SIEM 도구별 측정 알고리즘이 상이하므로
+교차 타당도(cross-validity) 연구가 선결 과제이다.}
+
+\syncr{\chg{셋째, 내용 타당도 재해석이다.} 본 연구의 \jrev{H9} 전문가 검증
+(Section C 파라미터 적정성 6문항, S-CVI/Ave $= 0.985$)은 조작화의 내용
+타당도의 간접 근거로 재해석 가능하나, 조작화 구성 자체에 대한 독립적
+내용 타당도 검증은 별도 연구가 필요하다.}
+
+\syncr{\chg{넷째, 수렴 및 예측 타당도이다.} 실제 조직 장애 이력과 $\eta$ 예측값의
+상관 분석(종단 연구)을 통해 \chg{수렴, 판별, 예측} 타당도를 확보하는 실증 연구가
+필요하다. 이는 본 연구 5.4.1 ``시뮬레이션 기반 검증의 한계''와 5.4.4
+``시간 동역학의 부재''에서 제시한 향후 연구 방향과 연결된다.}
+
+\syncr{종합적으로 본 절은 $\DRTO$ 프레임워크의 실무 적용 \textbf{방향성}을
+제시하였으나, 본격 실무 배포 이전에는 상기 네 영역의 실증 연구가 선결되어야
+한다.}
+

@@ -1,0 +1,204 @@
+
+
+%% ===================================================================
+\section{관측성(Observability) 이론}
+\label{sec:lit-observability}
+%% ===================================================================
+
+\chg{정적 RTO의 한계를 극복하려면 복구 환경의 상태 변화를 실시간으로 파악할 수 있어야 한다. 이러한 상태 파악 능력을 이론적으로 뒷받침하는 개념이 관측성(observability)이며, 이 절에서는 제어이론에서 출발한 관측성 개념과 그 현대적 확장을 검토한다.}
+
+%% -------------------------------------------------------------------
+\subsection{제어 이론에서의 관측성 (Kalman, 1960)}
+\label{subsec:kalman-observability}
+%% -------------------------------------------------------------------
+
+관측성(observability)의 개념은 \citet{kalman1960control}이 제어 이론에서 체계적으로 형식화하였다.
+Kalman은 선형 시불변(Linear Time-Invariant, LTI) 시스템
+\begin{equation}
+  \dot{x}(t) = Ax(t) + Bu(t), \quad y(t) = Cx(t)
+  \label{eq:lti-system}
+\end{equation}
+에서 시스템의 출력 $y(t)$를 관찰함으로써 초기 상태 $x(0)$를 유일하게 결정할 수 있는지를
+판별하는 기준으로 관측성 행렬(observability matrix)의 계수(rank) 조건을 제시하였다.
+관측성 행렬
+\begin{equation}
+  \mathcal{O} = \begin{bmatrix} C \\ CA \\ CA^2 \\ \vdots \\ CA^{n-1} \end{bmatrix}
+  \label{eq:obs-matrix}
+\end{equation}
+이 완전 계수(full rank)일 때 시스템이 완전 관측 가능(completely observable)하다.
+
+이 개념은 시스템의 내부 상태를 외부 출력만으로 추론할 수 있는 역량을 수학적으로
+정의한 것으로, 단순한 모니터링(monitoring)과는 본질적으로 구별된다~\citep{beyer2016sre}.
+모니터링이 사전에 정의된 지표의 임계값 초과 여부를 감시하는 반응적(reactive) 방식인 반면,
+관측성은 시스템 출력의 충분성(sufficiency)에 관한 구조적 속성이다.
+
+\chg{Kalman 이후 제어 이론에서 관측성은 상태 추정(state estimation)의 토대로 발전하였다. \citet{luenberger1966observers}는 관측성 조건이 충족되는 선형 시스템에서 직접 측정되지 않는 내부 상태를, 가용한 출력과 입력만으로 구동되는 보조 동역학계인 상태 관측기(state observer)를 통해 재구성할 수 있음을 보였다. 이로써 관측성은 가부 판별을 넘어 관측 가능한 시스템에서는 내부 상태를 실제로 복원할 수 있다는 구성적 의미를 획득하였고, 이후 상태 추정과 피드백 제어의 핵심 원리로 자리 잡았다. 본 연구가 관측성을 복구 환경의 내부 상태에 대한 가시성으로 해석하는 것은, 바로 이 출력으로부터 내부 상태를 복원하는 역량이라는 제어 이론적 함의를 BCM 영역으로 확장한 것이다.}
+
+
+%% -------------------------------------------------------------------
+\subsection{BCM 영역으로의 확장}
+\label{subsec:observability-bcm}
+%% -------------------------------------------------------------------
+
+%% --- BCM 맥락의 정규화 ---
+\subsubsection{BCM 맥락에서의 관측성 정규화}
+\label{subsubsec:obs-normalization}
+
+본 연구에서는 Kalman의 제어 이론적 관측성 개념을 BCM 영역으로 확장하여 적용한다.
+\chg{Kalman의 원래 정식화는 관측성 행렬의 계수 조건을 통해 시스템이 ``완전 관측
+가능한가''를 가능과 불가능의 이분법으로 판별한다. 그러나 \chg{BCM과 재해복구} 실무에서 조직의 관측성은 이분법으로 주어지지 않는다.
+\chg{현대 IT 운영에서 관측성은 로그(log), 메트릭(metric), 트레이스(trace)라는 세 가지
+텔레메트리(telemetry)를 통해 확보되며~\citep{majors2022observability}, 조직마다 센서와
+모니터링 도구의 구비 정도, 그리고 이 세 텔레메트리의 수집과 보존 수준이 달라 그 확보
+정도가 연속적으로 변한다.} 그 결과 조직의 관측성은 0과 1 사이에서 연속적으로 분포한다. 본 연구는 바로 이 부분을 확장하여 적용하는데, Kalman의
+이진 판별 대신 관측성의 \emph{정도}를 $O_{\text{raw}} \in [0, 1]$의 연속 점수로 정량화한다.
+이렇게 연속화하는 이유는, 복구 시간의 단축 효과가 관측성의 유무가 아니라 그
+수준에 연속적으로 의존한다고 보기 때문이며, 연속 점수라야 시그모이드 바운딩을 통한 복구 시간
+단축량의 정량적 모형화가 가능해지기 때문이다.}
+이때 $O_{\text{raw}} = 0$은 시스템 상태를 전혀 파악할 수 없는 상태를,
+$O_{\text{raw}} = 1$은 완전히 관측 가능한 상태를 의미한다.
+
+
+%% --- 관측성-복구 능력 구조적 연결 ---
+\subsubsection{관측성과 복구 능력의 구조적 연결}
+\label{subsubsec:obs-recovery-link}
+
+\citet{avizienis2004basic}와 \citet{hollnagel2006resilience}이 각각
+의존성과 복원공학 문헌에서 논의한 바와 같이, 관측성과 복구 능력 사이에는
+구조적 연결이 존재한다.
+시스템 상태를 보다 정확히 파악할 수 있을수록 장애의 근본 원인(root cause)을
+신속히 진단할 수 있고, 이에 따라 복구에 소요되는 시간이 단축된다.
+\citet{avizienis2004basic}는 가용성(availability), 신뢰성(reliability),
+안전성(safety), 무결성(integrity)을 포괄하는 의존성(dependability)의 분류 체계에서
+장애 진단 능력이 시스템의 가용성에 직접적으로 영향을 미침을 논의하였다.
+\citet{hollnagel2006resilience}는 복원공학(Resilience Engineering) 관점에서 시스템의
+예측, 감시, 대응, 학습 능력을 강조하며, 이 중 감시(monitoring) 능력이 본질적으로
+관측성에 해당한다고 볼 수 있다.
+\chg{본 연구는 이 두 이론을 관측성과 복구 시간 사이의 단조 감소 관계로 반영하여 적용한다.
+\citet{avizienis2004basic}에서는 장애 진단 능력이 가용성에 기여한다는 인과를,
+\citet{hollnagel2006resilience}에서는 감시 능력이 복원력의 핵심이라는 명제를 각각
+가져온다. 본 모델은 이 ``관측성에서 진단으로, 진단에서 복구 시간 단축으로''의 인과를
+관측성 채널의 하향 조정량 $E_{O,\text{bnd}} \leq 0$으로 구현한다. 즉 관측성이 높을수록
+$\DRTO$를 기준 RTO $R_0$ 아래로 끌어내리는 음의 효과로 정량화하는 것이다. 두 이론을
+이렇게 적용한 이유는, 이론이 제시한 인과 관계를 모델에서 관측성과 복구 시간 사이의
+단조 감소 관계로 직접 반영함으로써, 관측성 투자에 따른 복구 시간 단축을 정량적으로
+예측할 수 있게 하기 위함이다.}
+
+
+%% --- SRE와 세 가지 핵심 요소 ---
+\subsubsection{\chg{현대 IT 운영의 관측성 SRE와 세 가지 핵심 요소(three pillars)}}
+\label{subsubsec:obs-sre-pillars}
+
+현대 IT 운영에서의 관측성은 Kalman의 제어 이론적 개념을 분산 시스템
+환경으로 재해석한 것으로 볼 수 있으며, \citet{beyer2016sre}와
+\citet{majors2022observability}이 이를 SRE 실무 체계로 정착시켰다.
+\citet{beyer2016sre}는 Google의 SRE(Site Reliability Engineering)
+실무를 통해 모니터링과 관측성의 차이를 구분하였고,
+\citet{majors2022observability}는 관측성의 세 가지 핵심 구성 요소(three pillars), \chg{곧
+메트릭(metrics)과 로그(logs), 트레이스(traces)를} 체계화하였다.
+이 세 구성 요소의 통합적 활용을 통해 조직은 예상치 못한 장애 상황에서도
+시스템의 내부 상태를 효과적으로 파악할 수 있다.
+\p{[}그림~\ref{fig:obs-three-pillars}\p{]}는 이러한 세 가지 핵심 요소(three pillars)의 구성 관계를 도식화한 것이다.
+
+
+%% --- 운영화 매핑 ---
+\subsubsection{\chg{데이터 유형에서} \chg{도구와 목적} \chg{차원으로의 운영화 매핑}}
+\label{subsubsec:obs-operationalization}
+
+이러한 세 가지 핵심 요소(three pillars) 분류는 관측성을 구성하는 \textbf{데이터 유형(data primitives)} 차원의
+정의이다. 본 연구는 \chg{BCM과 재해복구} 맥락의 운영화 단계에서 관측성을 \chg{도구와 목적}별 통합 시스템
+차원, \chg{곧 APM(Application Performance Monitoring, 서비스 신뢰성 영역)과 SIEM(Security
+Information and Event Management, 보안 이벤트 대응 영역)의 두 축으로} 재구성하여 정량화한다.
+APM과 SIEM은 각각 \chg{메트릭, 로그, 트레이스}를 통합 활용하되 측정 목적과 주된 데이터 출처가
+상이하므로 분리 산출 후 가중 합성($O_{\text{raw}} = \alpha \cdot O_{\text{APM}}
++ (1-\alpha) \cdot O_{\text{SIEM}}$)으로 통합하며, 이론적 분류와 운영화 모델의 매핑 관계는
+본문 \secref{app:operationalization}(제5장 실무적 기여)의 조작화 예시에서 참고용으로 다룬다.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  every node/.style={text=black},
+  pillar/.style={draw, thick, rounded corners=4pt, fill=blue!10, minimum width=40mm,
+    minimum height=22mm, font=\Large\bfseries, align=center, text=black},
+  obs/.style={draw, very thick, rounded corners=4pt, fill=green!15, minimum width=64mm,
+    minimum height=18mm, font=\Large\bfseries, align=center, text=black},
+  arr/.style={->, >=Stealth, very thick, black}
+]
+  \node[pillar] (m) at (0, 0)   {Metrics\\\normalsize\mdseries(메트릭)};
+  \node[pillar] (l) at (5.5, 0) {Logs\\\normalsize\mdseries(로그)};
+  \node[pillar] (t) at (11, 0)  {Traces\\\normalsize\mdseries(트레이스)};
+  \node[obs]    (o) at (5.5, -3.4)
+    {Observability\\\normalsize\mdseries(관측성)};
+  \draw[arr] (m.south) -- (o.north);
+  \draw[arr] (l.south) -- (o.north);
+  \draw[arr] (t.south) -- (o.north);
+\end{tikzpicture}
+\caption{관측성의 세 가지 핵심 구성 요소(three pillars)}
+\label{fig:obs-three-pillars}
+\end{figure}
+
+관측성 수준이 높은 조직은 장애 발생 시 원인 파악에 소요되는 시간(Mean Time to Detect,
+MTTD)과 복구에 소요되는 시간(Mean Time to Recovery, MTTR)을 모두 단축할 수 있다~\citep{forsgren2018accelerate, kim2016devops}.
+이는 관측성이 단순한 기술적 역량을 넘어 조직의 복구 목표 달성에 직접적으로
+기여하는 운영 변수임을 시사한다.
+본 연구에서는 이러한 이론적 근거를 바탕으로 관측성 점수 $O_{\text{raw}} \in [0,1]$을
+$\DRTO$ 모델의 핵심 입력 변수로 도입한다.
+
+
+%% -------------------------------------------------------------------
+\subsection{모니터링과 관측성의 개념적 구분}
+\label{subsec:monitoring-vs-observability}
+%% -------------------------------------------------------------------
+
+실무에서 모니터링(monitoring)과 관측성(observability)은 혼용되는 경우가 많으나,
+BCM 맥락에서 양자는 분석 범위와 목적이 구별된다. 모니터링은 사전에 정의된
+지표를 수집하여 임계값 초과 여부를 감시하는 활동인 반면, 관측성은 시스템 외부
+출력만으로 내부 상태를 추정할 수 있는 시스템 고유의 속성이다. 즉 모니터링이
+관측성을 구현하기 위한 수단(도구와 프로세스)이라면, 관측성은 그 수단이 확보하는
+결과(시스템의 파악 가능 정도)에 해당한다.
+\p{[}표~\ref{tab:monitoring-vs-observability}\p{]}은 두 개념의 핵심 차이를 비교한 것이다.
+
+\begin{table}[htbp]
+\centering
+\caption{모니터링과 관측성의 비교}
+\label{tab:monitoring-vs-observability}
+\small
+\begin{tabularx}{\textwidth}{l X X}
+\toprule
+\textbf{비교 기준} & \textbf{모니터링 (Monitoring)} & \textbf{관측성 (Observability)} \\
+\midrule
+정의 &
+  사전에 정의된 지표(메트릭, 로그, 알림 규칙)를 수집·추적하는 활동 &
+  시스템 외부 출력만으로 내부 상태를 추정할 수 있는 시스템 고유 속성 \\
+\addlinespace
+관점 &
+  ``무엇을 측정할 것인가'' (도구·프로세스 중심) &
+  ``시스템이 얼마나 파악 가능한가'' (시스템 능력 중심) \\
+\addlinespace
+범위 &
+  사전 정의된 이상 징후 탐지 (known-unknowns) &
+  예상하지 못한 장애의 근본 원인 추적 포함 (unknown-unknowns) \\
+\addlinespace
+BCM 역할 &
+  장애 감지 $\to$ 알림 발생 $\to$ 대응 절차 개시 &
+  복구 과정에서 시스템 상태 가시성 확보 $\to$ 복구 시간 단축 \\
+\addlinespace
+$\DRTO$ 대응 &
+  모니터링 도구의 존재 자체는 $O_{\mathrm{raw}}$의 필요조건 &
+  $O_{\mathrm{raw}} \in [0,1]$로 정량화, 관측성 채널($E_{O,\mathrm{bnd}}$)에 직접 반영 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+$\DRTO$ 모델에서는 모니터링 인프라의 수준이 $O_{\mathrm{raw}}$ 값으로 변환되어
+관측성 채널에 반영되므로, 모니터링 투자가 곧 $\DRTO$ 감소로 이어지는 정량적
+경로를 제공한다. 이러한 관측성의 차이는 실무 환경에서도 뚜렷하게 나타난다.
+관측성이 높은($O_{\mathrm{raw}} \approx 1$) 환경의 전형적 예는
+실시간 서버 모니터링 시스템(Prometheus, Grafana)이 구축된 IT 인프라로,
+장애 발생 시 원인을 수 분 내에 특정하여 복구 시간을 단축하며,
+금융권의 실시간 트랜잭션 모니터링이나 SRE 조직의 가시성 대시보드가 여기에 해당한다.
+반대로 관측성이 낮은($O_{\mathrm{raw}} \approx 0$) 환경에서는
+센서가 미비한 노후 제조 설비나 수동 점검에 의존하는 중소기업 IT 환경처럼
+장비 고장의 근본 원인 파악에 수 시간이 소요되어 복구가 지연된다.
+
+\chg{이처럼 관측성은 복구 환경의 가시성을 좌우하여 복구 시간에 직접 영향을 미치지만, 복구 시간에 내재한 변동성 자체를 설명하지는 못한다. 다음 절에서는 이 변동성을 정량화하는 불확실성 모델링을 검토한다.}

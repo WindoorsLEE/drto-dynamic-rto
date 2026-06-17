@@ -1,0 +1,564 @@
+
+
+%% ===================================================================
+\section{\vrev{회귀분석 결과}}
+\label{sec:regression_results}
+%% ===================================================================
+
+본 절에서는 C1, C2, C3 각 조건에 대해 3단계 회귀분석---1차 단순,
+1차 다중, 2차 회귀---의 설명력 진행($R^2$ progression)을
+체계적으로 보고한다. 2차 회귀는 1차항, 2차항, 교호작용항을 포함하는
+완전 2차 다항 모형(complete quadratic polynomial model)이다.
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{C1 회귀분석(관측성 구조)}}
+\label{subsec:reg_c1}
+%% -------------------------------------------------------------------
+
+\chg{C1 회귀분석은 설명력이 점증하는 세 단계로 진행한다. 첫째, 1차 단순 회귀는}
+$\hat{\eta}_{\text{C1}}^{(1s)} = 0.997 - 0.285\,k_O$ ($R^2 = 0.428$, $p < 0.001$)\chg{로서,}
+관측성 가중치 $k_O$만으로 분산의 $42.8\%$를 설명하며, $k_O$가
+증가할수록 관측성의 복구 단축 효과가 강화되는 선형 관계가 확인되었다.
+\chg{둘째, 1차 다중 회귀는} $\hat{\eta}_{\text{C1}}^{(1m)} = 1.07 - 0.15\,k_O - 0.15\,O$ ($R^2 = 0.869$)\chg{로서,}
+관측성 원시 점수 $O$를 추가하면 설명력이 $86.9\%$로 두 배 이상
+증가한다. $k_O$와 $O$의 회귀 계수 크기가 $-0.15$로 거의 동일하여,
+두 관측성 변수가 $\eta$ 감소에 동등하게 기여함을 보여준다.
+\chg{셋째, 2차교호작용 회귀는 다음과 같다.}
+\begin{equation}
+  \hat{\eta}_{\text{C1}}^{(2q)} = \hat{\beta}_0
+    + \hat{\beta}_1 k_O + \hat{\beta}_2 O
+    + \hat{\beta}_3 k_O^2 + \hat{\beta}_4 O^2
+    + \hat{\beta}_5 (k_O \cdot O)
+  \quad (R^2 = 1.000)
+\end{equation}
+\begin{equation}
+  = 1.011
+    - 0.036\,k_O - 0.036\,O
+    + 0.024\,k_O^2 + 0.024\,O^2
+    - 0.546\,(k_O \cdot O)
+\end{equation}
+정밀 표기 시 $R^2 = 0.9995$로 거의 1.000에 근접하며,
+핵심 교호작용항 $k_O \cdot O$(계수 $= -0.546$)가
+$R^2$를 $0.869 \to 1.000$으로 향상시키는 결정적 기여를 한다.
+1차항($k_O$, $O$)과 2차항($k_O^2$, $O^2$)의 계수는 모두
+$|\hat{\beta}| < 0.04$로 미미한 반면,
+교호작용항의 계수 절댓값이 $0.546$으로 압도적이다.
+이는 C1의 $\eta$가 개별 시그모이드 바운딩 함수의 해석적 구조에 의해
+$k_O$와 $O$의 2차 다항식으로 정확히 근사됨을 의미하며,
+잔차가 수치 정밀도 수준에 불과하다.
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{C2 회귀분석(불확실성 통합 구조)}}
+\label{subsec:reg_c2}
+%% -------------------------------------------------------------------
+
+\chg{C2 회귀분석도 동일한 세 단계로 진행한다. 첫째, 1차 단순 회귀는}
+$\hat{\eta}_{\text{C2}}^{(1s)} = 2.633 - 1.878\,k_O$ ($R^2 = 0.768$)\chg{로서,}
+$k_O$의 회귀 계수가 C1의 $-0.285$에서 $-1.878$로 $6.6$배 증가하였다.
+이는 불확실성이 존재하는 환경에서 관측성 가중치의 영향력이
+증폭된다는 것을 의미하며, $R^2$도 $0.428 \to 0.768$으로
+대폭 향상되었다.
+\chg{둘째, 1차 다중 회귀는} $\hat{\eta}_{\text{C2}}^{(1m)} = 2.024 - 1.869\,k_O - 0.281\,O + 0.248\,U$ ($R^2 = 0.948$)\chg{로서,}
+불확실성 변수 $U$가 양의 계수($+0.248$)로 유의미하게 포함되어,
+불확실성이 클수록 $\eta$가 증가하는 관계가 확인되었다.
+\chg{셋째, 2차교호작용 회귀는 다음과 같다.}
+\begin{equation}
+  \hat{\eta}_{\text{C2}}^{(2q)} = \hat{\beta}_0
+    + \sum_{j} \hat{\beta}_j x_j
+    + \sum_{j} \hat{\beta}_{jj} x_j^2
+    + \sum_{j<k} \hat{\beta}_{jk} (x_j \cdot x_k)
+  \quad (R^2 = 0.998)
+\end{equation}
+\begin{equation}
+  \begin{aligned}
+    = 1.011
+    &- 0.036\,k_O - 0.036\,O + 0.598\,U \\
+    &+ 0.022\,k_O^2 + 0.024\,O^2 - 0.003\,U^2 \\
+    &- 0.546\,(k_O \cdot O) - 0.593\,(k_O \cdot U) + 0.001\,(O \cdot U)
+  \end{aligned}
+\end{equation}
+정밀 표기 시 $R^2 = 0.9982$이며,
+9개 변수($k_O$, $O$, $U$, $k_O^2$, $O^2$, $U^2$,
+$k_O \cdot O$, $k_O \cdot U$, $O \cdot U$)를 포함한다.
+$k_O \cdot O$, $k_O \cdot U$ 등의 교호작용이 핵심 구조를
+이루며, C2 조건의 분산을 사실상 완전히 설명한다.
+$k_O \cdot U$ 교호작용의 존재는 관측성 가중치와 불확실성이
+독립적이 아니라 상호작용하여 $\eta$에 영향을 미침을 시사한다.
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{C3 회귀분석(파레토 구조와 분할 회귀)}}
+\label{subsec:reg_c3}
+%% -------------------------------------------------------------------
+
+\chg{C3 회귀분석은 전체 표본에 대해 세 단계로 진행한 뒤 분할 회귀로 이어진다. 첫째, 1차 단순 회귀는}
+$\hat{\eta}_{\text{C3}}^{(1s)} = 2.220 - 1.394\,k_O$ ($R^2 = 0.256$)\chg{로서,}
+전체 표본에 대한 설명력은 $25.6\%$에 불과하여, C3의 변동을
+$k_O$ 단독으로는 충분히 설명하지 못한다.
+\chg{둘째, 1차 다중 회귀는} $\hat{\eta}_{\text{C3}}^{(1m)} = 2.018 - 1.408\,k_O - 0.249\,O + 0.112\,U$ ($R^2 = 0.695$)\chg{로서,}
+1차 다중 회귀에서도 C3의 설명력은 $69.5\%$로 C2의 $94.8\%$에
+미치지 못하며, 파레토 분포의 극단값이 선형 모형의 한계를
+드러내는 것으로 해석된다.
+\chg{셋째, 2차+교호작용 회귀는 다음과 같다.}
+\begin{equation}
+  \hat{\eta}_{\text{C3}}^{(2q)} = \hat{\beta}_0
+    + \sum_{j} \hat{\beta}_j x_j
+    + \sum_{j} \hat{\beta}_{jj} x_j^2
+    + \sum_{j<k} \hat{\beta}_{jk} (x_j \cdot x_k)
+  \quad (R^2 = 0.858)
+\end{equation}
+\begin{equation}
+  \begin{aligned}
+    = 1.430
+    &- 0.216\,k_O + 0.085\,O + 0.256\,U \\
+    &- 0.513\,k_O^2 + 0.022\,O^2 - 0.002\,U^2 \\
+    &- 0.627\,(k_O \cdot O) - 0.125\,(k_O \cdot U) - 0.025\,(O \cdot U)
+  \end{aligned}
+\end{equation}
+C2와 동일한 9개 변수 구조이나, 전체 $R^2 = 0.858$로
+C1($1.000$) 및 C2($0.998$)와 달리 높은 설명에는 도달하지 못한다.
+이는 파레토 분포의 비선형성이 2차 회귀 다항식의 근사 능력을 초과함을 시사한다.
+
+\chg{P85.8을 기준으로 분할 회귀를 수행하면 각 영역에서의 설명력이 현저히 개선된다.
+Core 영역($\leq$ P85.8)에서는 2차교호작용 $R^2 = 0.999$로 C2와 유사한 완전 설명이 달성되며,
+Tail 영역($>$ P85.8)에서도 분할 회귀 적용 시 2차교호작용 $R^2 = 0.710$으로 설명력이 개선된다.}
+
+\p{[}표~\vref{tab:c3_split_regression}\p{]}는 C3 분할 회귀의 주요 결과를 요약한다.
+
+\begin{table}[htbp]
+  \centering
+  \caption{C3 분할 회귀분석 결과 (P85.8 기준)}
+  \label{tab:c3_split_regression}
+  \begin{tabular}{llcccc}
+    \toprule
+    영역 & 모형 & $n$ & $k_O$ 계수 & $R^2$ & 비고 \\
+    \midrule
+    \multirow{3}{*}{전체}
+      & 1차 단순 & 10{,}000 & $-1.394$ & 0.256 & --- \\
+      & 1차 다중 & 10{,}000 & $-1.408$ & 0.695 & $+O,\;U$ \\
+      & 2차 회귀 & 10{,}000 & --- & 0.858 & --- \\
+    \midrule
+    \multirow{3}{*}{Core ($\leq$ P85.8)}
+      & 1차 단순 & 8{,}580 & $-0.798$ & 0.263 & --- \\
+      & 1차 다중 & 8{,}580 & $-1.034$ & 0.630 & $+O,\;U$ \\
+      & 2차 회귀 & 8{,}580 & --- & 0.999 & 완전 설명 \\
+    \midrule
+    \multirow{3}{*}{Tail ($>$ P85.8)}
+      & 1차 단순 & 1{,}420 & $-0.415$ & 0.032 & $0.52$배 감쇠 \\
+      & 1차 다중 & 1{,}420 & $-1.664$ & 0.860 & $+O,\;\ln U$ \\
+      & 2차 회귀 & 1{,}420 & --- & 0.710 & --- \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\chg{표의 Tail 영역 1차 다중 회귀에서 불확실성 $U$를 원래 스케일로 쓰면 $R^2$가 0.457에 불과하나,
+$\ln U$로 변환하면 0.860으로 크게 개선된다. 이는 파레토 분포의 멱법칙 구조($P(U > u) \propto u^{-\alpha}$)를
+로그 변환이 선형화하기 때문이며, Tail의 $\DRTO$가 불확실성의 절대 크기가 아니라 로그 스케일에 비례하여
+증가함을 의미한다. Core와 Tail 분할 회귀의 전체 계수는 공개 재현 패키지에 수록한다.}
+
+Tail 영역의 1차 단순 회귀에서 $k_O$ 계수는 $-0.415$로,
+Core 영역($-0.798$) 대비 $0.52$배로 감쇠된다(전체 계수는 공개 재현 패키지 수록).
+이 $0.52$배 감쇠가 \textbf{이중채널 감쇠(dual-channel attenuation)}의
+핵심 지표이다. 관측성 가중치 $k_O$가 동일하게 1단위 변화할 때,
+극단 불확실성 영역에서는 관측성의 복구 단축 효과가 핵심 영역의 $0.52$배로 약화된다.
+이는 관측성과 파레토 불확실성이 결합될 때 비선형적으로 상호작용하여,
+극단 상황에서 관측성의 역할이 질적으로 변화함을 나타낸다.
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{$R^2$ 진행 종합 비교}}
+\label{subsec:r2_progression}
+%% -------------------------------------------------------------------
+
+\p{[}표~\vref{tab:regression_progression}\p{]}는 조건별 회귀분석 설명력($R^2$)의
+3단계 진행을 비교한 것이며, \p{[}그림~\vref{fig:r2_progression}\p{]}은
+이를 그룹 막대 차트로 시각화한 것이다.
+\chg{표에서 (1s)는 1차 단순, (1m)은 1차 다중, (2q)는 2차교호작용 회귀를 가리킨다.}
+
+\begin{table}[htbp]
+  \centering
+  \caption{조건별 회귀분석 설명력($R^2$) 진행 비교}
+  \label{tab:regression_progression}
+  \begin{tabular}{lccc}
+    \toprule
+    조건 & $R^2_{(1\mathrm{s})}$ & $R^2_{(1\mathrm{m})}$ & $R^2_{(2\mathrm{q})}$ \\
+    \midrule
+    C1 (관측성) & 0.428 & 0.869 & 1.000 \\
+    C2 (Gaussian) & 0.768 & 0.948 & 0.998 \\
+    C3 전체 (Pareto) & 0.256 & 0.695 & 0.858 \\
+    \quad C3 Core ($\leq$ P85.8) & 0.263 & 0.630 & 0.999 \\
+    \quad C3 Tail ($>$ P85.8) & 0.032 & 0.860 & 0.710 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      ybar,
+      width=0.92\textwidth,
+      height=7.5cm,
+      bar width=8pt,
+      ylabel={$R^2$},
+      symbolic x coords={C1, C2, C3 전체, C3 Core, C3 Tail},
+      xtick=data,
+      xticklabel style={font=\small},
+      ymin=0, ymax=1.15,
+      ymajorgrids=true,
+      grid style={dashed, black},
+      nodes near coords,
+      nodes near coords style={font=\tiny, anchor=south, yshift=1pt},
+      every node near coord/.append style={/pgf/number format/.cd, fixed, precision=3},
+      enlarge x limits=0.15,
+      legend style={at={(0.5,-0.18)}, anchor=north, font=\small,
+        legend columns=3, draw=black, fill=white},
+      ]
+      % Simple regression
+      \addplot[fill=blue!20, draw=blue!50] coordinates {
+        (C1, 0.428)
+        (C2, 0.768)
+        (C3 전체, 0.256)
+        (C3 Core, 0.263)
+        (C3 Tail, 0.032)
+      };
+      \addlegendentry{1차 단순}
+
+      % Multiple regression
+      \addplot[fill=green!25, draw=green!60] coordinates {
+        (C1, 0.869)
+        (C2, 0.948)
+        (C3 전체, 0.695)
+        (C3 Core, 0.630)
+        (C3 Tail, 0.860)
+      };
+      \addlegendentry{1차 다중}
+
+      % Quadratic regression
+      \addplot[fill=red!25, draw=red!60] coordinates {
+        (C1, 1.000)
+        (C2, 0.998)
+        (C3 전체, 0.858)
+        (C3 Core, 0.999)
+        (C3 Tail, 0.710)
+      };
+      \addlegendentry{2차교호작용}
+
+      % H4 threshold line (전체 수평선)
+      \draw[dashed, black, thick] (rel axis cs:0,0.826) -- (rel axis cs:1,0.826);
+      \node[font=\scriptsize, fill=white, inner sep=1.5pt,
+        anchor=south east] at (rel axis cs:0.99,0.826)
+        {H4 판정 기준 ($R^2 \geq 0.95$)};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{조건별 $R^2$ 진행 비교 (1차 단순 $\to$ 1차 다중 $\to$ 2차 회귀)}
+  \label{fig:r2_progression}
+\end{figure}
+
+C1은 2차교호작용 모형에서 $R^2 = 1.000$, C2는 $R^2 = 0.998$에 도달하여 개별 시그모이드 바운딩 함수가
+2차교호작용 다항식으로 높은 정밀도로 근사됨을 보여준다. C3는 전체 표본에서 $R^2 = 0.858$로
+완전 설명에 미달하며, P85.8 기준 분할 시 Core 영역에서 $R^2 = 0.999$,
+Tail 영역에서 $R^2 = 0.710$을 달성하여, 분할 회귀가 C3의
+이질적 구조를 효과적으로 포착함을 입증한다.
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{회귀 계수 비교 시각화}}
+\label{subsec:coeff_comparison}
+%% -------------------------------------------------------------------
+
+\p{[}그림~\vref{fig:regression_coefficients}\p{]}은 C1, C2, C3(전체) 1차 다중 회귀모형의
+주요 계수를 비교한 것이다.
+1차 단순 회귀는 $k_O$ 단일 계수만 존재하여 조건 간 비교 차트의 의미가 제한적이고,
+2차 회귀는 최대 9개 항의 계수가 포함되어 막대 차트보다 표 형태가
+적합하므로(\p{[}표~\vref{tab:regression_progression}\p{]} 참조),
+3개 공통 변수($k_O$, $O$, $U$)를 갖는 1차 다중 회귀만 시각화한다.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      ybar,
+      width=0.88\textwidth,
+      height=7.5cm,
+      bar width=12pt,
+      ylabel={회귀 계수 $\hat{\beta}$},
+      symbolic x coords={절편, $k_O$, $O$, $U$},
+      xtick=data,
+      xticklabel style={font=\small},
+      ymin=-2.2, ymax=2.4,
+      ymajorgrids=true,
+      grid style={dashed, black},
+      nodes near coords,
+      nodes near coords style={font=\tiny},
+      every node near coord/.append style={
+        /pgf/number format/.cd, fixed, fixed zerofill, precision=2,
+        /tikz/anchor=south,
+        /tikz/yshift=1pt,
+      },
+      enlarge x limits=0.2,
+      legend style={at={(0.98,0.98)}, anchor=north east, font=\small},
+      ]
+      \addplot[fill=blue!25, draw=blue!60] coordinates {
+        (절편, 1.07) ($k_O$, -0.15) ($O$, -0.15) ($U$, 0)
+      };
+      \addlegendentry{C1}
+
+      \addplot[fill=green!25, draw=green!60] coordinates {
+        (절편, 2.02) ($k_O$, -1.87) ($O$, -0.28) ($U$, 0.25)
+      };
+      \addlegendentry{C2}
+
+      \addplot[fill=red!25, draw=red!60] coordinates {
+        (절편, 2.02) ($k_O$, -1.41) ($O$, -0.25) ($U$, 0.11)
+      };
+      \addlegendentry{C3}
+
+      % Zero line
+      \draw[dashed, black, thin] (axis cs:절편, 0) -- (axis cs:$U$, 0);
+    \end{axis}
+  \end{tikzpicture}
+  \caption{C1/C2/C3 1차 다중 회귀 계수 비교}
+  \label{fig:regression_coefficients}
+\end{figure}
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{전진 선택법과 LASSO 정규화를 통한 변수 선택}}
+\label{subsec:variable_selection}
+%% -------------------------------------------------------------------
+
+2차 완전 모형은 9개 독립변수($k_O$, $O$, $U$, $k_O^2$, $O^2$, $U^2$,
+$k_O \cdot O$, $k_O \cdot U$, $O \cdot U$)를 포함하여 높은 설명력을 보이나,
+과적합(overfitting) 위험과 해석 가능성(interpretability) 저하가 우려된다.
+이에 \textbf{전진 선택법(Forward Selection)}과 \textbf{LASSO 정규화}를
+적용하여 핵심 변수를 체계적으로 식별하였다.
+
+\p{[}표~\vref{tab:forward_selection}\p{]}은 C2와 C3 각 조건에서 전진 선택법에 의한
+변수 진입 순서와 누적 $R^2$를 비교한 것이다.
+
+\begin{table}[htbp]
+  \centering
+  \caption{전진 선택법 변수 진입 순서 및 누적 $R^2$ (C2 vs.\ C3)}
+  \label{tab:forward_selection}
+  \small
+  \begin{tabular}{c l c c l c}
+    \toprule
+    & \multicolumn{2}{c}{\textbf{C2 (Gaussian)}} & & \multicolumn{2}{c}{\textbf{C3 (Pareto)}} \\
+    \cmidrule{2-3} \cmidrule{5-6}
+    순서 & 변수 & 누적 $R^2$ & & 변수 & 누적 $R^2$ \\
+    \midrule
+    1 & $k_O$ & 0.768 & & $U$ & 0.424 \\
+    2 & $U$ & 0.931 & & $k_O$ & 0.686 \\
+    3 & $k_O \cdot U$ & 0.973 & & $U^2$ & 0.799 \\
+    4 & $k_O \cdot O$ & 0.996 & & $k_O \cdot U$ & 0.839 \\
+    5 & $k_O^2$ & 0.997 & & $k_O \cdot O$ & 0.853 \\
+    6 & $U^2$ & 0.998 & & $k_O^2$ & 0.856 \\
+    7 & $O$ & 0.998 & & $O \cdot U$ & 0.857 \\
+    8 & $O^2$ & 0.998 & & $O$ & 0.858 \\
+    9 & $O \cdot U$ & 0.998 & & $O^2$ & 0.858 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+변수 진입 순서의 차이는 두 조건의 구조적 특성을 반영한다.
+C2에서는 관측성 가중치 $k_O$가 최초로 진입하여($R^2 = 0.768$)
+관측성이 1차적 설명 변수임을 보여준다.
+반면, C3에서는 불확실성 $U$가 최초로 진입하여($R^2 = 0.424$)
+파레토 불확실성이 지배적 설명 변수로 전환됨을 나타낸다.
+이러한 \textbf{지배 변수의 전환}은 분포의 꼬리 특성이
+모형 구조에 질적 변화를 야기한다는 것을 의미한다.
+
+C2에서는 2개 변수 투입($k_O$, $U$)만으로 $R^2 = 0.931$에 도달하여
+핵심 구조가 상대적으로 단순한 반면,
+C3에서는 4개 변수 투입 후에도 $R^2 = 0.839$에 머물러
+파레토 분포의 비선형적 복잡성을 보여준다.
+
+\p{[}그림~\vref{fig:forward_selection_r2}\p{]}은 변수 투입 수에 따른 누적 $R^2$의
+진행을 비교한 것이다.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=0.88\textwidth,
+      height=7cm,
+      xlabel={투입 변수 수},
+      ylabel={누적 $R^2$},
+      xmin=0.5, xmax=9.5,
+      ymin=0.3, ymax=1.05,
+      xtick={1,2,3,4,5,6,7,8,9},
+      ymajorgrids=true,
+      grid style={dashed, black},
+      legend style={at={(0.98,0.15)}, anchor=south east, font=\small,
+        fill=white, fill opacity=0.9, draw=black},
+      ]
+      % C2 (Gaussian)
+      \addplot[blue, thick, mark=o, mark size=3pt] coordinates {
+        (1, 0.768) (2, 0.931) (3, 0.973) (4, 0.996) (5, 0.997)
+        (6, 0.998) (7, 0.998) (8, 0.998) (9, 0.998)
+      };
+      \addlegendentry{C2 (Gaussian)}
+
+      % C3 (Pareto)
+      \addplot[red, thick, mark=square*, mark size=3pt] coordinates {
+        (1, 0.424) (2, 0.686) (3, 0.799) (4, 0.839) (5, 0.853)
+        (6, 0.856) (7, 0.857) (8, 0.858) (9, 0.858)
+      };
+      \addlegendentry{C3 (Pareto)}
+
+      % H4 threshold (전체 수평선)
+      \draw[dashed, black, thin] (rel axis cs:0,0.867) -- (rel axis cs:1,0.867);
+      \node[font=\scriptsize, fill=white, inner sep=1.5pt,
+        anchor=north east] at (rel axis cs:0.99,0.867)
+        {H4 판정 기준 ($R^2 \geq 0.95$)};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{전진 선택법 누적 $R^2$ 진행 비교}
+  \label{fig:forward_selection_r2}
+\end{figure}
+
+
+\chg{다음으로 LASSO 정규화에 의한 변수 선택을 살펴본다.} 전진 선택법의 결과를 독립적으로 검증하기 위해 LASSO(Least Absolute
+Shrinkage and Selection Operator) 정규화를 적용하였다.
+LASSO는 $L_1$ 패널티($\lambda$)를 부과하여 기여도가 낮은 변수의
+회귀계수를 정확히 0으로 수축시킴으로써,
+전진 선택법과 \textbf{상이한 원리}로 핵심 변수를 식별한다.
+\p{[}표~\vref{tab:lasso_results}\p{]}는 정규화 계수 $\lambda$에 따른 생존 변수 수와
+$R^2$를 요약한 것이다.
+
+\begin{table}[htbp]
+  \centering
+  \caption{$\lambda$에 따른 LASSO 생존 변수와 $R^2$}
+  \label{tab:lasso_results}
+  \small
+  \begin{tabular}{c cc cc}
+    \toprule
+    & \multicolumn{2}{c}{\textbf{C2 (Gaussian)}} & \multicolumn{2}{c}{\textbf{C3 (Pareto)}} \\
+    \cmidrule(lr){2-3} \cmidrule(lr){4-5}
+    $\lambda$ & 생존 변수 & $R^2$ & 생존 변수 & $R^2$ \\
+    \midrule
+    0.00015 & 7 & 0.998 & 9 & 0.858 \\
+    0.0005 & 6 & 0.998 & 9 & 0.858 \\
+    0.001 & 7 & 0.998 & 9 & 0.857 \\
+    0.005 & 5 & 0.997 & 7 & 0.856 \\
+    0.01 & 5 & 0.995 & 6 & 0.852 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+LASSO 결과는 전진 선택법과 일관된 패턴을 보여준다.
+C2에서는 $\lambda = 0.01$에서도 5개 변수($k_O$, $U$, $k_O^2$, $k_O \cdot O$,
+$k_O \cdot U$)만으로 $R^2 = 0.995$를 유지하여,
+관측성-불확실성 교호작용 중심의 핵심 구조가 확인된다.
+C3에서는 동일한 $\lambda = 0.01$에서 6개 변수가 생존하며
+$R^2 = 0.852$에 그쳐, 더 많은 변수가 필요하되
+설명력은 상대적으로 제한적이다.
+이는 C3의 파레토 구조가 2차 다항식 근사의 한계를
+벗어나는 비선형성을 포함함을 재확인한다.
+
+\p{[}그림~\vref{fig:lasso_path}\p{]}는 $\lambda$에 따른 $R^2$ 경로를 비교한 것이다.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=0.88\textwidth,
+      height=6.5cm,
+      xlabel={정규화 계수 $\lambda$},
+      ylabel={$R^2$},
+      xmode=log,
+      xmin=0.0001, xmax=0.02,
+      ymin=0.84, ymax=1.005,
+      ymajorgrids=true,
+      grid style={dashed, black},
+      legend style={at={(0.98,0.5)}, anchor=east, font=\small,
+        fill=white, fill opacity=0.9, draw=black},
+      ]
+      % C2 (Gaussian)
+      \addplot[blue, thick, mark=o, mark size=3pt] coordinates {
+        (0.00015, 0.998) (0.0005, 0.998) (0.001, 0.998)
+        (0.005, 0.997) (0.01, 0.995)
+      };
+      \addlegendentry{C2 (Gaussian)}
+
+      % C3 (Pareto)
+      \addplot[red, thick, mark=square*, mark size=3pt] coordinates {
+        (0.00015, 0.858) (0.0005, 0.858) (0.001, 0.857)
+        (0.005, 0.856) (0.01, 0.852)
+      };
+      \addlegendentry{C3 (Pareto)}
+
+      % H4 threshold (전체 수평선)
+      \draw[dashed, black, thin] (rel axis cs:0,0.667) -- (rel axis cs:1,0.667);
+      \node[font=\scriptsize, fill=white, inner sep=1.5pt,
+        anchor=south east] at (rel axis cs:0.99,0.667)
+        {H4 판정 기준 ($R^2 \geq 0.95$)};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{LASSO $R^2$ 경로 (C2 vs.\ C3)}
+  \label{fig:lasso_path}
+\end{figure}
+
+
+\chg{끝으로 두 방법의 교차검증 합의로 간명 모형을 도출한다.} 전진 선택법과 LASSO는 각각 단계별 최적(stepwise) 진입 순서와
+$L_1$ 정규화라는 상이한 원리로 변수를 선택한다.
+단일 방법론의 편향을 최소화하기 위해, 두 방법의
+\textbf{교집합(consensus)}을 합의 변수로 채택하였다.
+구체적으로, 전진 선택법 상위 4개 변수 집합과
+LASSO 정규화($\lambda = 0.005$)에서의 생존 변수 집합의
+교집합을 선정하였다.
+
+\chg{C2의 합의 변수는 전진 선택법 상위 4개($k_O$, $U$, $k_O \cdot U$, $k_O \cdot O$)와 LASSO 생존
+5개($k_O$, $U$, $k_O^2$, $k_O \cdot O$, $k_O \cdot U$)의 교집합인 \{$k_O$, $U$, $k_O \cdot U$, $k_O \cdot O$\}
+4개로서, 전진 선택에 없는 $k_O^2$가 LASSO에서만 생존하여 탈락한다. C3의 합의 변수는 전진 선택법
+상위 4개($U$, $k_O$, $U^2$, $k_O \cdot U$)와 LASSO 생존 7개($k_O$, $U$, $k_O^2$, $U^2$, $k_O \cdot O$,
+$k_O \cdot U$, $O \cdot U$)의 교집합인 \{$U$, $k_O$, $U^2$, $k_O \cdot U$\} 4개로서, $k_O^2$, $k_O \cdot O$,
+$O \cdot U$는 LASSO에서만 생존하여 탈락한다.}
+
+합의 변수를 사용한 4변수 간명 모형의 회귀식은 다음과 같다\chg{.}
+
+\begin{align}
+  \hat{\eta}_{\text{C2}} &= 1.225
+    - 0.291\,k_O + 0.467\,U
+    - 0.433\,(k_O \cdot U) - 0.562\,(k_O \cdot O)
+    & (R^2 = 0.996) \label{eq:c2_parsimonious} \\
+  \hat{\eta}_{\text{C3}} &= 1.574
+    + 0.240\,U - 1.053\,k_O
+    - 0.002\,U^2 - 0.122\,(k_O \cdot U)
+    & (R^2 = 0.839) \label{eq:c3_parsimonious}
+\end{align}
+
+간명 모형은 9변수 완전 모형(C2: $0.998$, C3: $0.858$) 대비
+4개 변수만으로 C2의 $99.6\%$, C3의 $83.9\%$를 설명하여,
+설명력 손실을 최소화하면서 해석 가능성을 확보한다.
+C2에서는 관측성 효과가 $k_O$($-0.291$), $k_O \cdot O$($-0.562$),
+$k_O \cdot U$($-0.433$)의 3개 항에 분산되어 있어,
+관측성과 불확실성의 교호작용 구조가 세분화된 형태로 포착된다.
+C3에서는 $k_O \cdot O$ 항이 선택되지 않아 $k_O$($-1.053$) 단일 항에
+관측성 효과가 집중되며, $U^2$ 항(계수 $-0.002$)이 포함되어
+파레토 분포의 비선형 구조가 반영된다.
+C3에서 $k_O$ 계수의 절대값이 C2보다 큰 것은 관측성 영향력의 증대가
+아니라, C2에서 교호작용 항에 분산된 효과가 C3에서 단일 항에
+집중된 결과이다.
+이는 파레토 극단 영역에서 관측성의 한계적 효과가 감쇠하는
+이중채널 감쇠 현상(\p{[}표~\vref{tab:c3_split_regression}\p{]}, $0.52$배 감쇠)과 일관된다.
+
+\subsection{\mrev{회귀분석 가설 검증 결과}}
+\label{subsec:ch4_h4_h5_conclusion}
+
+\input{chapters/ch4/sec4.4_full_coeff}
+
+\chg{회귀 설명력에 관한 H4의 검증 결론을 정리한다.} \mrev{H4는 $R^2_{(2\mathrm{q})} \geq 0.95$를 기준으로 한다.
+\chg{조건별 $R^2$는 C1 1.000(충족), C2 0.998(충족), C3 전체 0.858(단일 회귀 시 미달)이다.}
+C3는 P85.8 분할 시 Core $R^2 = 0.999$로 충족하여, 분할 회귀 적용
+조건부로 \textbf{H4는 채택된다}.}
+
+\chg{이어 교호작용 유의성에 관한 H5의 검증 결론은 다음과 같다.} \mrev{H5는 $\Delta R^2$ 기여도 유의를 기준으로 한다. C1에서 $k_O \cdot O$
+교호작용항이 $R^2$를 $0.869 \to 1.000$로 향상시켜 $\Delta R^2 = 0.131$
+($p < 0.001$). C2 전진 선택법에서 $k_O \cdot U$와 $k_O \cdot O$가 3$\sim$4
+순위로 진입하며, LASSO ($\lambda = 0.01$)에서도 두 항 모두 생존한다.
+서로 다른 두 변수 선택 방법이 일관되게 교호작용항을 핵심으로 식별하여,
+\textbf{H5는 채택된다}.}

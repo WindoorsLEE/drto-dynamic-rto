@@ -1,0 +1,48 @@
+{
+  "description": "DRTO 프로젝트 공통 난수열 (순수 raw data)",
+  "generated": "2026-02-28",
+  "rng_engine": "PCG64 (numpy.random.default_rng)",
+  "rng_note": "NumPy 1.17+ 권장 API, 레거시 Mersenne Twister 대체",
+  "n": 10000,
+  "variables": {
+    "O_raw": {
+      "file": "O_raw_seed42_n10000.csv",
+      "seed": 42,
+      "band": "[0, 9999]",
+      "distribution": "Uniform(0, 1)",
+      "description": "관측성 수준 난수열"
+    },
+    "k_O": {
+      "file": "k_O_seed20042_n10000.csv",
+      "seed": 20042,
+      "band": "[20000, 29999]",
+      "distribution": "Uniform(0, 1)",
+      "description": "관측성 가중치 난수열"
+    },
+    "U_gaussian": {
+      "file": "U_gaussian_seed30042_n10000.csv",
+      "seed": 30042,
+      "band": "[30000, 39999]",
+      "distribution": "N(3, 1) / 6 (정규화)",
+      "description": "가우시안 불확실성 난수열. U_raw ~ N(3,1), U_norm = U_raw / 6",
+      "added_for": "박사논문 C2"
+    },
+    "U_pareto": {
+      "file": "U_pareto_seed40042_n10000.csv",
+      "seed": 40042,
+      "band": "[40000, 49999]",
+      "distribution": "6·Pareto(α=3), Heavy-tail",
+      "description": "파레토 불확실성 난수열. U_raw = 6·Pareto(α=3), E[U_raw]=3.0h",
+      "added_for": "박사논문 C3"
+    }
+  },
+  "correlation": {
+    "corr_kO_O": 0.016194,
+    "corr_O_Ugauss": 0.009165,
+    "corr_kO_Ugauss": -0.005764,
+    "corr_O_Upareto": -0.000639,
+    "corr_kO_Upareto": 0.009852,
+    "corr_Ugauss_Upareto": 0.015126
+  },
+  "usage": "모든 KCI 논문(1~5), SCI, 박사학위논문에서 공유"
+}

@@ -1,0 +1,176 @@
+
+%% -------------------------------------------------------------------
+\subsection{산업별 권장 파라미터}
+\label{subsec:industry-guidelines}
+%% -------------------------------------------------------------------
+
+$\DRTO$ 프레임워크의 파라미터는 산업별 특성에 따라 교정(calibration)이
+필요하다. \chref{ch:results}의 시뮬레이션 결과, 전문가 의견, 그리고 연구모형의 산업
+시나리오 설계를 종합하여, 6개 주요 산업에 대한 권장 파라미터 설정을
+\p{[}표~\vref{tab:ch6-industry-params}\p{]}에 제시한다.
+
+\begin{table}[htbp]
+\centering
+\caption{6개 산업별 $\DRTO$ 권장 파라미터}
+\label{tab:ch6-industry-params}
+\small
+\begin{tabularx}{\textwidth}{l c c c c X}
+\toprule
+\textbf{산업} & \textbf{$R_0$ (h)} & \textbf{$R_{\max}$ (h)} & \textbf{$O_{\text{raw}}$ 범위} & \textbf{권장 조건} & \textbf{적용 근거} \\
+\midrule
+제조업       & 4.0 & 16.0 & 0.50--0.70 & C2
+  & 생산 설비 고장은 가우시안 분포 적합, 생산 계획 연동으로 $R_0$ 엄격 관리 필요 \\
+\addlinespace
+금융         & 1.0 & 4.0  & 0.70--0.85 & C3
+  & 규제 준수 요건(RTO $\leq$ 2h) 엄격, 시장 변동$\cdot$사이버 공격의 파레토 특성 반영 필수 \\
+\addlinespace
+의료         & 2.0 & 8.0  & 0.60--0.75 & C3
+  & 환자 안전이 최우선, 의료기기 장애, 감염 확산 시나리오의 파레토 위험 대비 \\
+\addlinespace
+IT 서비스    & 0.5 & 2.0  & 0.75--0.90 & C2
+  & SLA 기반 복구, 인프라 장애의 대다수가 가우시안 근사 가능, 높은 관측성 인프라 \\
+\addlinespace
+물류         & 6.0 & 24.0 & 0.45--0.60 & C2
+  & 공급망 연속성, 계절 변동$\cdot$물류 지연은 정규분포 근사, 가장 긴 허용 RTO \\
+\addlinespace
+소매         & 3.0 & 12.0 & 0.50--0.65 & C2
+  & 매출 손실 최소화, 일상적 IT 장애 중심, POS$\cdot$결제 시스템 관측성 활용 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\chg{표의 공통 파라미터는 다음과 같다. 곡률 매개변수는 $\kappa = 1.2$로 \jrev{\citet{lee2026drto}}에서 확정된
+매개변수이며, 본 연구는 \frev{분포 환경 적합성} 종합 명제로 \frev{운영 적합성을 시사한다}(\secref{sec:ch4_hypothesis_summary}
+참조). 관측성 가중치는 권장 범위 $k_O \in [0.4, 0.6]$이고, C2는 가우시안 불확실성 분포, C3는 파레토
+불확실성 분포이며, $R_0 / R_{\max} = 1:4$ 비율을 유지한다(연구모형 기본 설정). $O_{\text{raw}}$ 범위는 해당 산업의
+전형적 모니터링 성숙도를 반영한다.}
+
+\p{[}그림~\vref{fig:ch6-industry-summary}\p{]}는 6개 산업의 핵심 파라미터와
+권장 조건을 종합적으로 시각화한 것이다.
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+    indbox/.style={draw, rounded corners=5pt, minimum width=30mm, minimum height=22mm,
+                   align=center, font=\small, line width=0.6pt},
+    modelC2/.style={draw, rounded corners=3pt, fill=blue!10, minimum width=12mm,
+                    minimum height=6mm, font=\scriptsize\bfseries},
+    modelC3/.style={draw, rounded corners=3pt, fill=red!10, minimum width=12mm,
+                    minimum height=6mm, font=\scriptsize\bfseries},
+    conn/.style={-{Stealth[length=2mm]}, thick, black},
+]
+
+% 산업 박스
+\node[indbox, fill=green!8]  (mfg) at (0, 0)
+  {\textbf{제조업}\\$R_0 = 4.0$h\\$O = 0.50$--$0.70$};
+\node[indbox, fill=blue!8]   (fin) at (3.2, 0)
+  {\textbf{금융}\\$R_0 = 1.0$h\\$O = 0.70$--$0.85$};
+\node[indbox, fill=red!8]    (hc)  at (6.4, 0)
+  {\textbf{의료}\\$R_0 = 2.0$h\\$O = 0.60$--$0.75$};
+\node[indbox, fill=purple!8] (it)  at (9.6, 0)
+  {\textbf{IT 서비스}\\$R_0 = 0.5$h\\$O = 0.75$--$0.90$};
+\node[indbox, fill=orange!8] (log) at (12.8, 0)
+  {\textbf{물류}\\$R_0 = 6.0$h\\$O = 0.45$--$0.60$};
+\node[indbox, fill=yellow!10](ret) at (16.0, 0)
+  {\textbf{소매}\\$R_0 = 3.0$h\\$O = 0.50$--$0.65$};
+
+% 모델 레이블
+\node[modelC2] at (0, -1.7) {C2};
+\node[modelC3] at (3.2, -1.7) {C3};
+\node[modelC3] at (6.4, -1.7) {C3};
+\node[modelC2] at (9.6, -1.7) {C2};
+\node[modelC2] at (12.8, -1.7) {C2};
+\node[modelC2] at (16.0, -1.7) {C2};
+
+% 연결
+\draw[dashed, black] (mfg.south) -- (0, -1.4);
+\draw[dashed, black] (fin.south) -- (3.2, -1.4);
+\draw[dashed, black] (hc.south)  -- (6.4, -1.4);
+\draw[dashed, black] (it.south)  -- (9.6, -1.4);
+\draw[dashed, black] (log.south) -- (12.8, -1.4);
+\draw[dashed, black] (ret.south) -- (16.0, -1.4);
+
+% R₀ 크기 축 (상단)
+\draw[thick, -{Stealth[length=2.5mm]}, black] (-1.2, 2.0) -- (17.2, 2.0)
+    node[right, font=\scriptsize, black] {$R_0$ 증가};
+\node[font=\scriptsize, black, above] at (3.2, 2.0) {짧은 RTO};
+\node[font=\scriptsize, black, above] at (12.8, 2.0) {긴 RTO};
+
+% 범례
+\node[modelC2] at (5.5, -2.8) {C2};
+\node[font=\scriptsize, anchor=west] at (6.2, -2.8) {가우시안 (일상적 장애)};
+\node[modelC3] at (10.5, -2.8) {C3};
+\node[font=\scriptsize, anchor=west] at (11.2, -2.8) {파레토 (꼬리 위험 필수)};
+
+\end{tikzpicture}
+}% end resizebox
+\caption{6개 산업 $\DRTO$ 적용 요약 다이어그램}
+\label{fig:ch6-industry-summary}
+\end{figure}
+
+산업별 모델 선택의 핵심 기준은 \textbf{파레토 위험의 존재 여부}이다.
+금융과 의료는 사이버 공격, 시장 급변, 감염 확산 등 극단적 사건이
+복구 시간을 급격히 연장할 수 있으므로 C3(파레토)를 권장한다.
+C3의 CVaR$_{99}$가 C2 대비 $+24.0\%$ 높은 점은 이러한 산업에서
+꼬리 위험을 사전에 반영해야 하는 정량적 근거가 된다.
+반면, 제조업, IT 서비스, 물류, 소매는 장애의 대다수가 가우시안
+분포로 근사 가능하므로 C2가 효율적이며, 필요 시 극단 시나리오에 한하여
+C3를 보완적으로 적용할 수 있다.
+
+분포 유형의 판단 오류는 복구 자원의 배정에서 두 가지 상반된 위험으로 이어진다.
+가우시안 환경(C2)에 파레토 수준(C3)의 자원을 배정하는 과다예비(over-provisioning)는
+불확실성을 과대 추정한 결과로, 유휴 대기 인력이나 미사용 예비 시스템, 과도한 예비
+부품과 같은 자원이 상시 유지되어 비용 효율이 저하되나 서비스 수준 협약(SLA) 위반
+위험은 낮다. 예컨대 정상적 IT 장애 복구에 대해 랜섬웨어 대응 수준의 인력과 예비
+시스템을 상시 유지하면 유휴 자원 비용이 불필요하게 증가한다. 반대로 파레토
+환경(C3)에 가우시안 수준(C2)의 자원만 배정하는 과소예비(under-provisioning)는
+불확실성을 과소 추정한 결과로, 비용은 절감되나 극단적 사건 발생 시 SLA 위반과
+업무 중단 장기화 위험이 급증한다. 공급망 복합 장애 가능성이 있는 물류 기업이 단순
+장비 교체 수준의 예비만 확보하면, P99 수준의 극단적 지연(약 $13.2$시간 이상)이
+발생할 때 복구 역량이 부족하여 업무 연속성이 심각하게 위협받는다. 따라서 산업별
+모델 선택은 단순한 분포 가정의 문제가 아니라 자원 배정의 비용과 위험을 균형 짓는
+의사결정이며, 파레토 위험이 존재하는 산업에서 C3를 권장하는 근거가 여기에 있다.
+
+각 산업에 대한 세부 적용 지침은 다음과 같다.
+
+\chg{제조업의 경우,}
+생산 설비 고장에 의한 업무 중단이 주요 위험이며,
+관측성은 PLC(Programmable Logic Controller), SCADA, MES(Manufacturing
+Execution System) 등의 기존 인프라를 활용한다.
+$R_0 = 4.0$h는 일반적인 교대제 생산 라인의 복구 목표를 반영하며,
+$O = 0.50$--$0.70$은 중간 수준의 모니터링 성숙도에 해당한다.
+
+\chg{금융의 경우,}
+금융감독 당국의 IT 복구 시간 규제(예: RTO $\leq$ 2시간)가 엄격하며,
+\chg{사이버 공격, 시장 급변, 결제 시스템 장애}의 파레토 특성을 고려하여
+C3를 권장한다. $O = 0.70$--$0.85$의 높은 관측성은 실시간 거래
+모니터링 시스템(FDS 등)을 반영한다.
+
+\chg{의료의 경우,}
+환자 안전이 최우선이며, 의료기기 장애, 전자 의무기록(EMR) 시스템 중단,
+감염병 확산 시나리오에서 복구 지연이 생명에 직결된다.
+$R_0 = 2.0$h는 응급 의료 시스템의 전형적 복구 목표이며,
+C3 적용으로 극단 시나리오에 대한 사전 대비를 강화한다.
+
+\chg{IT 서비스의 경우,}
+SLA(Service Level Agreement) 기반의 엄격한 복구 목표를 가지며,
+$R_0 = 0.5$h는 클라우드/SaaS 서비스의 전형적 RTO이다.
+$O = 0.75$--$0.90$의 높은 관측성은 APM, 로그 분석, 분산 추적(distributed
+tracing) 등 성숙한 모니터링 인프라를 반영한다.
+
+\chg{물류의 경우,}
+공급망의 연속성이 핵심이며, 계절 변동, 운송 지연, 창고 시스템 장애가
+주요 위험이다. $R_0 = 6.0$h는 본 연구의 기본 설정과 동일하며,
+$O = 0.45$--$0.60$은 물류 산업의 상대적으로 낮은 IT 관측성 성숙도를 반영한다.
+
+\chg{소매의 경우,}
+POS(Point of Sale) 시스템, 재고 관리, 전자상거래 플랫폼의 가용성이
+매출에 직접 영향을 미친다. $R_0 = 3.0$h, $O = 0.50$--$0.65$는
+중간 규모 소매 환경의 전형적 특성을 반영하며, C2 기반의 효율적 복구를 권장한다.
+
+
+\chg{이상의 산업별 권장 파라미터를 회귀식에 대입한 구체적 $\DRTO$ 산출 예시는 회귀식 기반 산출 도구를
+다루는 \subsecref{subsec:practical-regression-tool}에 제시한다.}
+
+

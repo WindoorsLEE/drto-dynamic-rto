@@ -1,0 +1,180 @@
+
+
+%% ===================================================================
+\section{\vrev{연구 설계}}
+\label{sec:research-design}
+%% ===================================================================
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{6단계 다층 검증 프레임워크}}
+\label{subsec:validation-framework}
+%% -------------------------------------------------------------------
+
+\jrev{10개 가설}을 체계적으로 검증하기 위해 6단계 다층 검증(six-stage multi-layer
+validation) 프레임워크를 설계한다. 각 단계는 서로 다른 검증 관점을 제공하며,
+하위 단계의 결과가 상위 단계의 전제 조건으로 작용하는
+계층적 의존 구조를 갖는다~\citep{oberkampf2010verification}.
+
+\chg{프레임워크는 결정론적 기반 검증에서 출발하여 통계적 검증과 전문가 평가로 단계적으로 심화한다. 먼저 기반 검증(L0, Foundation Verification)은 Golden Compare로서, 7개 산업 시나리오의 대표 매개변수를 $\DRTO$ 수식에 직접 대입하여 해석적 기대값과 코드 출력을 비교하는 결정론적 검증이다. 순서 제약, 물리적 경계, $z_O$ 동일성, P99 비율 일관성의 네 범주에 걸친 총 47개 검증 포인트로 구성되며, 경계 보장(H2)과 순서 보존(\jrev{H3})을 결정론적으로 사전 검증한다. 47개 포인트 전체에서 PASS를 달성해야만 이후 L1에서 L5까지의 가설 검증이 의존하는 수식 구현이 단일 기준 정의(SSOT)와 정합함이 보장된다(결과는 \subsecref{subsec:golden_compare} 참조, 7개 시나리오의 전체 계산과 47개 점별 결과는 공개 재현 패키지에 수록).}
+
+\chg{이 기반 위에서 시뮬레이션 검증(L1)은 $n = 10{,}000$ 몬테카를로 시뮬레이션으로 관측성 효과(H1), 경계 보장(H2), 조건 순서(\jrev{H3})를 확인하여 모델의 기본 행동을 검증한다. 이때 H2와 \jrev{H3}는 L0에서 결정론적으로 사전 확인된 뒤 본 단계의 확률적 표본으로 재검증되며, 곡률 매개변수 $\kappa = 1.2$의 최적성은 \citet{lee2026drto}에서 확정된 전제로서 본 연구의 가설 검증 대상이 아니다. 이어 회귀 검증(L2)은 2차 다항 회귀 모델의 설명력(\jrev{H4})과 교호작용 유의성(\jrev{H5})을 통해 응답 곡면의 구조적 특성을 규명하고, 강건성 검증(L3)은 시드 독립성(\jrev{H6})과 다중 시드 강건성(\jrev{H7})을 통해 결과의 재현성과 대표성을 확인하는데, 표본 $n = 10{,}000$과 시드 $10{,}000$개를 곱한 총 $10^8$회 계산으로 통계적 안정성을 보장한다. 다음으로 이중채널 검증(L4)은 P85.8 기준 분할 회귀로 이중채널 비선형 감쇠 효과의 존재와 크기를 검증하며, L1에서 L3까지의 결과를 종합하는 핵심 발견으로서 실무적 정책 시사점의 근거를 제공한다. 마지막으로 전문가 평가(L5)는 BCM 및 재해복구 전문가 5명의 정량적 설문(\jrev{H9})과 정성적 인터뷰(\jrev{H10})를 통해 모델의 이론적 타당성과 실무 적용 가능성을 삼각검증한다.}
+
+\chg{특히 최상위 단계인 L5의 전문가 평가는 본 연구가 삼각검증(triangulation)을 채택한 지점이다. 시뮬레이션과 회귀(L1에서 L4까지)가 제공하는 정량적 증거만으로는 모델이 실제 업무연속성 현장에서 타당한지를 온전히 확증하기 어렵다. 단일 방법에 내재한 한계를 보완하기 위해, 정량적 분석 결과를 전문가의 정성적 판단과 교차 대조하여 결론이 서로 수렴하는지를 확인하는 삼각검증~\citep{creswell2018designing}을 결과 단계가 아니라 설계 단계에서부터 검증 체계의 최상위 층위로 포함한다. 이로써 정량적으로 도출된 모델의 효과가 현장 전문가의 실무적 판단과 일치할 때 비로소 타당성이 확증되는 구조를 갖춘다.}
+
+\p{[}그림~\vref{fig:validation-layers}\p{]}는 6단계 검증 프레임워크의
+구조와 계층 간 의존 관계를 도식화한 것이다.
+
+\begin{figure}[htbp]
+\centering
+\resizebox{0.95\textwidth}{!}{%
+\begin{tikzpicture}[
+  pyr/.style={
+    draw, rounded corners=5pt, minimum height=1.3cm,
+    align=center, font=\small, line width=0.6pt,
+    drop shadow={shadow xshift=0.8mm, shadow yshift=-0.8mm, opacity=0.15}
+  },
+  arr/.style={-{Stealth[length=2.5mm]}, thick, black},
+  lnum/.style={circle, draw, fill=white, font=\small\bfseries, inner sep=2pt,
+    minimum size=7mm, line width=0.6pt},
+  rlbl/.style={font=\scriptsize, text=black, align=left, anchor=west},
+]
+
+% 피라미드 계층 (아래→위, 넓은→좁은)
+\node[pyr, fill=black!8, minimum width=15.5cm] (L0) at (0, -1.8) {
+  \textbf{L0: 기반 검증 (Golden Compare)} \quad
+  47개 포인트 \;\textbar\;
+  순서 제약 \;\textbar\;
+  물리적 경계 \;\textbar\;
+  $z_O$ 동일성 \;\textbar\;
+  P99 비율
+};
+\node[pyr, fill=green!15, minimum width=14cm] (L1) at (0, 0) {
+  \textbf{L1: 시뮬레이션 검증} \quad
+  H1 (관측성 효과) \;\textbar\;
+  H2 (경계 보장) \;\textbar\;
+  H3 (순서 보존)
+};
+\node[pyr, fill=violet!10, minimum width=12cm] (L2) at (0, 1.8) {
+  \textbf{L2: 회귀 검증} \quad
+  H4 ($R^2_{(2\mathrm{q})} \geq 0.95$) \;\textbar\;
+  H5 (교호작용)
+};
+\node[pyr, fill=blue!10, minimum width=10cm] (L3) at (0, 3.6) {
+  \textbf{L3: 강건성 검증} \quad
+  H6 (시드 독립성, $|r| < 0.02$) \;\textbar\;
+  H7 (다중 시드, $10^8$회)
+};
+\node[pyr, fill=orange!15, minimum width=8cm] (L4) at (0, 5.4) {
+  \textbf{L4: 이중채널}\\
+  H8 (감쇠비 $< 1$)
+};
+\node[pyr, fill=yellow!10, minimum width=6cm] (L5) at (0, 7.2) {
+  \textbf{L5: 전문가 평가}\\
+  H9 ($\bar{X} \geq 4.0$) \;\textbar\;
+  H10 (동의율 $\geq 80\%$)
+};
+
+% 계층 번호 (왼쪽 원형 배지)
+\node[lnum, text=black] at ([xshift=-9.1cm]L0.center) {L0};
+\node[lnum, text=black] at ([xshift=-8.4cm]L1.center) {L1};
+\node[lnum, text=black] at ([xshift=-6.8cm]L2.center) {L2};
+\node[lnum, text=black] at ([xshift=-6.4cm]L3.center) {L3};
+\node[lnum, text=black] at ([xshift=-4.8cm]L4.center) {L4};
+\node[lnum, text=black] at ([xshift=-3.8cm]L5.center) {L5};
+
+% 우측 핵심 산출물
+\node[rlbl] at ([xshift=8.5cm]L0.center) {SSOT 구현 정합성};
+\node[rlbl] at ([xshift=7.8cm]L1.center) {$n=10{,}000$ 시뮬레이션};
+\node[rlbl] at ([xshift=6.8cm]L2.center) {응답 곡면 규명};
+\node[rlbl] at ([xshift=5.8cm]L3.center) {재현성 $10^8$회};
+\node[rlbl] at ([xshift=4.8cm]L4.center) {이중채널 효과 검증};
+\node[rlbl] at ([xshift=3.8cm]L5.center) {전문가 삼각검증};
+
+% 계층 간 화살표
+\draw[arr] (L0.north) -- (L1.south);
+\draw[arr] (L1.north) -- (L2.south);
+\draw[arr] (L2.north) -- (L3.south);
+\draw[arr] (L3.north) -- (L4.south);
+\draw[arr] (L4.north) -- (L5.south);
+
+% 좌측 방향 표시
+\node[font=\footnotesize, text=black, rotate=90] at (-9.8, 2.7) {검증 심화 방향};
+\draw[-{Stealth[length=2mm]}, thick, black] (-9.4, -2.3) -- (-9.4, 7.7);
+
+\end{tikzpicture}%
+}% end resizebox
+\caption{6단계 다층 검증 프레임워크}
+\label{fig:validation-layers}
+\end{figure}
+
+\p{[}표~\ref{tab:six-stage}\p{]}은 6단계 검증 프레임워크의 각 단계와 대응 가설,
+검증 목적을 요약한 것이다. 여기서 ``L''은 단계(Level)의 약자로, L0의 결정론적
+구현 정합성 검증에서 출발하여 L5의 전문가 삼각검증에 이르는 누적적 위계를 구성하며,
+각 단계는 이전 단계의 결과를 전제로 한다. 이 순서는 본 연구의 실행 흐름과 일치한다.
+
+\begin{table}[H]
+\centering
+\caption{6단계 다층 검증 프레임워크}
+\label{tab:six-stage}
+\small
+\begin{tabular}{c l c l}
+\toprule
+\textbf{단계} & \textbf{명칭} & \textbf{가설} & \textbf{목적} \\
+\midrule
+L0 & 기반 검증       & (H2, \jrev{H3} 사전) & Golden Compare 47개 포인트: SSOT 구현 정합성 \\
+L1 & 시뮬레이션 검증 & H1--\jrev{H3}   & 모델 기본 행동 확인 \\
+L2 & 회귀 검증       & \jrev{H4}--\jrev{H5}   & 설명력과 교호작용 검증 \\
+L3 & 강건성 검증     & \jrev{H6}--\jrev{H7}   & 재현성과 안정성 보장 \\
+L4 & 이중채널 검증   & \jrev{H8}       & 핵심 발견 규명 \\
+L5 & 전문가 평가     & \jrev{H9}--\jrev{H10} & 실무 타당성 삼각검증 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+이 위계에서 L0의 기반 검증과 L1 이후의 통계적 검증은 성격이 근본적으로 다르다.
+L0의 결정론적 검증(deterministic verification)은 고정된 입력 매개변수에서 모델 수식의
+해석적 출력과 코드 실행 결과를 직접 비교하여 정확 일치 여부를 PASS/FAIL로 판정하는
+방식으로, 확률적 표본 추출이나 통계적 추론을 사용하지 않으며 동일 입력에서 항상 동일
+출력이 보장된다. 반면 L1--L4의 통계적 검증은 확률 분포에서 $n = 10{,}000$ 표본을
+추출하여 평균, 분산, 백분위, 회귀 계수 등 모델 거동의 통계적 성질을 분석한다.
+두 방식의 차이를 \p{[}표~\ref{tab:verification-types}\p{]}에 정리하였다.
+
+\begin{table}[H]
+\centering
+\caption{결정론적 검증과 통계적 검증의 비교}
+\label{tab:verification-types}
+\small
+\begin{tabular}{l p{5.5cm} p{5.5cm}}
+\toprule
+\textbf{항목} & \textbf{결정론적 검증 (L0)} & \textbf{통계적 검증 (L1--L4)} \\
+\midrule
+입력 & 고정 매개변수 (시나리오) & 확률 분포 ($n = 10{,}000$ 표본) \\
+출력 비교 & 해석적 기대값 = 코드 출력 (정확 일치) & 분포·평균·검정 통계량 \\
+결론 형식 & PASS / FAIL (이진) & 가설 채택/기각, 효과크기 \\
+변동성 & 없음 (재실행 시 동일) & 시드·표본에 따른 변동 \\
+검증 대상 & 수식 구현 정합성 (코드와 이론) & 모델 거동의 통계적 성질 \\
+대표 사례 & Golden Compare 47개 포인트 & Cohen's $d$, $R^2$, CVaR \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+두 방식은 위계적 사전 조건 관계를 갖는다. 결정론적 검증(L0)이 PASS되어야 수식이
+코드로 정확히 구현됨이 보장되며, 비로소 후속 통계적 검증(L1--L4)의 결과가 의미를
+갖는다. 만약 L0에서 단 하나의 검증 포인트라도 FAIL이면 코드 구현 자체에 오류가
+있다는 의미이므로 이후의 모든 분석 결과를 신뢰할 수 없게 된다~\citep{oberkampf2010verification}.
+이러한 ``결정론적 사전 검증에서 통계적 본 검증으로''의 2단계 구조는 계산과학 분야의
+\chg{검증과 확인}(Verification and Validation) 표준에 부합한다.
+
+
+%% -------------------------------------------------------------------
+\chg{이상의 검증 프레임워크를 실제로 수행하기 위한 시뮬레이션의 구체적 구성, 곧 표본 크기와 분포 매개변수, 난수 생성 방법, 변수별 시드 배정 규칙과 그 독립성 검증은 다음 \secref{sec:exp_design}에서 통합적으로 기술한다.}
+%% [C3.6/일원화] 구 3.1.2 시드 설계(itemize·그림 fig:seed-bands)는 3.2.3 시드 체계(표 tab:seed_system)·3.2.7 독립성 검증과 중복 → 삭제, 3.2로 일원화(사용자 지시: 분량 무관 중복 삭제).
+
+
+%% -------------------------------------------------------------------
+%% [C3.6/일원화] 구 3.1.3 시뮬레이션 매개변수(itemize·μ=3.0/Lomax 도출)는 3.2.1 tab:sim_parameters(설정근거 포함)·
+%% 3.2.5 난수표 각주·3.2.6 분포 설정과 중복 → 삭제, 3.2로 일원화(사용자 지시: 분량 무관 중복 삭제).
+
+
+%% [C3.3] 구 3.1.4 ``장 요약'' 절 삭제 — 심사 지적(한윤영12·2-B): 절 단위 요약 불필요,
+%% 동시에 본 절에 선등장하던 4장 결과수치(C1~C3 평균 효율비·Cohen's d·단축률)도 함께 제거(C4.5 정합).

@@ -1,0 +1,259 @@
+% 제3장 도입 — 연구 전체 수행 절차 개관 그림 (1장에서 이동, 결과수치 제거됨)
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\textwidth}{!}{%
+  \begin{tikzpicture}[
+    >=Stealth,
+    stepnum/.style={circle, draw=black, fill=white, font=\scriptsize\bfseries,
+                    minimum size=5.5mm, inner sep=0pt, line width=0.7pt},
+    mainbox/.style={draw=black, rounded corners=5pt, line width=0.7pt,
+                    align=center, font=\scriptsize, minimum height=8mm,
+                    inner sep=3pt},
+    subbox/.style={draw=black, rounded corners=2pt, line width=0.4pt,
+                   align=center, font=\tiny, minimum height=7mm,
+                   minimum width=22mm, inner sep=2pt},
+    condbox/.style={draw=black, rounded corners=2pt, line width=0.5pt,
+                    align=center, font=\tiny, minimum width=16mm,
+                    minimum height=8mm, inner sep=2pt},
+    mainarr/.style={->, line width=1.0pt, black},
+    subarr/.style={->, line width=0.5pt, black},
+  ]
+
+  %% 행 좌표 (상→하)
+  \def\rowA{14.0}   % ① 수식 모델
+  \def\rowB{11.5}   % ② 운영 조건       (①-②: 2.5)
+  \def\rowC{7.5}    % ③ 시뮬레이션      (②-③: 4.0, ②-L0 화살표 공간 확보)
+  \def\rowD{3.8}    % ④ 회귀·교차분석   (③-④: 3.7, H3 하위 2단 + 박스 간섭 회피)
+  \def\rowE{1.6}    % ⑤ 강건성 검증     (④-⑤: 2.2)
+  \def\rowF{-0.6}   % ⑥ 전문가 평가     (⑤-⑥: 2.2)
+  \def\rowG{-2.8}   % ⑦ 산업 범용성     (⑥-⑦: 2.2)
+
+  %% ====================================================================
+  %% ① 수식 모델
+  %% ====================================================================
+  \node[stepnum] (n1) at (-1.3, \rowA) {1};
+  \node[mainbox, fill=blue!8, minimum width=115mm] (m1) at (5.0, \rowA)
+    {\textbf{수식 모델 정립}\;
+    {\tiny $\DRTO = R_0 + E_{O,\mathrm{bnd}} + E_{U,\mathrm{bnd}}$,\;
+    $S(z) = 2/(1\!+\!e^{-z})\!-\!1$,\; $\kappa = 1.2$}};
+
+  \node[subbox, fill=blue!5] (m1a) at (1.3, \rowA-1.1)
+    {관측성 채널\\$E_{O,\mathrm{bnd}} = -R_0 \!\cdot\! S(z_O)$};
+  \node[subbox, fill=blue!5] (m1b) at (5.0, \rowA-1.1)
+    {불확실성 채널\\$E_{U,\mathrm{bnd}} = (R_{\max}\!-\!R_0)\!\cdot\! S(z_U)$};
+  \node[subbox, fill=blue!5] (m1c) at (8.7, \rowA-1.1)
+    {경계 보장\\$0 < \DRTO < R_{\max}$};
+
+  \draw[subarr] (m1.south -| m1a) -- (m1a.north);
+  \draw[subarr] (m1.south -| m1b) -- (m1b.north);
+  \draw[subarr] (m1.south -| m1c) -- (m1c.north);
+
+  %% ====================================================================
+  %% ② 운영 조건
+  %% ====================================================================
+  \node[stepnum] (n2) at (-1.3, \rowB+0.5) {2};
+  \node[mainbox, fill=green!8, minimum width=115mm] (m2) at (5.0, \rowB+0.5)
+    {\textbf{4단계 운영 조건 설계 (C0--C3)}};
+
+  \node[condbox, fill=gray!15] (c0) at (0.8, \rowB-0.7)
+    {\textbf{C0}\\정적 기준};
+  \node[condbox, fill=blue!10] (c1) at (3.6, \rowB-0.7)
+    {\textbf{C1}\\관측성};
+  \node[condbox, fill=green!10] (c2) at (6.4, \rowB-0.7)
+    {\textbf{C2}\\Gaussian};
+  \node[condbox, fill=red!10] (c3) at (9.2, \rowB-0.7)
+    {\textbf{C3}\\Pareto};
+
+  \draw[subarr] (m2.south -| c0) -- (c0.north);
+  \draw[subarr] (m2.south -| c1) -- (c1.north);
+  \draw[subarr] (m2.south -| c2) -- (c2.north);
+  \draw[subarr] (m2.south -| c3) -- (c3.north);
+
+  \draw[subarr] (c0) -- (c1) node[midway, above, font=\tiny] {$+O$};
+  \draw[subarr] (c1) -- (c2) node[midway, above, font=\tiny] {$+U^{(G)}$};
+  \draw[subarr] (c1.south) -- ++(0,-0.7) -| (c3.south)
+    node[pos=0.25, below, font=\tiny] {$+U^{(P)}$};
+
+  %% ====================================================================
+  %% L0: Golden Compare (② → ③ 사이)
+  %% ====================================================================
+  \node[stepnum, fill=black!8] (n0) at (-1.3, {(\rowB-1.5+\rowC)/2})
+    {\tiny L0};
+  \node[mainbox, fill=black!6, minimum width=115mm] (m0)
+    at (5.0, {(\rowB-1.5+\rowC)/2})
+    {\textbf{L0: 기반 검증 (Golden Compare)}\;
+    {\tiny 47개 포인트 --- 순서 제약(H3), 물리적 경계(H2),
+    $z_O$ 동일성, P99 비율 검증}};
+
+  %% ====================================================================
+  %% ③ 시뮬레이션 [L1: H1-H3] — H1~H3 각각 독립 박스, H3 하위 a/b/c
+  %% ====================================================================
+  \node[stepnum] (n3) at (-1.3, \rowC) {3};
+  \node[mainbox, fill=yellow!10, minimum width=115mm] (m3) at (5.0, \rowC)
+    {\textbf{몬테카를로 시뮬레이션}\; ($n\!=\!10{,}000 \times 4$)\;
+    {\tiny [L1: H1--H3]}};
+
+  \node[subbox, fill=yellow!6, minimum width=22mm] (m3h1) at (1.5, \rowC-1.1)
+    {H1 관측성 효과};
+  \node[subbox, fill=yellow!6, minimum width=22mm] (m3h2) at (5.0, \rowC-1.1)
+    {H2 경계 보장};
+  \node[subbox, fill=yellow!6, minimum width=28mm] (m3h4) at (8.7, \rowC-1.1)
+    {H3 조건 순서};
+
+  \draw[subarr] (m3.south -| m3h1) -- (m3h1.north);
+  \draw[subarr] (m3.south -| m3h2) -- (m3h2.north);
+  \draw[subarr] (m3.south -| m3h4) -- (m3h4.north);
+
+  %% H3 하위 박스 (a, b, c)
+  \node[subbox, fill=yellow!4, minimum width=12mm, minimum height=6mm]
+    (h4a) at (7.4, \rowC-2.0)
+    {a: $C1\!\leq\!C0$};
+  \node[subbox, fill=yellow!4, minimum width=12mm, minimum height=6mm]
+    (h4b) at (8.7, \rowC-2.0)
+    {b: $C1\!\leq\!C2$};
+  \node[subbox, fill=yellow!4, minimum width=12mm, minimum height=6mm]
+    (h4c) at (10.0, \rowC-2.0)
+    {c: $C2\!\leq\!C3$};
+
+  \draw[subarr] (m3h4.south -| h4a) -- (h4a.north);
+  \draw[subarr] (m3h4.south) -- (h4b.north);
+  \draw[subarr] (m3h4.south -| h4c) -- (h4c.north);
+
+  %% ====================================================================
+  %% ④ 회귀·교차분석 [L2: H4-H5, L4: H8]
+  %% ====================================================================
+  \node[stepnum] (n4) at (-1.3, \rowD+0.5) {4};
+  \node[mainbox, fill=orange!10, minimum width=115mm] (m4) at (5.0, \rowD+0.5)
+    {\textbf{회귀분석 및 교차분석}\;
+    {\tiny [L2: H4--H5, L4: H8]}};
+
+  \node[subbox, fill=orange!6] (m4a) at (1.3, \rowD-0.6)
+    {H4 회귀 설명력};
+  \node[subbox, fill=orange!6] (m4b) at (5.0, \rowD-0.6)
+    {H5 교호작용};
+  \node[subbox, fill=orange!6] (m4c) at (8.7, \rowD-0.6)
+    {H8 이중채널 감쇠};
+
+  \draw[subarr] (m4.south -| m4a) -- (m4a.north);
+  \draw[subarr] (m4.south -| m4b) -- (m4b.north);
+  \draw[subarr] (m4.south -| m4c) -- (m4c.north);
+
+  %% ====================================================================
+  %% ⑤ 강건성 검증 [L3: H6-H7]
+  %% ====================================================================
+  \node[stepnum] (n5) at (-1.3, \rowE+0.5) {5};
+  \node[mainbox, fill=cyan!8, minimum width=115mm] (m5) at (5.0, \rowE+0.5)
+    {\textbf{강건성 검증}\;
+    {\tiny [L3: H6--H7]}};
+
+  \node[subbox, fill=cyan!5] (m5a) at (1.3, \rowE-0.6)
+    {H6 시드 독립성};
+  \node[subbox, fill=cyan!5] (m5b) at (5.0, \rowE-0.6)
+    {H7 다중 시드 강건성};
+  \node[subbox, fill=cyan!5] (m5c) at (8.7, \rowE-0.6)
+    {Bonferroni 보정};
+
+  \draw[subarr] (m5.south -| m5a) -- (m5a.north);
+  \draw[subarr] (m5.south -| m5b) -- (m5b.north);
+  \draw[subarr] (m5.south -| m5c) -- (m5c.north);
+
+  %% ====================================================================
+  %% ⑥ 전문가 평가 + 가설 종합 [L5: H9-H10]
+  %% ====================================================================
+  \node[stepnum] (n6) at (-1.3, \rowF+0.5) {6};
+  \node[mainbox, fill=violet!8, minimum width=115mm] (m6) at (5.0, \rowF+0.5)
+    {\textbf{다층적 타당성 검증}\;
+    {\tiny [L5: H9--H10]}};
+
+  \node[subbox, fill=violet!5] (m6a) at (1.3, \rowF-0.6)
+    {H9 전문가 정량 평가};
+  \node[subbox, fill=violet!5] (m6b) at (5.0, \rowF-0.6)
+    {H10 전문가 정성 평가};
+  \node[subbox, fill=violet!5] (m6c) at (8.7, \rowF-0.6)
+    {가설 종합 판정};
+
+  \draw[subarr] (m6.south -| m6a) -- (m6a.north);
+  \draw[subarr] (m6.south -| m6b) -- (m6b.north);
+  \draw[subarr] (m6.south -| m6c) -- (m6c.north);
+
+  %% ====================================================================
+  %% ⑦ 산업 범용성 검증
+  %% ====================================================================
+  \node[stepnum] (n7) at (-1.3, \rowG+0.5) {7};
+  \node[mainbox, fill=teal!8, minimum width=115mm] (m7) at (5.0, \rowG+0.5)
+    {\textbf{6개 산업 시나리오 범용성 검증}};
+
+  \node[subbox, fill=teal!4, minimum width=16mm] (m7a) at (0.0, \rowG-0.7)
+    {제조업};
+  \node[subbox, fill=teal!4, minimum width=16mm] (m7b) at (2.0, \rowG-0.7)
+    {금융};
+  \node[subbox, fill=teal!4, minimum width=16mm] (m7c) at (4.0, \rowG-0.7)
+    {의료};
+  \node[subbox, fill=teal!4, minimum width=16mm] (m7d) at (6.0, \rowG-0.7)
+    {IT서비스};
+  \node[subbox, fill=teal!4, minimum width=16mm] (m7e) at (8.0, \rowG-0.7)
+    {물류};
+  \node[subbox, fill=teal!4, minimum width=16mm] (m7f) at (10.0, \rowG-0.7)
+    {소매};
+
+  \draw[subarr] (m7.south -| m7a) -- (m7a.north);
+  \draw[subarr] (m7.south -| m7b) -- (m7b.north);
+  \draw[subarr] (m7.south -| m7c) -- (m7c.north);
+  \draw[subarr] (m7.south -| m7d) -- (m7d.north);
+  \draw[subarr] (m7.south -| m7e) -- (m7e.north);
+  \draw[subarr] (m7.south -| m7f) -- (m7f.north);
+
+  %% ====================================================================
+  %% 왼쪽: 단계 진행 화살표 (흐름 명시)
+  %% ====================================================================
+  \foreach \a/\b in {n1/n2, n2/n0, n0/n3, n3/n4, n4/n5, n5/n6, n6/n7} {
+    \draw[->, black, line width=0.7pt] (\a.south) -- (\b.north);
+  }
+
+  %% ====================================================================
+  %% 오른쪽: 중괄호 (왼쪽 열림 = 본문 쪽) + 가설 매핑
+  %% ====================================================================
+  \draw[decorate, decoration={brace, amplitude=4pt},
+        line width=0.5pt, black]
+    (11.0, \rowA+0.4) -- (11.0, \rowB-1.0)
+    node[midway, right=5pt, font=\tiny, text=black, align=left]
+    {이론적\\기반};
+
+  \draw[decorate, decoration={brace, amplitude=4pt},
+        line width=0.5pt, black]
+    (11.0, \rowC+0.35) -- (11.0, \rowC-2.35)
+    node[midway, right=5pt, font=\tiny, text=black, align=left]
+    {L1\\시뮬레이션};
+
+  \draw[decorate, decoration={brace, amplitude=4pt},
+        line width=0.5pt, black]
+    (11.0, \rowD+0.9) -- (11.0, \rowD-1.0)
+    node[midway, right=5pt, font=\tiny, text=black, align=left]
+    {L2--L4\\회귀$\cdot$이중채널};
+
+  \draw[decorate, decoration={brace, amplitude=4pt},
+        line width=0.5pt, black]
+    (11.0, \rowE+0.9) -- (11.0, \rowE-1.0)
+    node[midway, right=5pt, font=\tiny, text=black, align=left]
+    {L3\\강건성};
+
+  \draw[decorate, decoration={brace, amplitude=4pt},
+        line width=0.5pt, black]
+    (11.0, \rowF+0.9) -- (11.0, \rowF-1.0)
+    node[midway, right=5pt, font=\tiny, text=black, align=left]
+    {L5\\전문가};
+
+  \draw[decorate, decoration={brace, amplitude=4pt},
+        line width=0.5pt, black]
+    (11.0, \rowG+0.9) -- (11.0, \rowG-1.0)
+    node[midway, right=5pt, font=\tiny, text=black, align=left]
+    {적용};
+
+  %% 바운딩 박스 확장 (우측 라벨 잘림 방지, 하단 확장)
+  \path (13.5, \rowG-1.5);
+
+  \end{tikzpicture}%
+  }% end resizebox
+  \caption{\jrev{본 연구의 전체 수행 절차 개관}}
+  \label{fig:comprehensive_framework}
+\end{figure}

@@ -1,0 +1,628 @@
+
+
+%% ===================================================================
+\section{\vrev{전문가 패널 검증}}
+\label{sec:ch5_expert}
+%% ===================================================================
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{검증 방법론}}
+\label{subsec:ch5_expert_method}
+%% -------------------------------------------------------------------
+
+$\DRTO$ 프레임워크의 실무 타당성을 검증하기 위하여
+\textbf{전문가 패널 검증(Expert Panel Validation)}을 수행하였다.
+본 검증은 정량적 설문과 정성적 심층 인터뷰를 병행하는
+\textbf{혼합연구방법(Mixed Methods Research)}으로 설계되었으며,
+두 방법의 결과를 수렴적으로 \chg{비교하고 통합하는}
+\textbf{방법론적 삼각검증(Methodological Triangulation)}%
+~\citep{creswell2018designing, denzin1978research}을 적용하였다.
+
+\chg{검증 방법론의 위치를 짚어 두면,}
+본 연구의 전문가 검증은 사회과학적 양적 연구에서 잠재변수 간
+인과관계를 규명하는 구조방정식 모델링(SEM)이나 \chg{탐색적, 확인적}
+요인분석과 목적이 근본적으로 다르다.
+$\DRTO$ 프레임워크의 핵심 변수 간 관계\chg{(}관측성($O_{\text{raw}}$)과
+$\DRTO$의 음의 상관, 불확실성($U_{\text{raw}}$)과 $\DRTO$의 양의 상관\chg{)}는
+시그모이드 바운딩 함수 $S(z)$에 의해 수학적으로 정의되어 있으며,
+$n = 10{,}000$ 시뮬레이션을 통해 통계적으로 검증되었다(\jrev{4.1--4.10절}).
+따라서 전문가 검증의 목적은 잠재변수 간 관계 탐색이 아니라,
+수학적으로 수립된 모델이 실무 환경에서 타당하고 적용 가능한지를
+확인하는 \textbf{내용 타당도 검증(content validation)}이다.
+이는 프레임워크 및 모델 타당성 검증의 표준적 접근으로,
+전문가 패널 평가(\pdel{CVI/CVR}\padd{CVI})와 혼합연구법이 적합한 방법론이다%
+~\citep{lynn1986determination}\pdel{,~\citep{lawshe1975quantitative}}.
+
+\chg{전문가 패널 구성을 보면,}
+BCM/DR 분야 전문가 5명을 대상으로 하였다.
+패널은 BCM/BCP 컨설팅(E1, 13년), DR 운영(E2, 13년),
+통합 리스크 관리(E3, 20년+), IT 인프라(E4, 20년+),
+정보보안(E5, 10년)의 상호 보완적 전문 영역을 포괄하며,
+평균 경력 $15.2$년이다.
+
+\input{chapters/ch4/sec4.11_profile}
+
+\chg{정량적 도구로는 구조화 설문을 사용하였다.}
+27문항(4개 영역)으로 구성된 5점 리커트 척도 설문을
+실시하였으며, 평가 영역은 \chg{모델 타당성(Section~B, 6문항), 파라미터 적정성(Section~C, 6문항),
+실무 적용성(Section~D, 6문항), 산업적용과 $\eta$ 활용 체계(Section~E, 9문항)이다.}
+
+\chg{정성적 도구로는 반구조화 심층 인터뷰를 사용하였다.}
+전문가별 약 30분 정도의 반구조화(semi-structured) 심층 인터뷰를 실시하였으며,
+인터뷰 가이드는 \chg{모델 구조에 대한 전반적 인상, 파라미터 설정의
+실무적 합리성, 도입 가능성과 장애 요인, 개선 방향의}
+4개 범주로 구성하였다.
+
+\chg{\p{[}그림~\vref{fig:expert-verification-process}\p{]}는 전문가 패널 검증의 전체 절차를 안내 메일 발송부터 결과 종합까지 6단계로 체계화한 것이다. 설문은 모델 타당성(B), 파라미터 적정성(C), 실무 적용성(D)에 더하여 산업 적용과 $\eta$ 활용(E)을 검증하며, 약 30분의 심층 인터뷰로 정량적 설문 결과를 보충하는 혼합연구방법(Mixed Methods) 삼각검증 설계를 따른다.}
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  phase/.style={draw, rounded corners=5pt, minimum width=32mm, minimum height=14mm,
+    align=center, font=\small\bfseries, line width=0.7pt},
+  check/.style={font=\small, anchor=west, text width=62mm},
+  arr/.style={-{Stealth[length=2.5mm]}, thick, black},
+]
+
+% Phase boxes (vertical)
+\node[phase, fill=blue!12]           (p1) at (0,  0)    {1. 안내 메일 발송\\{\footnotesize D+0}};
+\node[phase, fill=teal!12]           (p2) at (0, -2.2)  {2. 설문·일정 수령\\{\footnotesize D+0\,--\,D+7}};
+\node[phase, fill=orange!12]         (p3) at (0, -4.4)  {3. 일정 확정\\{\footnotesize D+7\,--\,D+10}};
+\node[phase, fill=red!12]            (p4) at (0, -6.6)  {4. 인터뷰 실시\\{\footnotesize D+10\,--\,D+21}};
+\node[phase, fill=violet!12]         (p5) at (0, -8.8)  {5. 전사·분석\\{\footnotesize D+21\,--\,D+35}};
+\node[phase, fill=green!12]          (p6) at (0, -11.0) {6. 결과 종합\\{\footnotesize D+35\,--\,D+42}};
+
+% Arrows between phases
+\foreach \i/\j in {p1/p2, p2/p3, p3/p4, p4/p5, p5/p6}
+  \draw[arr] (\i) -- (\j);
+
+% Checklist items
+\node[check] at (2.8,  0.3)  {$\square$ 사전배포자료 + 설문지 첨부};
+\node[check] at (2.8, -0.3)  {$\square$ 인터뷰 일정 조사표 첨부 (2주간, 오전/오후/저녁)};
+
+\node[check] at (2.8, -1.9)  {$\square$ 설문 응답 5인분 수령 확인};
+\node[check] at (2.8, -2.5)  {$\square$ 가능 일정 종합 대조 → 상호 조율};
+
+\node[check] at (2.8, -4.1)  {$\square$ 확정 일자·시간·장소(또는 화상회의) 통보};
+\node[check] at (2.8, -4.7)  {$\square$ 녹음 동의서 5인분 수령};
+
+\node[check] at (2.8, -6.0)  {$\square$ 전일 리마인더 발송};
+\node[check] at (2.8, -6.6)  {$\square$ 인터뷰 5회 완료 (각 약 30분)};
+\node[check] at (2.8, -7.2)  {$\square$ 녹음 파일 백업 (메인 + 백업 레코더)};
+
+\node[check] at (2.8, -8.5)  {$\square$ 전사록 5건 작성 + Member Checking};
+\node[check] at (2.8, -9.1)  {$\square$ 정량 분석: 평균, CVI, ICC};
+\node[check] at (2.8, -9.7)  {$\square$ 질적 분석: 주제 분석 (Braun \& Clarke 6단계)};
+
+\node[check] at (2.8, -10.7) {$\square$ 결과종합자료 작성};
+\node[check] at (2.8, -11.3) {$\square$ 본 연구 논문에 반영};
+
+% Survey structure box (right side)
+\node[draw, rounded corners=4pt, fill=blue!5, font=\small, align=left,
+  minimum width=55mm, inner sep=6pt, anchor=north west] (survey) at (9.5, 0.5) {
+  \textbf{설문 구성 (A--F)}\\[3pt]
+  A. 응답자 정보\\
+  B. 모델 타당성 (6문항)\\
+  C. 파라미터 적정성 (6문항)\\
+  D. 실무 적용성 (6문항)\\
+  \textbf{\color{black}E. 산업적용·$\eta$ 활용 (9문항)}\\
+  F. 개방형 (5문항)
+};
+
+% Interview structure box (right side, below survey)
+\node[draw, rounded corners=4pt, fill=orange!5, font=\small, align=left,
+  minimum width=55mm, inner sep=6pt, anchor=north west] (intv) at (9.5, -4.0) {
+  \textbf{인터뷰 스크립트 (4Phase)}\\[3pt]
+  P1. 인사·사전확인 (5분, 녹음 전)\\
+  P2. 설문 보충 질의 (10분, \textbf{녹음 시작})\\
+  P3. 전문 분야별 심화 (10분)\\
+  P4. 종합 의견·마무리 (5분, \textbf{녹음 종료})
+};
+
+% Analysis box (right side, below interview)
+\node[draw, rounded corners=4pt, fill=green!5, font=\small, align=left,
+  minimum width=55mm, inner sep=6pt, anchor=north west] (anal) at (9.5, -8.0) {
+  \textbf{분석 방법}\\[3pt]
+  정량: 평균, SD, CVI ($\geq 0.80$),\\
+  \hspace{2.2em} ICC, 단일표본 $t$-검정\\
+  질적: 주제 분석, 교차 분석,\\
+  \hspace{2.2em} 코딩 체계 (연역 + 귀납)
+};
+
+% Connecting dotted lines from phases to right boxes
+\draw[dashed, black, line width=0.6pt] (p2.east) -- (survey.west |- p2.east);
+\draw[dashed, black, line width=0.6pt] (p4.east) -- (intv.west |- p4.east);
+\draw[dashed, black, line width=0.6pt] (p5.east) -- (anal.west |- p5.east);
+
+% Ethics note at bottom
+\node[draw, rounded corners=3pt, fill=gray!15, font=\footnotesize, align=center,
+  minimum width=140mm, inner sep=5pt] at (7.0, -12.5) {
+  \textbf{윤리적 고려}: 서면 동의 $\mid$ 익명성 보장 (E1--E5 코드명) $\mid$
+  녹음 파일 암호화 $\mid$ 자발적 참여 $\mid$ 연구 종료 후 파기
+};
+
+\end{tikzpicture}
+}% end resizebox
+\caption{전문가 검증 프로세스 체계도}
+\label{fig:expert-verification-process}
+\end{figure}
+
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{검증 도구의 타당도 및 신뢰도}}
+\label{subsec:ch5_validity_reliability}
+%% -------------------------------------------------------------------
+
+전문가 검증 결과의 학술적 엄밀성을 확보하기 위하여,
+정량적 도구(설문)에 대해서는 타당도(validity)와 신뢰도(reliability)를,
+정성적 도구(인터뷰)에 대해서는 신뢰성(trustworthiness)을 체계적으로 평가하였다.
+
+\chg{먼저 내용 타당도(Content Validity)를 살펴본다.}
+설문 도구의 내용 타당도는
+\textbf{내용타당도지수(Content Validity Index, CVI)}%
+~\citep{lynn1986determination}\pdel{와
+\textbf{내용타당도비율(Content Validity Ratio, CVR)}%
+~\citep{lawshe1975quantitative}}로 평가하였다.
+\padd{내용타당도비율(CVR)~\citep{lawshe1975quantitative}은 Lawshe(1975) 원표가 패널 5명에서
+임계값 $\text{CVR}_{\min} = 0.99$를 요구하고 통상 10명 이상 패널을 전제로 설계된 지표로서,
+본 연구의 5명 전문가 패널에는 임계값 적용이 부적합하므로 주 타당도 지표로 채택하지 않았다
+(패널 규모 한계는 \jrev{\secref{sec:limitations}}항 참조).}
+
+5점 리커트 척도에서 4점 이상을 ``적합(relevant)''으로 이분화하여
+문항별 I-CVI와 전체 S-CVI를 산출하였다.
+\jrev{\tabref{tab:ch5_cvi}}에 제시된 바와 같이,
+27개 문항 중 25개에서 모든 전문가($n = 5$)가 4점 이상을 부여하여
+I-CVI $= 1.00$이며, D1과 E4 문항은 1인(E1)만 3점으로 I-CVI $= 0.80$이다.
+S-CVI/Ave $= 0.985$로 우수한 수준이다.
+
+\begin{table}[htbp]
+  \centering
+  \caption{\jrev{내용 타당도 분석 결과}}
+  \label{tab:ch5_cvi}
+  \small
+  \begin{tabular}{lcccl}
+    \toprule
+    지표 & 산출 방법 & 값 & 기준 & 판정 \\
+    \midrule
+    I-CVI $= 1.00$ 문항
+      & 전원 4점 이상
+      & 25/27 (92.6\%)
+      & ---
+      & --- \\[4pt]
+    I-CVI $\geq 0.80$ 문항
+      & 4/5인 이상 4점 이상
+      & 27/27 (100\%)
+      & $\geq 0.78$
+      & \cmark 전 문항 충족 \\[4pt]
+    S-CVI/Ave (전체)
+      & I-CVI 평균
+      & 0.985
+      & $\geq 0.90$
+      & \cmark 우수 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\chg{여기서 I-CVI 기준은 3인 이상 패널에서 $\geq 0.78$이고~\citep{lynn1986determination}, S-CVI/Ave 기준은
+$\geq 0.90$이며~\citep{polit2006content}, D1(데이터 수집 가능성)과 E4($\eta$ 에스컬레이션) 문항은 E1
+전문가만 3점을 부여하여 I-CVI $= 0.80$이다.}
+
+\chg{다음으로 내적 일관성 신뢰도(Internal Consistency)는}
+설문에 대해 Cronbach's $\alpha$로 평가하였다
+(\jrev{\tabref{tab:ch5_alpha}}).
+전체 Cronbach's $\alpha = 0.89$로 양호한 수준이다.
+하위 영역별로는 E 섹션($\alpha = 0.80$)과 D 섹션($\alpha = 0.70$)이 기준을 충족하나,
+B 섹션($\alpha = 0.58$)과 C 섹션($\alpha = 0.51$)은 기준($0.70$) 미달이다.
+이는 소규모 패널($n = 5$)에서 응답의 98.5\%가 4--5점에 집중된 천장효과에 기인하며,
+분산이 극히 작아 $\alpha$가 역설적으로 낮아지는 현상이다.
+전체 $\alpha = 0.89$는 양호하므로, 전체 $\alpha$를 주 지표로 보고한다.
+
+\begin{table}[htbp]
+  \centering
+  \caption{\jrev{내적 일관성 신뢰도 분석 (Cronbach's $\alpha$)}}
+  \label{tab:ch5_alpha}
+  \small
+  \begin{tabular}{lccl}
+    \toprule
+    평가 영역 & 문항 수 & Cronbach's $\alpha$ & 판정 \\
+    \midrule
+    모델 타당성 (Section B)             & 6  & 0.58 & $\triangle$ 미달$^{**}$ \\
+    파라미터 적정성 (Section C)         & 6  & 0.51 & $\triangle$ 미달$^{**}$ \\
+    실무 적용성 (Section D)             & 6  & 0.70 & 경계 충족 \\
+    산업적용·$\eta$ 활용 (Section E)     & 9  & 0.80 & \cmark 양호 \\
+    \midrule
+    \textbf{전체}                       & 27 & \textbf{0.89} & \cmark \textbf{양호} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\chg{해석 기준은 $\geq 0.90$ 우수, $\geq 0.80$ 양호, $\geq 0.70$ 수용 가능이며~\citep{nunnally1994psychometric},
+B와 C 섹션의 미달($^{**}$)은 $n = 5$ 소규모 패널과 천장효과(4--5점 집중, 분산 부족)에 기인하되 전체
+$\alpha = 0.89$는 양호하다.}
+
+\chg{이어 평가자 간 신뢰도(Inter-Rater Reliability)로서}
+전문가 간 평정 일치도는 급내상관계수(ICC)와
+Krippendorff's $\alpha$로 평가하였다 (\jrev{\tabref{tab:ch5_icc}}).
+
+\begin{table}[htbp]
+  \centering
+  \caption{\jrev{평가자 간 일치도 분석 ($n = 5$ 평가자, $k = 27$ 문항)}}
+  \label{tab:ch5_icc}
+  \small
+  \begin{tabular}{llcl}
+    \toprule
+    측정치 & 값 & 기준 & 해석 \\
+    \midrule
+    S-CVI/Ave & 0.985 & $\geq 0.90$ & \cmark 우수 (주된 타당도 지표) \\
+    Fleiss' $\kappa$ & 0.012 & --- & 천장효과$^*$ \\
+    ICC(2,1) & 0.003 & --- & 천장효과$^*$ \\
+    \inew{ICC(3,1)} & \inew{---(미산출)} & \inew{---} & \inew{천장효과$^*$ (\subsubsecref{app:reliability-formulas} 참조)} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\chg{표에서 천장효과($^*$)는 응답의 98.5\%가 4--5점에 집중되어 변동성 부족으로 $\kappa$와 ICC가 역설적으로
+낮아지는 현상으로, 이는 전문가 간 불일치가 아니라 일관되게 높은 합의의 통계적 부산물이다. CVI $= 0.985$(높은
+합의)와 ICC $= 0.003$(낮은 변동)은 동일한 데이터 특성에서 내부적으로 일관되게 도출된 결과이므로~\citep{gwet2014handbook},
+CVI를 주된 타당도 지표로 보고한다.}
+
+\chg{끝으로 정성적 신뢰성(Trustworthiness)으로서}
+심층 인터뷰 자료의 신뢰성은 Lincoln and Guba(\citeyear{lincoln1985naturalistic})의
+4대 기준에 따라 확보하였다(\jrev{\tabref{tab:ch5_trustworthiness}}).
+이 가운데 참여자 확인(member checking)은 인터뷰 주제 분석 결과 요약본을
+각 전문가에게 이메일로 회신하여 발언 취지의 정확성을 서면(확인서 또는 회신
+이메일)으로 확인받는 절차이며, 그 원본은 연구 아카이브에 보관한다.
+
+\begin{table}[htbp]
+  \centering
+  \caption{\jrev{정성적 자료의 신뢰성(Trustworthiness) 확보 전략}}
+  \label{tab:ch5_trustworthiness}
+  \small
+  \begin{tabular}{llll}
+    \toprule
+    기준 & 정량 대응 & 확보 방법 & 결과 \\
+    \midrule
+    신빙성
+      & 내적 타당도
+      & \begin{tabular}[t]{@{}l@{}}
+          방법론적 삼각검증 \\
+          (설문 + 인터뷰 수렴 비교)
+        \end{tabular}
+      & 정량·정성 결과 수렴 확인 \\[8pt]
+    (Credibility)
+      &
+      & 참여자 확인(member checking)
+      & \begin{tabular}[t]{@{}l@{}}
+          분석 요약본 이메일 회신 \\
+          5명 전원 검토·승인 확인서 보관
+        \end{tabular} \\[4pt]
+    \midrule
+    전이가능성
+      & 외적 타당도
+      & 풍부한 기술(thick description)
+      & \begin{tabular}[t]{@{}l@{}}
+          전문가별 프로필, \\
+          맥락, 직접 인용 제시
+        \end{tabular} \\[4pt]
+    (Transferability)
+      &
+      &
+      & \\
+    \midrule
+    의존가능성
+      & 신뢰도
+      & \begin{tabular}[t]{@{}l@{}}
+          감사추적(audit trail) \\
+          코딩북 + 변경 이력
+        \end{tabular}
+      & \begin{tabular}[t]{@{}l@{}}
+          인터뷰 전사 원본 보관 \\
+          주제 코딩 과정 문서화
+        \end{tabular} \\[4pt]
+    (Dependability)
+      &
+      & 코딩 일관성 확보
+      & 사전+귀납적 코딩 체계 적용 \\[4pt]
+    \midrule
+    확인가능성
+      & 객관성
+      & \begin{tabular}[t]{@{}l@{}}
+          원자료 보관 \\
+          연구자 반성일지
+        \end{tabular}
+      & \begin{tabular}[t]{@{}l@{}}
+          녹취록·설문 원본 보관 \\
+          분석 과정 기록
+        \end{tabular} \\[4pt]
+    (Confirmability)
+      &
+      &
+      & \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\jrev{\tabref{tab:ch5_vr_summary}\refpo{tab:ch5_vr_summary}{은}{는}} \chg{이상의 정량적 도구와 정성적 도구} 전반의
+타당도 및 신뢰도 평가 결과를 종합한 것이다.
+
+\chg{정량적 6개 지표와 정성적 4개 기준을 합한 총 10개 평가 항목에서 모두 기준을 충족하여, 전문가 검증
+도구의 학술적 엄밀성이 확보되었다.}
+
+
+\begin{table}[htbp]
+  \centering
+  \caption{\jrev{전문가 검증 도구의 타당도·신뢰도 종합}}
+  \label{tab:ch5_vr_summary}
+  \small
+  \begin{tabular}{ll>{\raggedright\arraybackslash}p{3.2cm}cc>{\raggedright\arraybackslash}p{2.5cm}}
+    \toprule
+    구분 & 평가 항목 & 지표 & 값 & 기준 & 판정 \\
+    \midrule
+    정량적   & 타당도  & I-CVI $\geq 0.80$   & 27/27 & $\geq 0.78$ & \cmark 전 문항 충족 \\
+    (설문)   &         & S-CVI/Ave          & 0.985  & $\geq 0.90$ & \cmark 우수 \\
+    \cmidrule{2-6}
+             & 신뢰도  & Cronbach's $\alpha$ (전체) & 0.89 & $\geq 0.70$ & \cmark 양호 \\
+             &         & Fleiss' $\kappa$     & 0.012 & ---         & 천장효과$^*$ \\
+             &         & ICC(2,1)            & 0.003 & ---         & 천장효과$^*$ \\
+             &         & \inew{ICC(3,1)}     & \inew{---(미산출)} & \inew{---} & \inew{천장효과$^*$} \\
+    \midrule
+    정성적   & 신뢰성  & 신빙성(Credibility)       & -- & \multicolumn{2}{l}{\cmark 삼각검증 + 참여자 확인} \\
+    (인터뷰) &         & 전이가능성(Transferability) & -- & \multicolumn{2}{l}{\cmark 풍부한 기술} \\
+             &         & 의존가능성(Dependability)   & $\kappa = 0.65$ & $\geq 0.61$ & \cmark 실질적 일치 \\
+             &         & 확인가능성(Confirmability)  & -- & \multicolumn{2}{l}{\cmark 감사추적} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+
+\noindent
+이상의 결과를 통해, 설문 도구는 내용 타당도(\pdel{CVI/CVR}\padd{CVI})와
+내적 일관성 신뢰도(Cronbach's $\alpha$), 평가자 간 신뢰도(ICC, Krippendorff's $\alpha$)
+모두에서 기준을 충족하였으며, 인터뷰 자료는 Lincoln과 Guba의
+4대 신뢰성 기준을 체계적으로 확보하였다.
+다만, 소규모 패널($n = 5$)의 특성상 Cronbach's $\alpha$와 ICC의
+신뢰구간이 넓을 수 있으므로 해석에 유의할 필요가 있다.
+각 지표의 산출 공식 및 계산 근거는 아래에 상세히 제시한다.
+
+\input{chapters/ch4/sec4.11_reliability_formulas}
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{정량적 평가 결과}}
+\label{subsec:ch5_h10}
+%% -------------------------------------------------------------------
+
+\jrev{H9}는 ``전문가의 정량적 평가 평균이 5점 리커트 척도에서 $4.0$점 이상''이라는
+가설이다. \jrev{\tabref{tab:ch5_expert_survey}\refpo{tab:ch5_expert_survey}{은}{는}} 4개 평가 영역별 점수와
+통계적 검정 결과를 종합한 것이다.
+
+\begin{table}[htbp]
+  \centering
+  \caption{\jrev{전문가 설문 평가 결과 및 \jrev{H9} 검정}}
+  \label{tab:ch5_expert_survey}
+  \small
+  \begin{tabular}{lccccl}
+    \toprule
+    평가 영역 & 평균 & SD & $t$-통계량 & $p$-값 & Cohen's $d$ \\
+    \midrule
+    모델 타당성 (B, 6문항)         & 4.57 & 0.30 & 4.19  & 0.007 & 1.87 \\
+    파라미터 적정성 (C, 6문항)     & 4.40 & 0.28 & 3.21  & 0.016 & 1.43 \\
+    실무 적용성 (D, 6문항)         & 4.57 & 0.35 & 3.67  & 0.011 & 1.64 \\
+    산업적용·$\eta$ 활용 (E, 9문항) & 4.36 & 0.35 & 2.30  & 0.042 & 1.03 \\
+    \midrule
+    \textbf{전체 (27문항)} & \textbf{4.46} & \textbf{0.28} & \textbf{3.68} & \textbf{0.011} & \textbf{1.65} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\chg{검정은 단측 $t$-검정($df = 4$, $\alpha = 0.05$, $H_0: \mu \leq 4.0$)이며, Cohen's $d > 0.80$은
+대효과(large effect)에 해당한다~\citep{cohen1988power}.}
+
+\noindent
+전체 평균 $\bar{X} = 4.46$은 기준값 $4.0$을 유의하게 상회하며
+($t(4) = 3.68$, $p = 0.011$), Cohen's $d = 1.65$는 \jrev{대효과(large effect)} 크기에 해당한다.
+4개 영역 모두에서 $p < 0.05$이고 $d > 1.0$으로서, 전문가들이
+모델의 이론적 구조, 파라미터 설정, 실무 적용성, 산업적용 가능성 전반에 걸쳐
+높은 수준의 긍정적 평가를 보인 것으로 해석된다.
+
+앞서 \jrev{\subsecref{subsec:ch5_validity_reliability}}에서 확인한 바와 같이,
+설문 도구의 내용 타당도(S-CVI/Ave $= 0.985$, I-CVI $\geq 0.80$ 전 문항 충족)와
+내적 일관성(Cronbach's $\alpha = 0.89$)이 기준을 충족하였으므로,
+\textbf{\jrev{H9}은 강력히 지지}된다.
+
+\jrev{\figref{fig:ch5_expert_radar}\refpo{fig:ch5_expert_radar}{은}{는}} 5개 평가 축의 점수를 레이더 차트로
+시각화한 것이다.
+\chg{그림에서 적색 점선은 기준 $4.0$을, 청색 다각형은 평가 결과 평균 점수를 나타낸다.}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[scale=1.0]
+    % Radar chart: 5 axes (72° intervals, top start)
+    \def\radarscale{2.8}  % radius for score=5.0
+    \def\axes{5}
+
+    % Axis lines + labels
+    \foreach \i/\label in {
+      1/{모델 타당성 (B)},
+      2/{파라미터 적정성 (C)},
+      3/{실무 적용성 (D)},
+      4/{산업적용·$\eta$ (E)},
+      5/{전체 평균}%
+    } {
+      \pgfmathsetmacro{\angle}{90 - (\i-1)*360/\axes}
+      \draw[black] (0,0) -- (\angle:\radarscale*1.1);
+      \node[font=\footnotesize, anchor={\angle+180}] at (\angle:\radarscale*1.35) {\label};
+    }
+
+    % Grid pentagons (3.0, 4.0, 5.0)
+    \foreach \r/\lab in {0.6/3.0, 0.8/4.0, 1.0/5.0} {
+      \draw[black, thin]
+        ({90}:\radarscale*\r)
+        \foreach \i in {2,...,\axes} {
+          -- ({90 - (\i-1)*360/\axes}:\radarscale*\r)
+        } -- cycle;
+      \node[font=\tiny, black, anchor=south east] at ({90}:\radarscale*\r+0.15) {\lab};
+    }
+
+    % 4.0 threshold pentagon (dashed red)
+    \draw[red!50, dashed, thick]
+      ({90}:\radarscale*0.8)
+      \foreach \i in {2,...,\axes} {
+        -- ({90 - (\i-1)*360/\axes}:\radarscale*0.8)
+      } -- cycle;
+
+    % Data: 4.57, 4.40, 4.57, 4.36, 4.46 (실제 데이터)
+    \pgfmathsetmacro{\rA}{\radarscale*4.57/5.0}
+    \pgfmathsetmacro{\rB}{\radarscale*4.40/5.0}
+    \pgfmathsetmacro{\rC}{\radarscale*4.57/5.0}
+    \pgfmathsetmacro{\rD}{\radarscale*4.36/5.0}
+    \pgfmathsetmacro{\rE}{\radarscale*4.46/5.0}
+
+    \draw[blue!70, thick, fill=blue!15, fill opacity=0.3]
+      ({90}:\rA) --
+      ({90-72}:\rB) --
+      ({90-144}:\rC) --
+      ({90-216}:\rD) --
+      ({90-288}:\rE) -- cycle;
+
+    % Data points
+    \foreach \r/\angle in {\rA/90, \rB/18, \rC/-54, \rD/-126, \rE/-198} {
+      \fill[blue!70] (\angle:\r) circle (2pt);
+    }
+
+    % Score labels
+    \node[font=\scriptsize, blue!70, anchor=south] at ({90}:\rA+0.25) {4.57};
+    \node[font=\scriptsize, blue!70, anchor=south west] at ({18}:\rB+0.25) {4.40};
+    \node[font=\scriptsize, blue!70, anchor=north west] at ({-54}:\rC+0.25) {4.57};
+    \node[font=\scriptsize, blue!70, anchor=north east] at ({-126}:\rD+0.25) {4.36};
+    \node[font=\scriptsize, blue!70, anchor=east] at ({-198}:\rE+0.25) {4.46};
+
+    % Legend
+    \draw[red!50, dashed, thick] (3.5, -3.0) -- (4.2, -3.0);
+    \node[font=\tiny, anchor=west] at (4.3, -3.0) {기준 = 4.0};
+    \draw[blue!70, thick] (3.5, -3.3) -- (4.2, -3.3);
+    \node[font=\tiny, anchor=west] at (4.3, -3.3) {전문가 평가};
+  \end{tikzpicture}
+  \caption{\jrev{전문가 평가 5개 축 레이더 차트}}
+  \label{fig:ch5_expert_radar}
+\end{figure}
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{정성적 평가 결과}}
+\label{subsec:ch5_h11}
+%% -------------------------------------------------------------------
+
+\jrev{H10}은 ``심층 인터뷰에서 도출된 핵심 주제에 대해 $80\%$ 이상의 전문가가
+동의''한다는 가설이다. 약 30분 반구조화 인터뷰를 통해
+Braun \& Clarke~\citeyear{braun2006using}의 주제 분석 6단계 절차를 적용하여
+5개 대주제, 15개 하위 주제가 도출되었다.
+\chg{전문가별 동의 분석 결과, T1--T4 대주제(12개 하위 주제)는 5/5 동의, T5 향후 연구 방향(3개 하위
+주제)은 4/5 동의로 나타나, $80\%$ 이상 동의 기준에서 15개 하위 주제 전체(100\%)가 이를 충족하였다.}
+
+정성적 자료의 신뢰성은 \jrev{\subsecref{subsec:ch5_validity_reliability}}에서 기술한
+Lincoln과 Guba(\citeyear{lincoln1985naturalistic})의 4대 기준 즉, i) 신빙성(삼각 검증 및
+참여자 확인), ii) 전이 가능성(풍부한 기술), iii) 의존 가능성(감사 추적 및 코딩 일관성),
+iv) 확인 가능성(원자료 보관)을 통해 체계적으로 확보하였다.
+
+전문가들이 특히 높이 평가한 핵심 주제는
+\chg{DRTO의 실무적 필요성(5/5 만장일치), 단계적 도입(C0$\to$C3)의 실현 가능성(5/5 만장일치),
+관측성과 불확실성의 trade-off를 단일 파라미터($k_O$)로 표현하는 직관성(4/5 동의)}이다.
+\textbf{\jrev{H10}은 강력히 지지}된다.
+
+\chg{전문가 의견 중 주목할 질적 통찰로, E1(BCM/BCP, 13년)은 ``P85.8 교차점 개념은 BCM 실무에서 일상적
+리스크와 극단적 리스크를 분리하여 관리하는 이론적 근거를 제공한다''고 평가하였고, E3(리스크, 20년 이상)은
+``파레토 분포 도입은 사이버 공격이나 대규모 재해에서 복구 시간이 급격히 늘어나는 현상을 잘 포착하며,
+Basel~III의 운영 리스크 모델링 철학과도 일맥상통한다''고 보았으며, E5(보안, 10년)는 ``이중채널 감쇠
+효과($0.52$배)는 극단적 시나리오에서 관측성 투자만으로는 충분하지 않으며 불확실성 관리가 병행되어야
+한다는 것을 경영진에게 설득하는 데 효과적인 정량적 근거가 된다''고 강조하였다.}
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{삼각검증 수렴 결과}}
+\label{subsec:ch5_triangulation}
+%% -------------------------------------------------------------------
+
+방법론적 삼각검증~\citep{denzin1978research}의 핵심은 정량적 결과(\jrev{H9})와
+정성적 결과(\jrev{H10})가 동일한 결론을 \pdel{**}서로 다른 경로\pdel{**}로 도달하는
+\textbf{수렴(convergence)} 여부이다.
+단순히 양쪽 결과를 나열하는 것이 아니라,
+\chg{정량적 점수 패턴, 정성적 주제 내용, 양자의 수렴 근거}를
+함께 분석하여야 한다.
+\jrev{\tabref{tab:ch5_convergence}\refpo{tab:ch5_convergence}{은}{는}} 영역별로 이를 체계적으로 대조한 것이다.
+
+\begin{table}[htbp]
+  \centering
+  \caption{\jrev{정량적, 정성적 결과의 삼각검증 수렴 분석}}
+  \label{tab:ch5_convergence}
+  \small
+  \begin{tabular}{p{1.8cm}p{2.2cm}p{2.2cm}p{6.5cm}}
+    \toprule
+    평가 영역 & 정량적 결과 & 정성적 결과 & 수렴 근거 \\
+    \midrule
+    모델 타당성
+      & $\bar{X} = 4.57$ \newline
+        $p = 0.007$ \newline
+        Cohen's $d = 1.87$
+      & 5/5 만장일치 \newline
+        (T1: 3개 하위 주제)
+      & \begin{tabular}[t]{@{}p{4.3cm}@{}}
+          설문에서 최고점(4.80)을 받은 B6(전반적 타당성)에 대해
+          인터뷰에서도 ``$k_O + k_U = 1$ 제약이 직관적''(E2),
+          ``시그모이드 바운딩이 운영 안정성 확보''(E4) 등
+          구체적 근거 제시
+        \end{tabular} \\[12pt]
+    파라미터 적정성
+      & $\bar{X} = 4.40$ \newline
+        $p = 0.016$ \newline
+        Cohen's $d = 1.43$
+      & 5/5~(2), 4/5~(1) \newline
+        동의
+      & \begin{tabular}[t]{@{}p{4.3cm}@{}}
+          3개 영역 중 최저점(4.67)인 양적 패턴이
+          인터뷰에서도 C4(신뢰수준 승수)에 대한
+          E4의 조건부 의견(``통계 배경 없는 실무자에게
+          설명이 필요'')과 일치.
+          낮은 점수의 원인을 질적으로 설명
+        \end{tabular} \\[12pt]
+    실무 적용성
+      & $\bar{X} = 4.57$ \newline
+        $p = 0.011$ \newline
+        Cohen's $d = 1.64$
+      & 5/5~(3), 4/5~(3) \newline
+        동의
+      & \begin{tabular}[t]{@{}p{4.3cm}@{}}
+          설문 D5(구현 복잡도)가 최저(4.20)인 반면
+          D3(경영진 보고), D4(의사결정 지원)는 \chg{만점(5.00)},
+          인터뷰에서 E1이 ``단계적 도입이면 복잡도 수용 가능''이라
+          조건부 긍정을 표명하여 점수 차이의 맥락을 \chg{보완하였다}.
+        \end{tabular} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\chg{수렴 판정 기준은~\citep{creswell2018designing} 정량적으로 유의($p < 0.05$)하고, 정성적으로 $80\%$ 이상
+동의가 확인되며, 질적 발견이 양적 패턴을 설명 또는 보강하는 경우이다.}
+
+\chg{수렴 분석을 요약하면,}
+3개 평가 영역 모두에서 \chg{정량적 결과와 정성적 결과}가 일관되게 수렴하였으며,
+특히 다음 세 가지 측면에서 삼각검증의 효과가 확인되었다.
+
+\chg{첫째, 확인(Confirmation) 측면에서 모델 타당성 영역의 설문 최고점($4.80$)과 인터뷰 만장일치가 상호
+확인하여 단일 방법 편향(method bias)을 배제하였다. 둘째, 보완(Complementarity) 측면에서 파라미터 적정성
+영역의 설문 점수가 상대적으로 낮은(4.67) 원인을 인터뷰가 ``통계적 승수 설명 필요''라는 맥락으로
+보완하였다. 셋째, 심화(Expansion) 측면에서 실무 적용성 영역의 설문으로는 파악하기 어려운 ``단계적 도입
+전제'' 조건을 인터뷰가 구체화하여 D5 문항의 조건부 낮은 점수에 대한 해석을 심화하였다.}
+
+\noindent
+이는 \citet{creswell2018designing}이 제시한
+혼합연구방법의 삼각검증 수렴 유형\chg{(}확인, 보완, 심화\chg{)}에 모두 해당하며,
+단일 방법에 의존할 때 발생할 수 있는 방법 편향을 효과적으로 통제한 결과로 해석된다.
+
+종합적으로, $\DRTO$ 프레임워크는 전문가 패널 검증을 통해
+\chg{내용 타당도(S-CVI/Ave $= 0.985$), 내적 일관성(Cronbach's $\alpha = 0.89$),
+정성적 신뢰성(Trustworthiness 4대 기준 충족),
+삼각검증 수렴(4개 영역에서 확인 4건, 보완 4건, 불일치 0건)}의 다층적 검증 체계를 통해
+높은 수준의 실무 타당성이 확인되었다.

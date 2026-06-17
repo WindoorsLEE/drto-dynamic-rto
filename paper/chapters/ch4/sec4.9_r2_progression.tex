@@ -1,0 +1,189 @@
+
+
+%% ===================================================================
+\section{\vrev{회귀 모델의 설명력 구조}}
+\label{sec:ch5_r2_progression}
+%% ===================================================================
+
+각 조건에서 1차 단순$\to$1차 다중$\to$2차 회귀 분석의 설명력($R^2$) 진행은
+모델의 구조적 복잡성이 조건에 따라 어떻게 변화하는지를 보여준다.
+이 절에서는 $R^2$ 진행 패턴을 조건별로 비교 분석하고,
+2차 회귀 모형이 필요한 구조적 이유를 규명한다.
+
+\jrev{\tabref{tab:ch5_r2_progression}\refpo{tab:ch5_r2_progression}{은}{는}} 모든 조건의 $R^2$ 진행을 종합한 것이다.
+
+\begin{table}[htbp]
+  \centering
+  \caption{\jrev{조건별 회귀분석 설명력($R^2$) 진행 종합 ($\kappa = 1.2$)}}
+  \label{tab:ch5_r2_progression}
+  \begin{tabular}{lccccc}
+    \toprule
+    조건 & $n$ & $R^2_{(1\mathrm{s})}$ & $R^2_{(1\mathrm{m})}$ & $R^2_{(2\mathrm{q})}$ & $\Delta R^2$
+    ($R^2_{(1\mathrm{m})} \to R^2_{(2\mathrm{q})}$) \\
+    \midrule
+    C1 (관측성) & 10{,}000 & 0.428 & 0.869 & 1.000 & $+0.131$ \\
+    C2 (Gaussian) & 10{,}000 & 0.768 & 0.948 & 0.998 & $+0.050$ \\
+    C3 전체 (Pareto) & 10{,}000 & 0.256 & 0.695 & 0.858 & $+0.163$ \\
+    \midrule
+    C3 Core ($\leq$ P85.8) & 8{,}580 & 0.263 & 0.630 & 0.999 & $+0.369$ \\
+    C3 Tail ($>$ P85.8) & 1{,}420 & 0.032 & 0.860 & 0.710 & $-0.150$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{1차 단순 회귀에서의 조건별 차이}}
+\label{subsec:ch5_simple_r2}
+%% -------------------------------------------------------------------
+
+\chg{1차 단순 회귀($\eta$를 $k_O$에 대해 회귀)에서 결정계수 $R^2$는
+C2($0.768$) $>$ C1($0.428$) $>$ C3($0.256$)의 순으로 나타난다. C2에서 $k_O$의
+설명력이 가장 높은 것은 불확실성 도입이 관측성 가중치의 효과를
+증폭시키기 때문이다.} \jrev{4.4절(회귀분석)}\chg{에서 보고하였듯이 $k_O$ 계수가
+C1의 $-0.285$에서 C2의 $-1.878$로, 절대값 기준 약 $6.6$배 커졌다.
+반면 C3에서 $R^2 = 0.256$에 그치는 것은 파레토 분포의 극단값이
+$k_O$와 $\eta$ 사이의 선형 관계에서 벗어나는 체계적
+잔차(systematic residual)를 생성하기 때문이다.}
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{1차 다중 회귀에서의 설명력 향상}}
+\label{subsec:ch5_multi_r2}
+%% -------------------------------------------------------------------
+
+관측성 원시 점수 \jrev{$O_{\text{raw}}$}와 불확실성 변수 \jrev{$U_{\text{raw}}$}를 추가한 1차 다중 회귀에서
+설명력은 C1($0.869$), C2($0.948$), C3($0.695$)으로 크게 향상된다.
+$O$와 $U$의 추가 기여는 조건마다 질적으로 상이하다.
+
+\chg{먼저 C1에서는 $k_O$와 $O$의 계수가 모두 $-0.15$로 동일하여 두 관측성 변수가 동등하게(equally)
+기여하며, $O$를 추가함으로써 $R^2$가 $0.428 \to 0.869$로 $+0.441$ 향상되었다. C2에서는 $k_O$의
+계수($-1.869$)가 지배적이며 $O$($-0.281$)와 $U$($+0.248$)가 보조적으로 기여하여 관측성 감도가 여전히
+핵심 설명 변수임을 확인하며, 1차 다중 회귀의 $R^2 = 0.948$로서 3개 입력 변수의 선형 조합만으로 분산의
+$94.8\%$를 설명한다. C3에서는 $U$의 계수($+0.112$)가 C2($+0.248$)의 약 절반(45\%) 수준으로 감소하여,
+파레토 불확실성이 선형 모형의 틀에서는 효과적으로 포착되지 않음을 보여준다.}
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{2차 회귀 모형의 필요성과 교호작용 효과}}
+\label{subsec:ch5_quad_necessity}
+%% -------------------------------------------------------------------
+
+1차 다중 회귀에서 2차 회귀 모형으로의 전환이 필요한 구조적 이유는
+개별 시그모이드 바운딩 함수의 비선형성에 있다.
+시그모이드 $S(z) = 2/(1+e^{-z})-1$의 테일러 전개에서
+$S(z) \approx z - z^3/3 + \cdots$로서, 2차 이상의 비선형 항이 존재한다.
+$E_{O,\text{bnd}} = -R_0 \cdot S(\kappa \cdot k_O \cdot O)$에서
+$k_O \cdot O$ 곱이 시그모이드의 인자가 되므로,
+$\eta$는 $k_O$와 $O$의 교호작용항($k_O \cdot O$)에 의존하는 것이
+해석적으로 보장된다.
+
+\chg{먼저 C1과 C2의 완전 설명을 보면,}
+C1은 2차 회귀 모형에서 $R^2 = 1.000$, C2는 $R^2 = 0.998$에 도달하여, 개별 시그모이드 바운딩 함수가
+이들 조건에서 2차 회귀 다항식으로 사실상 높은 정밀도로 근사됨을 보여준다.
+이는 $\kappa = 1.2$에서의 입력 범위($|z| \leq 1.2$)가 시그모이드의
+선형--약비선형 영역에 해당하여, 3차 이상의 고차 항의 기여가
+수치 정밀도 수준에 불과하기 때문이다.
+C1에서 핵심 교호작용항 $k_O \cdot O$(계수 $\approx -0.30$)를 포함하면
+$R^2$가 $0.869 \to 1.000$으로 완전히 향상되며,
+이 교호작용이 관측성 채널의 비선형 구조를 완벽히 포착한다.
+C2에서는 $k_O \cdot O$에 더하여 $k_O \cdot U$(계수 $\approx -0.10$)
+교호작용이 추가로 기여하며, 이 두 교호작용의 합이 $R^2$를
+$0.948 \to 0.998$으로 향상시킨다.
+
+\chg{다음으로 C3의 잔여 비설명 분산을 보면,}
+C3 전체 표본에서 2차 회귀 모형의 $R^2 = 0.858$로, $14.2\%$의 잔여 분산이
+존재한다. 이 잔여 분산은 파레토 분포의 꼬리가
+2차 회귀 다항식의 근사 범위를 초과하는 극단값에서 발생한다.
+그러나 P85.8 기준 분할 시 Core 영역에서 $R^2 = 0.999$으로
+완전 설명이 달성되고, Tail 영역에서도 $R^2 = 0.710$으로
+전체 표본($0.858$) 대비 일정 수준 개선된다.
+이는 P85.8이 C3의 회귀 구조를 Core와 Tail의 두 가지 질적으로
+상이한 체제(regime)로 분리하는 자연적 전환점임을 입증한다.
+
+\jrev{\figref{fig:ch5_r2_heatmap}\refpo{fig:ch5_r2_heatmap}{은}{는}} 조건별$\times$모형 단계별 $R^2$ 값을
+히트맵 형태로 시각화한 것이다.
+\chg{히트맵에서 녹색은 $R^2 \geq 0.95$를, 주황색은 $0.50 \leq R^2 < 0.95$를, 적색은 $R^2 < 0.50$을 나타낸다.}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[
+      cw/.store in=\CW, cw=2.2cm,       % cell width
+      ch/.store in=\CH, ch=1.0cm,        % cell height
+      hw/.store in=\HW, hw=0.95cm,       % half-width for fill rectangle
+    ]
+    % Helper macro: \hcell{col}{row}{color}{value}{bold?}
+    % col = 1..3, row = 0..4 (0=top), bold = b or empty
+    \newcommand{\hcell}[5]{%
+      \fill[#3] ({#1*\CW-\HW}, {-#2*\CH-0.4cm})
+        rectangle ({#1*\CW+\HW}, {-#2*\CH+0.4cm});
+      \ifx b#5%
+        \node[font=\small\bfseries] at ({#1*\CW}, {-#2*\CH}) {#4};%
+      \else
+        \node[font=\small] at ({#1*\CW}, {-#2*\CH}) {#4};%
+      \fi
+    }
+
+    % Column headers
+    \node[font=\small\bfseries] at (1*\CW, 0.8cm) {단순};
+    \node[font=\small\bfseries] at (2*\CW, 0.8cm) {다중};
+    \node[font=\small\bfseries] at (3*\CW, 0.8cm) {2차};
+
+    % Row labels
+    \node[font=\small, anchor=east] at (0.3cm, 0)       {C1};
+    \node[font=\small, anchor=east] at (0.3cm, -1*\CH)  {C2};
+    \node[font=\small, anchor=east] at (0.3cm, -2*\CH)  {C3 전체};
+    \node[font=\small, anchor=east] at (0.3cm, -3*\CH)  {C3 Core};
+    \node[font=\small, anchor=east] at (0.3cm, -4*\CH)  {C3 Tail};
+
+    % Row 0: C1
+    \hcell{1}{0}{red!25}{0.428}{}
+    \hcell{2}{0}{orange!40}{0.869}{}
+    \hcell{3}{0}{green!50}{1.000}{b}
+
+    % Row 1: C2
+    \hcell{1}{1}{orange!30}{0.768}{}
+    \hcell{2}{1}{yellow!50!green!30}{0.948}{}
+    \hcell{3}{1}{green!50}{0.998}{b}
+
+    % Row 2: C3 전체
+    \hcell{1}{2}{red!40}{0.256}{}
+    \hcell{2}{2}{orange!30}{0.695}{}
+    \hcell{3}{2}{orange!30}{0.858}{b}
+
+    % Row 3: C3 Core
+    \hcell{1}{3}{red!30}{0.263}{}
+    \hcell{2}{3}{orange!25}{0.630}{}
+    \hcell{3}{3}{green!50}{0.999}{b}
+
+    % Row 4: C3 Tail
+    \hcell{1}{4}{red!50}{0.032}{}
+    \hcell{2}{4}{orange!40}{0.860}{}
+    \hcell{3}{4}{orange!30}{0.710}{b}
+
+    % H4 threshold line
+    \draw[dashed, red!60, thick]
+      (0.5cm, {-5*\CH+0.2cm}) -- ({3*\CW+1.0cm}, {-5*\CH+0.2cm});
+    \node[font=\scriptsize, red!60, anchor=west]
+      at ({3*\CW+1.1cm}, {-5*\CH+0.2cm}) {H4 기준 ($R^2_{(2\mathrm{q})} \geq 0.95$)};
+
+    % Color legend
+    \fill[red!35]    (0.5cm, {-5.8*\CH}) rectangle (1.1cm, {-5.8*\CH+0.35cm});
+    \node[font=\scriptsize, anchor=west] at (1.2cm, {-5.8*\CH+0.18cm}) {$R^2 < 0.50$};
+    \fill[orange!35] (3.5cm, {-5.8*\CH}) rectangle (4.1cm, {-5.8*\CH+0.35cm});
+    \node[font=\scriptsize, anchor=west] at (4.2cm, {-5.8*\CH+0.18cm}) {$0.50 \leq R^2 < 0.95$};
+    \fill[green!50]  (7.5cm, {-5.8*\CH}) rectangle (8.1cm, {-5.8*\CH+0.35cm});
+    \node[font=\scriptsize, anchor=west] at (8.2cm, {-5.8*\CH+0.18cm}) {$R^2 \geq 0.95$};
+  \end{tikzpicture}
+  \caption{\jrev{조건별$\times$모형 단계별 $R^2$ 히트맵}}
+  \label{fig:ch5_r2_heatmap}
+\end{figure}
+
+\noindent
+\jrev{\figref{fig:ch5_r2_heatmap}}에서 다음의 구조적 패턴이 관찰된다.
+\chg{첫째,} 모든 조건에서 1차 단순$\to$1차 다중$\to$2차 회귀로 갈수록 $R^2$가 단조 증가한다.
+\chg{둘째,} C1은 2차교호작용 모형에서 녹색($R^2 = 1.000$), C2는 $R^2 = 0.998$에 도달하여
+개별 시그모이드 바운딩 함수의 높은 정밀도 근사가 확인된다.
+\chg{셋째,} C3 전체의 2차 $R^2 = 0.858$는 녹색 기준($0.95$)에 미달하나,
+분할 시 Core가 녹색에 도달하고 Tail은 $0.710$으로 잔여 비선형성이 존재한다.
+이러한 패턴은 P85.8 분할 회귀의 이론적 정당성을 시각적으로 입증한다.

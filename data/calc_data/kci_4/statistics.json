@@ -1,0 +1,191 @@
+{
+  "model": "KCI-4 가우시안 불확실성 (개별 시그모이드, C0→C1→C2)",
+  "parameters": {
+    "R0": 6.0,
+    "R_max": 24.0,
+    "kappa": 1.2,
+    "kappa_star": 1.2,
+    "n": 10000,
+    "rng_engine": "PCG64 (numpy.random.default_rng)",
+    "seeds": {
+      "O_raw": 42,
+      "k_O": 20042,
+      "U_gaussian": 30042,
+      "U_pareto": 40042
+    },
+    "sigmoid": "S(z) = 2/(1+exp(-z)) - 1"
+  },
+  "C0": {
+    "eta_mean": 1.0,
+    "eta_std": 0.0,
+    "DRTO_mean": 6.0
+  },
+  "C1": {
+    "eta_mean": 0.8526,
+    "eta_std": 0.1249,
+    "eta_min": 0.4683,
+    "eta_max": 1.0,
+    "DRTO_mean": 5.1153,
+    "DRTO_std": 0.7496,
+    "DRTO_min": 2.81,
+    "DRTO_max": 6.0,
+    "cohens_d_vs_C0": -1.1802
+  },
+  "C2": {
+    "model": "DRTO_C2 = R0 + E_O_bnd + E_U_bnd (gaussian)",
+    "eta_mean": 1.6824,
+    "eta_std": 0.6146,
+    "eta_min": 0.4768,
+    "eta_max": 3.4425,
+    "DRTO_mean": 10.0942,
+    "DRTO_std": 3.6877,
+    "DRTO_min": 2.861,
+    "DRTO_max": 20.655,
+    "pct_above_R0": 84.88,
+    "cohens_d_vs_C0": 1.1102,
+    "cohens_d_vs_C1": 1.8711,
+    "order_C1_le_C2_pct": 99.87,
+    "t_test_vs_C0": {
+      "t": 111.02,
+      "p": "0.00e+00"
+    },
+    "regression": {
+      "simple": {
+        "formula": "η = 2.6326 + (-1.8780)·k_O",
+        "R2": 0.7679
+      },
+      "multi": {
+        "formula": "η = 2.0236 + (-1.8685)·k_O + (-0.2810)·O + (0.2478)·U",
+        "R2": 0.948468,
+        "RMSE": 0.1395
+      },
+      "quad_9var": {
+        "R2": 0.998164
+      },
+      "consensus_4var": {
+        "method": "forward_top4 ∩ LASSO(λ=0.005)",
+        "variables": [
+          "k_O",
+          "U",
+          "k_O·U",
+          "k_O·O"
+        ],
+        "formula": "η = 1.2247 + (-0.2907)·k_O + (0.4673)·U + (-0.4325)·(k_O·U) + (-0.5621)·(k_O·O)",
+        "R2": 0.995929,
+        "RMSE": 0.0392,
+        "coefficients": {
+          "intercept": 1.2247,
+          "k_O": -0.2907,
+          "U": 0.4673,
+          "k_O_times_U": -0.4325,
+          "k_O_times_O": -0.5621
+        }
+      },
+      "forward_selection": {
+        "order": [
+          "k_O",
+          "U",
+          "k_O·U",
+          "k_O·O",
+          "k_O²",
+          "U²",
+          "O",
+          "O²",
+          "O·U"
+        ],
+        "cumulative_R2": [
+          0.767886,
+          0.931106,
+          0.972505,
+          0.995929,
+          0.997321,
+          0.998152,
+          0.998159,
+          0.998164,
+          0.998164
+        ]
+      },
+      "lasso": {
+        "0.00015": {
+          "R2": 0.9982,
+          "n_vars": 7,
+          "survivors": [
+            "O",
+            "U",
+            "k_O²",
+            "O²",
+            "U²",
+            "k_O·O",
+            "k_O·U"
+          ]
+        },
+        "0.0005": {
+          "R2": 0.9981,
+          "n_vars": 6,
+          "survivors": [
+            "O",
+            "U",
+            "k_O²",
+            "U²",
+            "k_O·O",
+            "k_O·U"
+          ]
+        },
+        "0.001": {
+          "R2": 0.9979,
+          "n_vars": 7,
+          "survivors": [
+            "k_O",
+            "O",
+            "U",
+            "k_O²",
+            "U²",
+            "k_O·O",
+            "k_O·U"
+          ]
+        },
+        "0.005": {
+          "R2": 0.9968,
+          "n_vars": 5,
+          "survivors": [
+            "k_O",
+            "U",
+            "k_O²",
+            "k_O·O",
+            "k_O·U"
+          ]
+        },
+        "0.01": {
+          "R2": 0.9952,
+          "n_vars": 5,
+          "survivors": [
+            "k_O",
+            "U",
+            "k_O²",
+            "k_O·O",
+            "k_O·U"
+          ]
+        }
+      }
+    }
+  },
+  "comparison": {
+    "C1_vs_C0": {
+      "delta_eta": -0.1474,
+      "cohens_d": -1.1802
+    },
+    "C2_vs_C1": {
+      "delta_eta": 0.8298,
+      "cohens_d": 1.8711
+    },
+    "C2_vs_C0": {
+      "delta_eta": 0.6824,
+      "cohens_d": 1.1102
+    }
+  },
+  "correlations": {
+    "corr_kO_O": 0.016194,
+    "corr_O_U": 0.009165,
+    "corr_kO_U": -0.005764
+  }
+}

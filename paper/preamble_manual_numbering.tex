@@ -1,0 +1,152 @@
+% =====================================================================
+% preamble_manual_numbering.tex – 한국어 학술문서 번호체계
+% =====================================================================
+% 문서 구조: 제1장 → 1.1 → 1.1.1 → 1.1.1.1
+% 본문 넘버링 (enumerate): 1) → 가) → (1) → (가) → ① → ⓐ
+% 불릿 포인트 (itemize): • (가운데점) → - (대쉬)
+% 들여쓰기: 각 레벨은 상위에서 2em 들여쓰기
+% =====================================================================
+
+% --- 한글 가나다 카운터 정의 ---
+\makeatletter
+\newcommand*{\korean@char}[1]{%
+  \ifcase#1\or 가\or 나\or 다\or 라\or 마\or 바\or 사\or 아\or 자\or 차%
+  \or 카\or 타\or 파\or 하\fi}
+\AddEnumerateCounter*{\gana}{\korean@char}{가}
+\makeatother
+
+% --- Enumerate 설정 (6단계) ---
+% Level 1: 1), 2), 3)... (기본 들여쓰기 2em)
+% Level 2: 가), 나), 다)... (상위에서 +2em)
+% Level 3: (1), (2), (3)... (상위에서 +2em)
+% Level 4: (가), (나), (다)... (상위에서 +2em)
+% Level 5: ①, ②, ③... (상위에서 +2em)
+% Level 6: ⓐ, ⓑ, ⓒ... (상위에서 +2em)
+
+\setlist[enumerate,1]{%
+  label=\arabic*),%
+  leftmargin=2em,%
+  labelsep=0.5em,%
+  itemsep=0.3em,%
+  parsep=0pt,%
+  topsep=0.5em%
+}
+
+\setlist[enumerate,2]{%
+  label=\gana*),%
+  leftmargin=2em,%
+  labelsep=0.5em,%
+  itemsep=0.2em,%
+  parsep=0pt,%
+  topsep=0.3em%
+}
+
+\setlist[enumerate,3]{%
+  label=(\arabic*),%
+  leftmargin=2em,%
+  labelsep=0.5em,%
+  itemsep=0.2em,%
+  parsep=0pt,%
+  topsep=0.3em%
+}
+
+\setlist[enumerate,4]{%
+  label=(\gana*),%
+  leftmargin=2em,%
+  labelsep=0.5em,%
+  itemsep=0.2em,%
+  parsep=0pt,%
+  topsep=0.3em%
+}
+
+% Level 5: ①, ②, ③... (원문자)
+\setlist[enumerate,5]{%
+  label=\ding{\numexpr171+\value{enumv}\relax},%
+  leftmargin=2em,%
+  labelsep=0.5em,%
+  itemsep=0.2em,%
+  parsep=0pt,%
+  topsep=0.3em%
+}
+
+% Level 6: ⓐ, ⓑ, ⓒ... (원소문자 - Unicode 직접 사용)
+\newcommand*{\circledletter}[1]{%
+  \ifcase#1\or ⓐ\or ⓑ\or ⓒ\or ⓓ\or ⓔ\or ⓕ\or ⓖ\or ⓗ\or ⓘ\or ⓙ%
+  \or ⓚ\or ⓛ\or ⓜ\or ⓝ\or ⓞ\or ⓟ\or ⓠ\or ⓡ\or ⓢ\or ⓣ%
+  \or ⓤ\or ⓥ\or ⓦ\or ⓧ\or ⓨ\or ⓩ\fi}
+
+\setlist[enumerate,6]{%
+  label=\circledletter{\value{enumvi}},%
+  leftmargin=2em,%
+  labelsep=0.5em,%
+  itemsep=0.2em,%
+  parsep=0pt,%
+  topsep=0.3em%
+}
+
+% --- Itemize 설정 (2단계) ---
+% Level 1: • (가운데점) - 자료 분류용
+% Level 2: - (대쉬) - 하위 내용용
+% 들여쓰기: 상위에서 2em
+
+\setlist[itemize,1]{%
+  label=\textbullet,%
+  leftmargin=2em,%
+  labelsep=0.5em,%
+  itemsep=0.3em,%
+  parsep=0pt,%
+  topsep=0.5em%
+}
+
+\setlist[itemize,2]{%
+  label=--,%
+  leftmargin=2em,%
+  labelsep=0.5em,%
+  itemsep=0.2em,%
+  parsep=0pt,%
+  topsep=0.3em%
+}
+
+\setlist[itemize,3]{%
+  label=\textbullet,%
+  leftmargin=2em,%
+  labelsep=0.5em,%
+  itemsep=0.2em,%
+  parsep=0pt,%
+  topsep=0.3em%
+}
+
+\setlist[itemize,4]{%
+  label=--,%
+  leftmargin=2em,%
+  labelsep=0.5em,%
+  itemsep=0.2em,%
+  parsep=0pt,%
+  topsep=0.3em%
+}
+
+% --- enumerate 최대 깊이 확장 ---
+\setlistdepth{6}
+
+% =====================================================================
+% 사용 예시:
+% =====================================================================
+% \begin{enumerate}
+%   \item 첫 번째 항목 (1))
+%   \begin{enumerate}
+%     \item 하위 항목 (가))
+%     \begin{enumerate}
+%       \item 세부 항목 ((1))
+%     \end{enumerate}
+%   \end{enumerate}
+% \end{enumerate}
+%
+% \begin{itemize}
+%   \item 분류 항목 (•)
+%   \begin{itemize}
+%     \item 하위 내용 (-)
+%   \end{itemize}
+% \end{itemize}
+%
+% enumerate 내에서 itemize 시작 시 동일한 2em 들여쓰기 적용
+% =====================================================================

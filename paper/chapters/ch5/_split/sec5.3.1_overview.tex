@@ -1,0 +1,155 @@
+
+$\eta = \DRTO / R_0$는 단일 지표이지만, 조직의 운영 상황에 따라
+두 가지 서로 다른 역할을 수행한다.
+이러한 이중 활용이 가능한 근거는 $\eta$를 구성하는 두 채널\chg{(}관측성($E_{O,bnd}$)과
+불확실성($E_{U,bnd}$)\chg{)}의 \textbf{지배적 기여 요인이 운영 모드에 따라 달라지기}
+때문이다.
+평상시에는 \chg{대규모 재난과 사고}가 부재하므로 불확실성이 \chg{일상적이고 가우시안}
+수준에 머물러 $\eta$의 변동을 주로 관측성 역량이 결정한다.
+반면 위기시에는 이미 \chg{사고와 재난}이 발생하여 규모를 알 수 없는 큰 불확실성이
+현존하며, 이를 얼마나 빠르게 정량화하여 $\eta$에 반영하느냐가 대응의 핵심이 된다.
+\p{[}표~\vref{tab:eta-dual-use}\p{]}는 이 \chg{평상시와 위기시} 활용 체계를 정리한 것이다.
+
+\begin{table}[htbp]
+\centering
+\caption{$\eta$ 지표의 \chg{평상시·위기시} 활용 체계}
+\label{tab:eta-dual-use}
+\small
+\begin{tabularx}{\textwidth}{l X X}
+\toprule
+\textbf{구분} & \textbf{평상시 (Normal Mode)} & \textbf{위기시 (Crisis Mode)} \\
+\midrule
+\textbf{역할} & BCMS 성숙도 평가 지표 & 에스컬레이션 대응 지표 \\
+\textbf{핵심 질문} & ``조직의 복구 역량이 어느 수준인가?'' & ``현재 상황이 얼마나 심각한가?'' \\
+\textbf{시간축} & 중장기 (월간/분기별 추이) & 실시간 (분$\sim$시간 단위) \\
+\textbf{주요 활동} & 진단, 투자 계획, 벤치마크 & 등급 판정, 보고, 즉각 대응 \\
+\textbf{대상자} & BCM 관리자, 경영진 & 복구 팀, 현장 담당자 \\
+\textbf{산출물} & 성숙도 등급, 개선 로드맵 & 에스컬레이션 등급, 대응 조치 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\p{[}그림~\vref{fig:eta-dual-use-diagram}\p{]}는 $\eta$의 \chg{평상시와 위기시} 이중 활용과
+BCMS 선순환 구조를 종합적으로 도식화한 것이다.
+평상시 성숙도 평가(좌측)와 위기시 에스컬레이션 대응(우측)이
+\chg{장애 발생과 복구 완료}를 통해 전환되며,
+사후 분석과 역량 환류가 상단의 진단--향상--대응--환류 선순환을 형성한다.
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  arr/.style={-{Stealth[length=2.5mm, width=2mm]}, line width=1.2pt},
+  arrlbl/.style={font=\scriptsize\bfseries, fill=white, inner sep=1.5pt, rounded corners=1.5pt},
+  sbox/.style={draw, rounded corners=2pt, semithick, minimum width=20mm,
+    minimum height=9mm, align=center, font=\scriptsize},
+]
+
+%% ============================================================
+%% 상단 박스: BCMS 선순환
+%% ============================================================
+\node[draw, rounded corners=6pt, line width=1pt,
+  fill=green!6, draw=green!50!black,
+  minimum width=120mm, minimum height=24mm] (topbox) at (0, 3.2) {};
+
+\node[font=\small\bfseries, text=black] at (0, 4.15) {BCMS 선순환};
+
+\node[sbox, fill=blue!12, draw=blue!50]  (s1) at (-3.7, 3.2) {\textbf{1. 진단}\\$\eta$ 추이};
+\node[sbox, fill=blue!12, draw=blue!50]  (s2) at (-1.25, 3.2) {\textbf{2. 향상}\\$O\!\uparrow\; U\!\downarrow$};
+\node[sbox, fill=red!12, draw=red!50]    (s3) at (1.25, 3.2)  {\textbf{3. 대응}\\에스컬레이션};
+\node[sbox, fill=yellow!18, draw=yellow!60!black] (s4) at (3.7, 3.2) {\textbf{4. 환류}\\이력$\to$KPI};
+
+\draw[-{Stealth[length=1.8mm]}, thin, blue!60] (s1) -- (s2);
+\draw[-{Stealth[length=1.8mm]}, thin, red!50] (s2) -- (s3);
+\draw[-{Stealth[length=1.8mm]}, thin, yellow!60!black] (s3) -- (s4);
+\draw[-{Stealth[length=1.8mm]}, thin, green!50!black]
+  (s4.south) -- ++(0,-0.28) -| (s1.south)
+  node[pos=0.5, below, font=\scriptsize\bfseries, text=black,
+    fill=green!6, inner sep=1.5pt, rounded corners=1.5pt] {$\eta$ 선순환};
+
+%% ============================================================
+%% 좌하 박스: 평상시 BCMS 성숙도
+%% ============================================================
+\node[draw, rounded corners=6pt, line width=1pt,
+  fill=blue!6, draw=blue!60,
+  minimum width=56mm, minimum height=38mm] (leftbox) at (-5.0, -1.0) {};
+
+\node[font=\small\bfseries, text=black] at (-5.0, 0.55) {평상시: BCMS 성숙도 평가};
+
+\node[anchor=center, inner sep=0pt] at (-5.0, -0.85) {%
+  \scalebox{0.7}{%
+  \begin{tabular}{c c c l}
+  \toprule
+  \textbf{단계} & \textbf{등급} & \textbf{$\eta$} & \textbf{수준} \\
+  \midrule
+  5 & 최적화 & $< 0.6$ & \textit{Optimized} \\
+  4 & 관리 & $0.6$--$0.8$ & \textit{Managed} \\
+  3 & 정의 & $0.8$--$1.0$ & \textit{Defined} \\
+  2 & 반복 & $1.0$--$1.5$ & \textit{Repeatable} \\
+  1 & 초기 & $\geq 1.5$ & \textit{Initial} \\
+  \bottomrule
+  \end{tabular}}%
+};
+
+\node[font=\scriptsize\bfseries, text=black] at (-5.0, -2.35) {%
+  개선 두 축: 관측성$\uparrow$ / 불확실성$\downarrow$%
+};
+
+%% ============================================================
+%% 우하 박스: 위기시 에스컬레이션
+%% ============================================================
+\node[draw, rounded corners=6pt, line width=1pt,
+  fill=red!6, draw=red!60,
+  minimum width=56mm, minimum height=38mm] (rightbox) at (5.0, -1.0) {};
+
+\node[font=\small\bfseries, text=black] at (5.0, 0.55) {위기시: 에스컬레이션 대응};
+
+\node[anchor=center, inner sep=0pt] at (5.0, -0.85) {%
+  \scalebox{0.7}{%
+  \begin{tabular}{c c l l}
+  \toprule
+  \textbf{$\eta$} & \textbf{등급} & \textbf{보고} & \textbf{대응} \\
+  \midrule
+  $< 0.8$ & Green & 팀 자체 & 정상 복구 \\
+  $0.8$--$1.0$ & Yellow & 팀장 & 모니터링 강화 \\
+  $1.0$--$1.5$ & Orange & 부서장 & 자원 추가 투입 \\
+  $\geq 1.5$ & Red & 경영진 & BCP 전면 가동 \\
+  \bottomrule
+  \end{tabular}}%
+};
+
+\node[font=\scriptsize\bfseries, text=black] at (5.0, -2.35) {%
+  국가 위기경보 연동: 관심--주의--경계--심각%
+};
+
+%% ============================================================
+%% 3개 박스 연결 화살표
+%% ============================================================
+\draw[arr, red!50]
+  ([yshift=-4mm]leftbox.east) -- ([yshift=-4mm]rightbox.west)
+  node[arrlbl, midway, below=1.5pt, text=black] {장애$\cdot$재난 발생 $\to$ 위기 모드 전환};
+\draw[arr, blue!50]
+  ([yshift=4mm]rightbox.west) -- ([yshift=4mm]leftbox.east)
+  node[arrlbl, midway, above=1.5pt, text=black] {복구 완료 $\to$ 평상 모드 복귀};
+\draw[arr, green!50!black]
+  ([xshift=6mm]rightbox.north) -- ([xshift=17mm]topbox.south)
+  node[arrlbl, midway, right=1.5pt, text=black] {사후 분석};
+\draw[arr, blue!60]
+  ([xshift=-17mm]topbox.south) -- ([xshift=-6mm]leftbox.north)
+  node[arrlbl, midway, left=1.5pt, text=black] {역량 환류};
+
+%% ============================================================
+%% 하단 강조 문구
+%% ============================================================
+\node[font=\small\bfseries, text=black, align=center,
+  draw=red!50, rounded corners=3pt, fill=red!6, inner sep=4pt,
+  line width=0.6pt] at (0, -3.5) {%
+  $\eta$ 하나로 평상시 ``얼마나 준비되었는가'' + 위기시 ``얼마나 심각한가'' 통합 측정
+  $\;\to\;$ \textcolor{black}{\bfseries 데이터 기반 BCMS 선순환}%
+};
+
+\end{tikzpicture}%
+}% end resizebox
+\caption{$\eta$의 \chg{평상시와 위기시} 이중 활용 체계와 BCMS 선순환 구조}
+\label{fig:eta-dual-use-diagram}
+\end{figure}

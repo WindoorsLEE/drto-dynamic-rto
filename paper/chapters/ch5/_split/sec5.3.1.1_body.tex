@@ -1,0 +1,60 @@
+%% --- 평상시: BCMS 성숙도 평가 ---
+\subsubsection{\tmp{평상시 BCMS 성숙도 평가}}
+\label{subsubsec:maturity-model}
+
+평상시에는 \chg{대규모 사고와 재난}이 발생하지 않은 상태이므로,
+불확실성은 일상적 업무 변동(가우시안 수준)에 한정되어 $E_{U,bnd}$의 기여가 작다.
+따라서 $\eta$의 변동은 주로 \textbf{관측성 역량}($E_{O,bnd}$)에 의해 결정되며,
+$\eta$의 중장기 추이를 추적하면 조직이 모니터링 체계를 얼마나 잘 구축하고
+있는지\chg{,} 즉 복구 역량의 성숙도를 정량적으로 진단할 수 있다.
+$\eta$가 낮을수록 관측성 역량이 우수한 성숙한 조직으로 해석되며,
+이에 기반하여 BCMS 성숙도를 5단계로 구분하는 모형을
+제안한다(\p{[}표~\vref{tab:maturity-5level}\p{]}).
+
+각 임계값은 본 연구의 시뮬레이션 결과에 기반한다\chg{.}
+$\eta = 0.6$은 C1 조건의 하위 25\% 수준으로 관측성이 극대화된 상태,
+$\eta = 0.8$은 C1 평균 $\bar{\eta} = 0.853$ 이하로 $\DRTO < R_0$가 안정적으로 유지되는 상태,
+$\eta = 1.0$은 $\DRTO = R_0$ 기준선으로 관측성과 불확실성이 상쇄되는 지점,
+$\eta = 1.5$는 불확실성이 지배적이어서 $\DRTO$가 $R_0$의 1.5배를 초과하는 상태이다.
+
+\begin{table}[htbp]
+\centering
+\caption{$\eta$ 기반 BCMS 성숙도 5단계 모형}
+\label{tab:maturity-5level}
+\small
+\begin{tabularx}{\textwidth}{c c c l X}
+\toprule
+\textbf{단계} & \textbf{등급} & \textbf{$\eta$ 범위} & \textbf{수준} & \textbf{특징} \\
+\midrule
+5 & 최적화 & $\eta < 0.6$ & \textit{Optimized} &
+  관측성 극대화, 불확실성 최소화. 자동화된 모니터링·복구 \\
+\addlinespace
+4 & 관리 & $0.6 \leq \eta < 0.8$ & \textit{Managed} &
+  정량적 KPI 기반 BCM 운영. $\DRTO < R_0$ 안정 유지 \\
+\addlinespace
+3 & 정의 & $0.8 \leq \eta < 1.0$ & \textit{Defined} &
+  공식 BCM 프로세스 수립. 관측성과 불확실성 상쇄 ($\DRTO \approx R_0$) \\
+\addlinespace
+2 & 반복 & $1.0 \leq \eta < 1.5$ & \textit{Repeatable} &
+  기본 절차 존재하나 불확실성 우세. $\DRTO > R_0$ 빈번 \\
+\addlinespace
+1 & 초기 & $\eta \geq 1.5$ & \textit{Initial} &
+  BCM 체계 미비. 극단적 불확실성 노출 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+성숙도를 향상(즉, $\eta$를 감소)시키는 경로는 두 축으로 구분된다.
+\chg{첫째, 관측성 강화($E_{O,bnd}$ 증가로 $\eta$ 감소)는 실시간 모니터링 체계 구축, APM/SIEM 연동, 장애
+원인 분석(RCA) 체계화를 포함하며, 본 연구의 C1 조건에서 $k_O$ 계수가 관측성의 실질적 효과를 결정하므로
+$k_O$가 높은 영역에 우선 투자하는 것이 효율적이다. 둘째, 불확실성 저감($E_{U,bnd}$ 감소로 $\eta$ 감소)은
+복구 절차서 최신 유지, 정기 BCM 훈련, 공급망 대체 방안 확보를 포함하며, 특히 Tail 영역(P85.8 초과)에서는
+파레토 불확실성이 지배적이므로 블랙스완 대비 계획이 성숙도 향상의 핵심이 된다.}
+
+각 성숙도 단계별 구체적 전환 전략, 위기시 정책 활용 방안, 도입 로드맵은
+아래에 상세히 기술하며, 현업 담당자용 자가 진단 체크리스트(15개 항목)는
+\appchref{app:eta-dual-use-detail}에 수록한다.
+
+\input{chapters/ch5/_split/sec5.3.1.3_eta_detail}
+
+

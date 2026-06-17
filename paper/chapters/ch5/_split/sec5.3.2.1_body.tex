@@ -1,0 +1,134 @@
+%% -------------------------------------------------------------------
+\subsection{\vrev{Core(C2)와 Tail(C3)의 2단계 프레임워크}}
+\label{subsec:two-stage-framework}
+%% -------------------------------------------------------------------
+
+앞서 논의한 교차점 분석과 이중채널 감쇠 결과에 기반하여,
+일상 운영과 극단 시나리오를 분리하는 2단계(two-stage) $\DRTO$ 운영 프레임워크를
+제안한다. \p{[}그림~\vref{fig:ch6-implementation-framework}\p{]}는 모니터링에서 에스컬레이션까지의
+전체 운영 흐름을 도식화한 것이다.
+본 절에서는 2단계 분리의 원리와 Core/Tail 운영 전략을 중심으로 기술하며,
+$\eta$ 기반 에스컬레이션 등급 체계와 구체적 대응 절차는
+\subsecref{subsec:escalation-thresholds}에서 상세히 다룬다.
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+    stepbox/.style={draw, rounded corners=6pt, minimum width=36mm, minimum height=20mm,
+                 align=center, font=\small, line width=0.7pt},
+    detail/.style={draw, rounded corners=3pt, fill=white, minimum width=34mm,
+                   align=left, font=\scriptsize, inner sep=4pt},
+    conn/.style={-{Stealth[length=2.5mm]}, thick, blue!60},
+    feedback/.style={-{Stealth[length=2mm]}, thick, black, dashed},
+]
+
+% 4단계 박스
+\node[stepbox, fill=green!12]  (s1) at (0, 0)
+  {\textbf{1. 모니터링}\\$O(t)$, $U(t)$ 수집\\APM/SIEM 연동};
+\node[stepbox, fill=blue!12]   (s2) at (4.5, 0)
+  {\textbf{2. 계산}\\$\DRTO$ 산출\\C2 또는 C3 적용};
+\node[stepbox, fill=orange!12] (s3) at (9, 0)
+  {\textbf{3. 의사결정}\\$\eta$ 평가\\Core vs Tail 판별};
+\node[stepbox, fill=red!12]    (s4) at (13.5, 0)
+  {\textbf{4. 에스컬레이션}\\$\eta$ 기반\\단계별 대응};
+
+% 연결
+\draw[conn] (s1) -- (s2);
+\draw[conn] (s2) -- (s3);
+\draw[conn] (s3) -- (s4);
+
+% 세부 내용 (피드백 루프보다 먼저 배치)
+\node[detail] (d1) at (0, -2.5) {
+  $\bullet$ 관측성: APM 지표 $\to$ $O \in [0,1]$\\
+  $\bullet$ 불확실성: 장애 이력 $\to$ $U$\\
+  $\bullet$ 30분 주기 갱신\\
+  $\bullet$ 이상 탐지 시 즉시 갱신
+};
+\node[detail] (d2) at (4.5, -2.5) {
+  $\bullet$ Core ($\leq$ P85.8): C2 적용\\
+  $\bullet$ Tail ($>$ P85.8): C3 적용\\
+  $\bullet$ $\DRTO = R_0 + E_{O,bnd} + E_{U,bnd}$\\
+  $\bullet$ $\eta = \DRTO / R_0$ 산출
+};
+\node[detail] (d3) at (9, -2.5) {
+  $\bullet$ $\eta < 0.8$: 안정 구간\\
+  $\bullet$ $0.8 \leq \eta < 1.0$: 주의\\
+  $\bullet$ $1.0 \leq \eta < 1.5$: 경고\\
+  $\bullet$ $\eta \geq 1.5$: 위기
+};
+\node[detail] (d4) at (13.5, -2.5) {
+  $\bullet$ 단계별 보고 대상 결정\\
+  $\bullet$ 추가 자원 배정\\
+  $\bullet$ 비상 계획 가동 판단\\
+  $\bullet$ 사후 분석 및 교정
+};
+
+% 세부 연결
+\draw[dashed, black, line width=0.8pt] (s1.south) -- (d1.north);
+\draw[dashed, black, line width=0.8pt] (s2.south) -- (d2.north);
+\draw[dashed, black, line width=0.8pt] (s3.south) -- (d3.north);
+\draw[dashed, black, line width=0.8pt] (s4.south) -- (d4.north);
+
+% 피드백 루프 (상단 우회: s4 → 위 → s1)
+\draw[feedback] (s4.north) -- ++(0, 1.0) -| (s1.north)
+    node[pos=0.5, above, font=\scriptsize, text=black] {파라미터 교정 피드백};
+
+% 단계 레이블 (피드백 루프 위에 배치)
+\node[font=\footnotesize\bfseries, text=black] at (0, 2.8)  {실시간 입력};
+\node[font=\footnotesize\bfseries, text=black]  at (4.5, 2.8) {모델 적용};
+\node[font=\footnotesize\bfseries, text=black] at (9, 2.8) {상태 판별};
+\node[font=\footnotesize\bfseries, text=black]   at (13.5, 2.8) {대응 실행};
+
+\end{tikzpicture}
+}% end resizebox
+\caption{모니터링에서 계산, 의사결정, 에스컬레이션으로 이어지는 $\DRTO$ 구현 프레임워크}
+\label{fig:ch6-implementation-framework}
+\end{figure}
+
+2단계 프레임워크의 핵심 원리는 \p{[}표~\vref{tab:two-stage-summary}\p{]}와 같다.
+
+\begin{table}[htbp]
+\centering
+\caption{Core(C2)와 Tail(C3)의 2단계 프레임워크 요약}
+\label{tab:two-stage-summary}
+\small
+\begin{tabularx}{\textwidth}{l X X}
+\toprule
+\textbf{구분} & \textbf{1단계 --- Core 영역 (C2 기반)} & \textbf{2단계 --- Tail 영역 (C3 기반)} \\
+\midrule
+\jrev{적용 영역 (P85.8 분할)}     & P85.8 이하 (일상적 운영)             & P85.8 초과 (극단 시나리오) \\
+\addlinespace
+\jrev{환경 분포}  & 가우시안 ($U \sim N(3,1)$)           & 파레토 ($U \sim 6 \cdot \mathrm{Pa}(3)$) \\
+\addlinespace
+\jrev{환경 전체 평균 $\bar{\eta}$}  & $\bar{\eta}_{\text{C2}} \approx 1.68$ & $\bar{\eta}_{\text{C3}} \approx 1.51$ \\
+\addlinespace
+\jrev{C3 내 분할 영역 $k_O$ 계수}    & \jrev{Core: $-0.798$}                             & \jrev{Tail: $-0.415$ ($0.52$배 감쇠)} \\
+\addlinespace
+CVaR$_{99}$ \jrev{(환경 전체)}   & $3.180$                              & $3.944$ ($+24.0\%$) \\
+\addlinespace
+\jrev{환경 전체 $R^2$ (9변수)} & $0.998$                              & $0.858$ \\
+\addlinespace
+운영 목표      & 효율적 복구 (관측성 효과 극대화)       & 보수적 대응 (꼬리 위험 대비) \\
+\addlinespace
+자원 배분      & 정상 복구 절차                        & 추가 자원 투입, 비상 계획 연계 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\jrev{본 표는 \textbf{Core/Tail의 두 가지 의미}를 함께 다룬다. \chg{첫째는 P85.8 기준 \textit{분할 영역}(적용 영역 행)이고, 둘째는 분할 영역에 적용되는 \textit{환경 모델 C2/C3}(환경 모델, 환경 평균, 환경 $R^2$ 행)이며, 셋째는 C3 조건 \textit{내부}의 분할 회귀 결과($k_O$ 계수 행, 4.10절 dual\_channel 결과)이다.} 각 지표의 산출 분석 대상이 다르므로 행 단위로 의미를 구분하여 해석해야 한다.}
+
+\textbf{1단계(Core, C2 기반)}는 P85.8 이하의 일상적 운영 상황에서 적용되며,
+가우시안 불확실성 분포(C2 조건)에 기반한 효율적 복구를 추구한다.
+\jrev{C2 조건 전체} 평균 $\bar{\eta} \approx 1.68$이며,
+\jrev{C3 환경의 분할 회귀 결과 Core 영역의 $k_O$ 계수는 $-0.798$로} 관측성의 효과가 충분히 발현된다.
+\textbf{2단계(Tail, C3 기반)}는 P85.8 초과의 극단 시나리오에서 활성화되며,
+파레토 불확실성 분포(C3 환경)의 특성을 반영한다.
+\jrev{C3 분할 회귀 결과 Tail 영역의 $k_O$ 계수가 $-0.415$로 $0.52$배 감쇠되고},
+CVaR$_{99}$가 C2 대비 $+24.0\%$ 높아져, 불확실성 관리 중심의 추가 자원
+투입이 정당화된다.
+
+이러한 2단계 분리는 앞서 규명된 P85.8 분할 기준점의 이론적 근거에
+기반하며, 조직이 일상 운영에서는 효율성을, 극단 상황에서는
+안정성을 각각 최적화할 수 있는 구조적 기반을 제공한다.
+

@@ -1,0 +1,69 @@
+{
+  "model": "KCI-1 선형 모델 (바운딩 없음)",
+  "formula": "DRTO_C1 = R0 * (1 - k_O * O_raw)",
+  "parameters": {
+    "R0": 6.0,
+    "n": 10000,
+    "seed_O_raw": 42,
+    "seed_k_O": 20042
+  },
+  "descriptive_stats": {
+    "C0": {
+      "DRTO_mean": 6.0,
+      "DRTO_std": 0.0,
+      "eta_mean": 1.0
+    },
+    "C1": {
+      "DRTO_mean": 4.4828,
+      "DRTO_std": 1.3221,
+      "DRTO_min": 0.0753,
+      "DRTO_max": 6.0,
+      "eta_mean": 0.7471,
+      "eta_std": 0.2203,
+      "delta_O_mean": -1.5172,
+      "delta_O_std": 1.3221
+    }
+  },
+  "compliance": {
+    "rate_pct": 100.0,
+    "count": 10000,
+    "total": 10000
+  },
+  "reduction": {
+    "mean_pct": 25.29,
+    "max_pct": 98.74,
+    "min_pct": 0.0
+  },
+  "statistical_tests": {
+    "t_test": {
+      "H0": "delta_O = 0",
+      "t_statistic": -114.76,
+      "p_value": "< 1e-300",
+      "result": "rejected"
+    },
+    "cohens_d": {
+      "value": -1.1476,
+      "interpretation": "large effect (|d| > 0.8)"
+    }
+  },
+  "regression": {
+    "simple_eta_vs_kO": {
+      "equation": "eta = 1.0000 + -0.4999 * k_O",
+      "slope": -0.4999,
+      "intercept": 1.0,
+      "R_squared": 0.4232
+    },
+    "exact_eta_vs_kO_O": {
+      "equation": "eta = 1.0000 + -1.0000 * (k_O * O_raw)",
+      "slope": -1.0,
+      "intercept": 1.0,
+      "R_squared": 1.0
+    }
+  },
+  "theoretical_expected": {
+    "E_eta": 0.75,
+    "E_DRTO_C1": 4.5,
+    "E_delta_O": -1.5,
+    "SD_eta": 0.2205
+  }
+}

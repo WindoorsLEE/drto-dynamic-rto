@@ -1,0 +1,717 @@
+% =====================================================================
+% main.tex – Soongsil Univ. PhD Thesis (DRTO v2)
+% !TeX program = xelatex
+% 빌드: latexmk -xelatex main.tex
+% =====================================================================
+\documentclass[11pt,a4paper]{report}
+
+% ---------------- 기본 패키지 ----------------
+\usepackage[a4paper,top=30mm,bottom=30mm,left=25mm,right=25mm]{geometry}
+\setlength{\headheight}{13.6pt}
+\addtolength{\topmargin}{-1.6pt}
+
+% ---------------- 페이지 구분선 (상·하단 가로줄) ----------------
+\usepackage{fancyhdr}
+\fancypagestyle{borderstyle}{%
+  \fancyhf{}%
+  \fancyhead[C]{\rule{\textwidth}{0.4pt}}%
+  \fancyfoot[C]{\rule{\textwidth}{0.4pt}\\\vspace{2pt}\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}%
+}
+\pagestyle{borderstyle}
+% chapter 첫 페이지(plain)에도 동일 적용
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyhead[C]{\rule{\textwidth}{0.4pt}}%
+  \fancyfoot[C]{\rule{\textwidth}{0.4pt}\\\vspace{2pt}\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}%
+}
+
+% ---------------- 폰트 ----------------
+% === Engine / Font ===
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\xeCJKsetup{CJKspace=true}
+
+% === 한글 폰트 ===
+% 본문: 명조
+\setCJKmainfont[
+  UprightFont = *,
+  BoldFont    = * Bold
+]{Noto Serif CJK KR}
+
+% 중고딕: 고딕
+\setCJKsansfont[
+  UprightFont = *,
+  BoldFont    = * Bold
+]{Noto Sans CJK KR}
+
+% === 줄간격 (가이드라인) ===
+\usepackage{setspace}
+
+% ---------------- 기타 패키지 ----------------
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{caption,subcaption}
+\usepackage{booktabs,multirow,tabularx,array,longtable}
+\usepackage{threeparttable}
+\usepackage{float}
+\usepackage{placeins}
+
+% --- 플로팅 환경(표/그림) 배치 최적화: 지면 절약 ---
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.9}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.7}
+\setcounter{topnumber}{4}
+\setcounter{bottomnumber}{4}
+\setcounter{totalnumber}{8}
+\setcounter{dbltopnumber}{4}
+
+% 기본 플로팅 배치 옵션: htbp
+\makeatletter
+\renewcommand{\fps@figure}{htbp}
+\renewcommand{\fps@table}{htbp}
+\makeatother
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{indentfirst}
+\usepackage[inline]{enumitem}
+\usepackage{ragged2e}
+\usepackage{microtype}
+\usepackage{pifont}
+\usepackage{makecell}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable}
+\usepackage{colortbl}
+\usepackage{amsthm}
+\usepackage{listings}
+\usepackage[normalem]{ulem}            % \sout 취소선 (4단계: CVR 삭제 표시용)
+
+% ── 참고문헌 리뷰 모드: \refchg 만 빨강, \vrev / \color{red} 는 검정 ──
+\definecolor{v2red}{rgb}{0,0,0}       % 1단계 완료: v2red 비활성
+\definecolor{p2red}{rgb}{0,0,0}       % 2·3단계 완료: p2red 비활성 (검정)
+\colorlet{red}{black}                  % 기존 \color{red} → 검은색으로 무효화
+% 4단계 (CVR 삭제 + 마크다운 별표 정리) 변경 표시: 검정 환원 + 삭제 완전 제거 ─
+\definecolor{p4red}{rgb}{0,0,0}       % 4단계 완료: p4red 비활성 (검정)
+\newcommand{\pdel}[1]{}               % 4단계 완료: 삭제 내용 완전 제거
+\newcommand{\padd}[1]{#1}             % 4단계 완료: 추가 내용 평문화
+% (본문/부록 \pdel{...}은 모두 사라지고, \padd{...}는 평문으로 출력됨)
+% 5단계 5-1단계: 출처 마커 (5-2 진입으로 비활성화 — 모두 사라짐)
+\definecolor{srcred}{rgb}{0,0,0}      % srcred 비활성 (검정)
+\newcommand{\src}[1]{}                % 비활성화: 출처 마커 제거
+% 5단계 완료: 검정 환원 + 삭제 완전 제거 ──────────────────────────────
+\definecolor{p5red}{rgb}{0,0,0}                         % p5red 비활성 (검정)
+\newcommand{\fdel}[1]{}                                  % 삭제: 완전 제거
+\newcommand{\fadd}[1]{#1}                                % 추가: 평문 출력 (검정)
+\newcommand{\fmod}[2]{#2}                                % 수정: 새 내용만 평문
+\newenvironment{p5del}[1]{}{}                            % no-op
+\newenvironment{p5add}{}{}                               % no-op (평문 출력)
+% 검토 마크업 완료: 검정 환원 + 삭제 완전 제거 ────────────────────────
+\definecolor{revred}{rgb}{0,0,0}                         % revred 비활성 (검정)
+\newcommand{\rev}[1]{}                                   % 비활성
+\newcommand{\revdel}[1]{}                                % 삭제 완전 제거
+\newcommand{\revadd}[1]{#1}                              % 추가 평문화
+\newenvironment{revnote}{}{}                             % no-op
+\newenvironment{revdelblock}[1]{}{}                      % no-op
+% 이전 임시 표시 (검정 환원 완료) ────────────────────────────────
+\definecolor{tmpred}{rgb}{0,0,0}                         % tmpred 비활성 (검정)
+\newcommand{\tmp}[1]{#1}                                 % 평문화
+% 이번 세션 변경분 표시 (미참조 표 참조 추가 완료: 검정 환원) ─────
+\definecolor{nref}{rgb}{0,0,0}                           % nref 비활성 (검정)
+\newcommand{\nref}[1]{#1}                                % 평문화
+% 김영철 교수 대응 (v3.1) 변경분 표시 — 검정 환원 ──────────────────
+\definecolor{kimred}{rgb}{0,0,0}                         % kimred 비활성 (검정)
+\newcommand{\kim}[1]{#1}                                 % 평문화
+\newcommand{\kcitep}[1]{\citep{#1}}                      % 평문
+\newcommand{\kcitet}[1]{\citet{#1}}                      % 평문
+% 한글본 v3 정합 작업 마킹 — 검정 환원 (한글본 body와 일치 확인 완료) ──
+\definecolor{syncr}{rgb}{0,0,0}                          % syncr 비활성 (검정)
+\newcommand{\syncr}[1]{#1}                               % 평문화
+% J.4 수정 — 3차: 검정 환원 (기존 빨간 표시 제거) ──
+\definecolor{jrev}{rgb}{0,0,0}                           % 3차: jrev 비활성 (검정)
+\newcommand{\jrev}[1]{#1}                                % 3차: 평문화
+\newcommand{\syncp}[1]{\citep{#1}}                       % 평문
+\newcommand{\synct}[1]{\citet{#1}}                       % 평문
+\newcommand{\vrev}[1]{#1}  % 3차: 검정으로 변환  % 1단계 리뷰 빨강 (toc/lot 안전)
+% 3차 한글 작업 완료분 — 검정으로 환원 (사용자 한글본 작업 완료)
+\definecolor{nrevred}{rgb}{0,0,0}                        % 3차: 검정으로 환원
+\newcommand{\nrev}[1]{#1}                                % 3차: 평문화
+% 3차 신규 추가 변경 (가설 보완안 + C.2.2 상세화) — 빨강
+\definecolor{mrevred}{rgb}{0,0,0}                        % 3차: 검정 환원
+\newcommand{\mrev}[1]{#1}                                % 3차: 평문화
+% C.2.2 전용 빨강 마커 (3차 심사 완료 후 검정 환원: 2026-05-09)
+\definecolor{prevred}{rgb}{0,0,0}                         % 3차 심사 후 검정 환원
+\newcommand{\prev}[1]{#1}                                 % 평문화
+% ── 3차 심사 결과 반영분 (검정 환원 완료: 2026-06-01, 4차 작업 진입) ──
+\definecolor{trevred}{rgb}{0,0,0}                         % 4차 진입: trevred 비활성 (검정)
+\newcommand{\tnew}[1]{#1}                                 % 4차: 평문화
+\newcommand{\tdel}[1]{}                                   % 삭제 내용 (제거)
+\newcommand{\tmod}[2]{#2}                                 % 4차: 새 내용만 평문
+\newcommand{\tnewp}[1]{#1}                                % 4차: 평문화
+\newcommand{\trefcol}[1]{\ref{#1}}                        % 4차: 평문 \ref
+% ── ICC 정정 라운드 (검정 환원 완료: 2026-06-01, 4차 작업 진입) ──
+\definecolor{iccred}{rgb}{0,0,0}                          % 4차 진입: iccred 비활성 (검정)
+\newcommand{\inew}[1]{#1}                                 % 4차: 평문화
+\newcommand{\idel}[1]{}                                   % 삭제 (제거)
+\newcommand{\imod}[2]{#2}                                 % 4차: 새 내용만 평문
+% ── 4차(최종) 심사 대비 수정분 (2026-06-01 신설) — 이번 라운드만 빨간색 ──
+\definecolor{frevred}{rgb}{0,0,0}                         % 4차 빨강 비활성 (전체 검정 환원)
+\newcommand{\frev}[1]{{\color{frevred}#1}}                % 단어 수준 수정 (빨강)
+\newcommand{\fpara}[1]{#1}                                % 신규 추가 단락 (검정, 식별만)
+\newcommand{\fdelf}[1]{}                                  % 삭제 (제거)
+\newcommand{\fmodf}[2]{{\color{frevred}#2}}              % 수정 (새 내용만 빨강)
+\newcommand{\frevp}[1]{\begingroup\color{frevred}#1\endgroup}  % 단락용
+\newcommand{\frefcol}[1]{\begingroup\hypersetup{linkcolor=frevred}\color{frevred}\ref{#1}\endgroup}
+% ── 4차(최종) 심사 반영: 단계 완료 — 검정 환원 (2026-06-11, 최종제출본 정합 라운드 진입) ──
+\definecolor{stepred}{rgb}{0,0,0}                % 검정 환원
+\newcommand{\chg}[1]{#1}                          % 평문화
+\newcommand{\del}[1]{}                            % 삭제 완전 제거
+% ── 최종제출본7 정합 라운드: 잔존 오류 표시 활성 (2026-06-12) ──
+\definecolor{subred}{rgb}{0,0,0}                  % 공개본: 리뷰 마커 검정 환원
+\newcommand{\pdferr}[1]{{\color{subred}#1}}      % 제출본 PDF 오류 정정 (빨강)
+% 참조형 오류 정정 (내부 ref 매크로의 p2red(검정)에 덮이지 않도록 전용 정의)
+\newcommand{\pdferrsubsub}[1]{\begingroup\hypersetup{linkcolor=subred}\color{subred}\ref{#1}목\endgroup}
+\newcommand{\pdferrsec}[1]{\begingroup\hypersetup{linkcolor=subred}\color{subred}\ref{#1}절\endgroup}
+\newcommand{\pdferrappch}[1]{\begingroup\hypersetup{linkcolor=subred}\color{subred}부록~\ref{#1}장\endgroup}
+% 4차 진입: trevred 기반 helper도 검정 환원 (frevred 4차 신설은 위 참조)
+\newcommand{\tsecref}[1]{\ref{#1}절}
+\newcommand{\tsubsecref}[1]{\ref{#1}항}
+\newcommand{\tchref}[1]{제\ref{#1}장}
+\newcommand{\ttabref}[1]{[표~\ref{#1}]}
+\newcommand{\tfigref}[1]{[그림~\ref{#1}]}
+% ref/autoref/eqref 전용: hyperref linkcolor까지 빨강 전환 (본문에서만 사용)
+\newcommand{\vref}[1]{\begingroup\hypersetup{linkcolor=v2red}\color{v2red}\ref{#1}\endgroup}
+\newcommand{\vautoref}[1]{\begingroup\hypersetup{linkcolor=v2red}\color{v2red}\autoref{#1}\endgroup}
+\newcommand{\veqref}[1]{\begingroup\hypersetup{linkcolor=v2red}\color{v2red}\eqref{#1}\endgroup}
+% 2단계 변경 표시 매크로
+\newcommand{\p}[1]{{\color{p2red}#1}}
+\newcommand{\pref}[1]{\begingroup\hypersetup{linkcolor=p2red}\color{p2red}\ref{#1}\endgroup}
+\newcommand{\pautoref}[1]{\begingroup\hypersetup{linkcolor=p2red}\color{p2red}\autoref{#1}\endgroup}
+% 3단계 통합 참조 매크로 (장·절·항·목·식 표기 규칙)
+\newcommand{\chref}[1]{\begingroup\hypersetup{linkcolor=p2red}\color{p2red}제\ref{#1}장\endgroup}
+\newcommand{\secref}[1]{\begingroup\hypersetup{linkcolor=p2red}\color{p2red}\ref{#1}절\endgroup}
+\newcommand{\subsecref}[1]{\begingroup\hypersetup{linkcolor=p2red}\color{p2red}\ref{#1}항\endgroup}
+\newcommand{\subsubsecref}[1]{\begingroup\hypersetup{linkcolor=p2red}\color{p2red}\ref{#1}목\endgroup}
+\newcommand{\appref}[1]{\begingroup\hypersetup{linkcolor=p2red}\color{p2red}\ref{#1}\endgroup}
+\newcommand{\appchref}[1]{\begingroup\hypersetup{linkcolor=p2red}\color{p2red}부록~\ref{#1}장\endgroup}
+\newcommand{\appsecref}[1]{\begingroup\hypersetup{linkcolor=p2red}\color{p2red}부록~\ref{#1}절\endgroup}
+\newcommand{\appsubsecref}[1]{\begingroup\hypersetup{linkcolor=p2red}\color{p2red}부록~\ref{#1}항\endgroup}
+% 표/그림 참조 (대괄호 + 빨강)
+\newcommand{\tabref}[1]{\begingroup\hypersetup{linkcolor=p2red}\color{p2red}[표~\ref{#1}]\endgroup}
+\newcommand{\figref}[1]{\begingroup\hypersetup{linkcolor=p2red}\color{p2red}[그림~\ref{#1}]\endgroup}
+% 수식 참조: \eqref{X} → (식 X.Y) 형식 (hyperref linkcolor도 빨강)
+\renewcommand{\eqref}[1]{\begingroup\hypersetup{linkcolor=p2red}\color{p2red}(식~\ref{#1})\endgroup}
+% 한국어 조사 자동 처리: \refpo{label}{받침있음조사}{받침없음조사}
+% xstring으로 참조 번호 마지막 문자를 추출해 조사 분기
+% 받침 있음: 끝자리 0,1,3,6,7,8 → 은/이/을
+% 받침 없음: 끝자리 2,4,5,9   → 는/가/를
+\usepackage{xstring}
+\usepackage{refcount}
+\makeatletter
+\newcommand{\refpo}[3]{%
+  \begingroup
+  \edef\refpo@tmp{\getrefnumber{#1}}%
+  \expandafter\StrRight\expandafter{\refpo@tmp}{1}[\refpo@last]%
+  \IfEqCase{\refpo@last}{%
+    {0}{#2}{1}{#2}{2}{#3}{3}{#2}{4}{#3}%
+    {5}{#3}{6}{#2}{7}{#2}{8}{#2}{9}{#3}%
+  }[#3]%
+  \endgroup
+}
+\makeatother
+\newcommand{\reFneun}[1]{\refpo{#1}{은}{는}}
+\newcommand{\reFyi}[1]{\refpo{#1}{이}{가}}
+\newcommand{\reFeul}[1]{\refpo{#1}{을}{를}}
+\newcommand{\refchg}[1]{#1}  % 참고문헌 표시 비활성 (1단계에서는 구조 변경만 강조)
+
+% Theorem-like environments
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{proposition}[theorem]{\p{명제}}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{hypothesis}{\p{가설 H}}  % 2단계 #11: "Hypothesis X.Y.Z" → "가설 HN" (H1..H11 연속 번호)
+\newtheorem{testspec}{Test Specification}[section]
+
+% --- Figures (TikZ) ---
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, fit, calc, shapes.geometric, backgrounds, shadows}
+
+% --- Plots (pgfplots) ---
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% 4단계: TikZ 그림 내부 기본 텍스트 색 = 검정
+\tikzset{every picture/.append style={execute at begin picture={\color{black}}}}
+\tikzset{
+  box/.style={draw, rounded corners=2pt, align=center, inner sep=6pt, minimum width=28mm, minimum height=8mm},
+  sbox/.style={draw, rounded corners=2pt, align=center, inner sep=5pt, minimum width=24mm, minimum height=7mm},
+  gbox/.style={draw, rounded corners=2pt, align=left, inner sep=7pt, text width=0.82\linewidth},
+  arrow/.style={-{Stealth[length=2.2mm]}, thick},
+  dashedarrow/.style={-{Stealth[length=2.2mm]}, thick, dashed},
+  group/.style={draw, rounded corners=3pt, inner sep=6pt},
+  note/.style={align=left, inner sep=2pt}
+}
+
+\setmainfont{TeX Gyre Termes}     % 영문
+\setCJKmonofont[Script=Hangul]{Noto Sans CJK KR}
+
+\newfontfamily\ChapterFont{Noto Serif CJK KR}[BoldFont=Noto Serif CJK KR Bold]
+\newfontfamily\JungGothic{Noto Sans CJK KR}[BoldFont=Noto Sans CJK KR Bold]
+\newfontfamily\TOCMincho{Noto Serif CJK KR}
+\newcommand{\mathkr}[1]{\text{\CJKfontspec{Noto Serif CJK KR}{#1}}}
+
+\usepackage{unicode-math}
+\setmathfont{TeX Gyre Termes Math}
+\newcommand{\cmark}{{\JungGothic ✓}}
+\newcommand{\circnum}[1]{{\JungGothic #1}}
+% 원문자(①②③…)가 라틴 폰트에 없어 깨지는 문제 → CJK 폰트(Noto)로 자동 라우팅
+\usepackage{newunicodechar}
+\newunicodechar{①}{{\JungGothic\char"2460}}
+\newunicodechar{②}{{\JungGothic\char"2461}}
+\newunicodechar{③}{{\JungGothic\char"2462}}
+\newunicodechar{④}{{\JungGothic\char"2463}}
+\newunicodechar{⑤}{{\JungGothic\char"2464}}
+\newunicodechar{⑥}{{\JungGothic\char"2465}}
+\newunicodechar{⑦}{{\JungGothic\char"2466}}
+\newunicodechar{⑧}{{\JungGothic\char"2467}}
+\newunicodechar{⑨}{{\JungGothic\char"2468}}
+\newunicodechar{⑩}{{\JungGothic\char"2469}}
+\newunicodechar{⑪}{{\JungGothic\char"246A}}
+\newunicodechar{⑫}{{\JungGothic\char"246B}}
+\newunicodechar{⑬}{{\JungGothic\char"246C}}
+\newunicodechar{⑭}{{\JungGothic\char"246D}}
+\newunicodechar{⑮}{{\JungGothic\char"246E}}
+% DRTO 표기 통일 매크로
+\newcommand{\DRTO}{\mathrm{DRTO}}
+
+\newcommand{\IACS}{산업자동화제어시스템(IACS: Industrial Automation and Control Systems)}
+\newenvironment{tablecellblock}{%
+  \begin{minipage}[t]{\linewidth}
+  \setlength{\parindent}{0pt}%
+  \setlength{\parskip}{2pt}}%
+  {\end{minipage}}
+\newenvironment{tablecellitemize}{%
+  \begin{itemize}[leftmargin=1.2em,itemsep=2pt,topsep=0pt,partopsep=0pt,parsep=0pt]}%
+  {\end{itemize}}
+
+% ---------------- 한글 띄어쓰기/줄바꿈 ----------------
+\spaceskip=1.20\fontdimen2\font plus 0.25\fontdimen3\font minus 0.25\fontdimen4\font
+\AtBeginDocument{%
+  \spaceskip=1.6\fontdimen2\font plus 0.35\fontdimen3\font minus 0.35\fontdimen4\font
+}
+\setlength{\xspaceskip}{0.8em plus 0.25em minus 0.1em}
+\XeTeXlinebreaklocale "ko"
+\XeTeXlinebreakskip = 0.5em plus 0.2em minus 0.1em
+
+% === 줄간격 (가이드라인) ===
+\setstretch{2.0}
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{2em}
+\hyphenpenalty=5000
+\exhyphenpenalty=5000
+\sloppy
+\hfuzz=200pt
+\vfuzz=50pt
+\hbadness=10000
+\vbadness=10000
+\setlength{\emergencystretch}{3em}
+\newcommand{\CurrentAppendixLetter}{}
+\newcounter{appsection}
+\newcounter{appsubsection}[appsection]
+\newcounter{appsubsubsection}[appsubsection]
+% 부록 다중 장(A·B·C)에서 하이퍼앵커 중복 방지
+\makeatletter
+\newcommand{\theHappsection}{\CurrentAppendixLetter.\arabic{appsection}}
+\newcommand{\theHappsubsection}{\CurrentAppendixLetter.\arabic{appsection}.\arabic{appsubsection}}
+\newcommand{\theHappsubsubsection}{\CurrentAppendixLetter.\arabic{appsection}.\arabic{appsubsection}.\arabic{appsubsubsection}}
+\makeatother
+\newcommand{\SetAppendixLetter}[1]{%
+  \renewcommand{\CurrentAppendixLetter}{#1}%
+  \setcounter{appsection}{0}%
+  \setcounter{appsubsection}{0}%
+  \setcounter{appsubsubsection}{0}}
+\makeatletter
+\newcommand{\AppSection}[1]{%
+  \setcounter{appsubsection}{0}%
+  \setcounter{appsubsubsection}{0}%
+  \refstepcounter{appsection}%
+  \def\@currentlabel{\CurrentAppendixLetter.\arabic{appsection}}%
+  \phantomsection
+  \addcontentsline{toc}{subsection}{\protect\numberline{\CurrentAppendixLetter.\arabic{appsection}}#1}%
+  {\par\noindent\hspace{2em}\JungGothic\bfseries\fontsize{12}{16}\selectfont
+  \CurrentAppendixLetter.\arabic{appsection}\ #1\par}\vspace{6pt}}
+\newcommand{\AppSubsection}[1]{%
+  \setcounter{appsubsubsection}{0}%
+  \refstepcounter{appsubsection}%
+  \def\@currentlabel{\CurrentAppendixLetter.\arabic{appsection}.\arabic{appsubsection}}%
+  \phantomsection
+  \addcontentsline{toc}{subsubsection}{\protect\numberline{\CurrentAppendixLetter.\arabic{appsection}.\arabic{appsubsection}}#1}%
+  {\par\noindent\hspace{3em}\JungGothic\bfseries\fontsize{11}{14}\selectfont
+  \CurrentAppendixLetter.\arabic{appsection}.\arabic{appsubsection}\ #1\par}\vspace{4pt}}
+\newcommand{\AppSubsubsection}[1]{%
+  \refstepcounter{appsubsubsection}%
+  \def\@currentlabel{\CurrentAppendixLetter.\arabic{appsection}.\arabic{appsubsection}.\arabic{appsubsubsection}}%
+  \phantomsection
+  {\par\noindent\hspace{4em}\JungGothic\fontsize{11}{14}\selectfont
+  \CurrentAppendixLetter.\arabic{appsection}.\arabic{appsubsection}.\arabic{appsubsubsection}\ #1\par}\vspace{3pt}}
+\makeatother
+\DeclareRobustCommand{\PlainTOCtext}[1]{%
+  {\TOCMincho\fontsize{11}{14}\selectfont #1}%
+}
+
+
+% =====================================================================
+%  목차 / 표목차 / 그림목차 설정
+% =====================================================================
+\renewcommand{\contentsname}{}
+\renewcommand{\listfigurename}{}
+\renewcommand{\listtablename}{}
+
+\renewcommand{\cftaftertoctitle}{\par\vskip 0.35cm}
+\renewcommand{\cftafterloftitle}{\par\vskip 0.35cm}
+\renewcommand{\cftafterlottitle}{\par\vskip 0.35cm}
+
+\newcommand{\FrontListTitle}[1]{%
+  \begin{center}
+    {\JungGothic\bfseries\fontsize{16}{22}\selectfont #1}
+  \end{center}
+  \vspace{0.35cm}
+}
+
+% 목차 항목 폰트/간격 설정
+\renewcommand{\cftchapfont}{\TOCMincho\bfseries\fontsize{13}{18}\selectfont}
+\renewcommand{\cftchappagefont}{\TOCMincho\bfseries\fontsize{13}{18}\selectfont}
+\renewcommand{\cftsecfont}{\JungGothic\fontsize{11}{15}\selectfont}
+\renewcommand{\cftsecpagefont}{\JungGothic\fontsize{11}{15}\selectfont}
+\renewcommand{\cftsubsecfont}{\JungGothic\fontsize{11}{15}\selectfont}
+\renewcommand{\cftsubsecpagefont}{\JungGothic\fontsize{11}{15}\selectfont}
+\renewcommand{\cftsubsubsecfont}{\JungGothic\fontsize{11}{15}\selectfont}
+\renewcommand{\cftsubsubsecpagefont}{\JungGothic\fontsize{11}{15}\selectfont}
+
+\setlength{\cftbeforechapskip}{0.8cm}
+\setlength{\cftbeforesecskip}{0pt}
+\setlength{\cftbeforesubsecskip}{0pt}
+
+\renewcommand{\cftchappresnum}{제}
+\renewcommand{\cftchapaftersnum}{장\ }
+
+\renewcommand{\cftchapfont}{\ChapterFont\bfseries\fontsize{13}{18}\selectfont}
+\renewcommand{\cftchappagefont}{\cftchapfont}
+\setlength{\cftchapnumwidth}{5em}
+
+% 표목차: [표 2-1] 형식
+\renewcommand{\cfttabpresnum}{[표\ }
+\renewcommand{\cfttabaftersnum}{]\ }
+\setlength{\cfttabnumwidth}{5em}
+\setlength{\cftbeforetabskip}{0pt}
+\setlength{\cfttabindent}{0pt}
+
+% 그림목차: [그림 3-1] 형식
+\renewcommand{\cftfigpresnum}{[그림\ }
+\renewcommand{\cftfigaftersnum}{]\ }
+\setlength{\cftfignumwidth}{5em}
+\setlength{\cftbeforefigskip}{0pt}
+\setlength{\cftfigindent}{0pt}
+
+\renewcommand{\cftsecfont}{\JungGothic\fontsize{11}{14}\selectfont}
+\renewcommand{\cftsecpagefont}{\cftsecfont}
+\renewcommand{\cftsubsecfont}{\JungGothic\fontsize{11}{14}\selectfont}
+\renewcommand{\cftsubsecpagefont}{\cftsubsecfont}
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
+
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
+% =====================================================================
+%  장/절/소제목 스타일 ("제 1 장 서론", 1.6.1 형식)
+% =====================================================================
+\titleformat{\chapter}[hang]
+  {\centering\ChapterFont\bfseries\fontsize{16}{22}\selectfont\ifnum\value{chapter}>1\color{v2red}\fi}
+  {제~\thechapter~장}{0.8em}{}
+\titlespacing*{\chapter}{0pt}{0pt}{18pt}
+
+\titleformat{\section}
+  {\bfseries\fontsize{13}{18}\selectfont\ifnum\value{chapter}>2\color{v2red}\fi}
+  {\thesection}{0.8em}{}
+\titlespacing*{\section}{0pt}{24pt}{12pt}
+
+\makeatletter
+\@beginparpenalty=0
+\@secpenalty=-300
+\makeatother
+\widowpenalty=10000
+\clubpenalty=10000
+
+\titleformat{\subsection}
+  {\JungGothic\bfseries\fontsize{11}{16}\selectfont\ifnum\value{chapter}>2\color{v2red}\fi}
+  {\thesubsection}{0.8em}{}
+\titlespacing*{\subsection}{0pt}{18pt}{9pt}
+
+\titleformat{\subsubsection}
+  {\JungGothic\fontsize{11}{15}\selectfont\ifnum\value{chapter}>2\color{v2red}\fi}
+  {\thesubsubsection}{0.8em}{}
+\titlespacing*{\subsubsection}{0pt}{14pt}{7pt}
+
+
+% =====================================================================
+%  표/그림 번호 형식 – "표 2-1", "그림 3-1"
+% =====================================================================
+\renewcommand{\figurename}{그림}
+\renewcommand{\tablename}{표}
+\numberwithin{figure}{chapter}
+\numberwithin{table}{chapter}
+\renewcommand{\thefigure}{\thechapter-\arabic{figure}}
+\renewcommand{\thetable}{\thechapter-\arabic{table}}
+\captionsetup[figure]{labelsep=space}
+\captionsetup[table]{labelsep=space}
+
+% 1단계 완료: 캡션 라벨 (번호 변경) — 비활성화, 2단계에서 대괄호로 대체
+% 2단계 #8: 그림/표 캡션 라벨을 [그림 X-Y]/[표 X-Y] 대괄호 형식 + 빨강 표시
+\DeclareCaptionLabelFormat{p2bracket}{{\color{p2red}[#1 #2]}}
+\captionsetup[figure]{labelformat=p2bracket}
+\captionsetup[table]{labelformat=p2bracket}
+
+% =====================================================================
+%  hyperref
+% =====================================================================
+\usepackage{hyperref}
+\pdfstringdefDisableCommands{%
+  \let\(\relax
+  \let\)\relax
+  \let\[\relax
+  \let\]\relax
+  \let\$ \relax
+  \def\alpha{alpha}%
+  \def\beta{beta}%
+  \def\gamma{gamma}%
+  \def\delta{delta}%
+  \def\epsilon{epsilon}%
+  \def\sigma{sigma}%
+  \def\mitsigma{sigma}%
+  \def\mu{mu}%
+  \def\lambda{lambda}%
+  \def\eta{eta}%
+  \def\miteta{eta}%
+  \def\kappa{kappa}%
+  \def\mitkappa{kappa}%
+  \def\cdot{.}%
+  \def\times{x}%
+  \def\leq{<=}%
+  \def\geq{>=}%
+  \def\mathrm#1{#1}%
+  \def\vrev#1{#1}%
+  \def\refchg#1{#1}%
+  \def\p#1{#1}%
+  \def\pref#1{#1}%
+  \def\pautoref#1{#1}%
+  \def\chref#1{제#1장}%
+  \def\secref#1{#1절}%
+  \def\subsecref#1{#1항}%
+  \def\subsubsecref#1{#1목}%
+  \def\appref#1{#1}%
+  \def\appchref#1{부록 #1장}%
+  \def\appsecref#1{부록 #1절}%
+  \def\appsubsecref#1{부록 #1항}%
+  \def\tabref#1{[표 #1]}%
+  \def\figref#1{[그림 #1]}%
+  \def\refpo#1#2#3{}%
+  \def\tnew#1{#1}%
+  \def\tdel#1{}%
+  \def\tmod#1#2{#2}%
+  \def\tnewp#1{#1}%
+  \def\trefcol#1{#1}%
+  \def\inew#1{#1}%
+  \def\idel#1{}%
+  \def\imod#1#2{#2}%
+  \def\tsecref#1{#1절}%
+  \def\tsubsecref#1{#1항}%
+  \def\tchref#1{제#1장}%
+  \def\ttabref#1{[표 #1]}%
+  \def\tfigref#1{[그림 #1]}%
+  \def\nrev#1{#1}%
+  \def\jrev#1{#1}%
+  \def\mrev#1{#1}%
+  \def\prev#1{#1}%
+  \let\textcolor\@gobbletwo
+  \def\color#1{}%
+  \def\_{}%
+  \def\TOCMincho{}%
+}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=black,
+  bookmarks=true,
+  bookmarksnumbered=true,
+  bookmarksopen=true,
+  bookmarksopenlevel=2,
+  pdfencoding=auto
+}
+\usepackage{bookmark}
+
+% -----------------------------
+% 참고문헌(biblatex + biber)
+% 스타일: 숭실대 재난안전관리학과 관례 (송은정 박사 2022 참조)
+% 형식: 저자. (연도). 제목. 출처, 권(호), p.페이지.
+% [국내 문헌] / [국외 문헌] 분리
+% -----------------------------
+\usepackage[
+  backend=biber,
+  style=authoryear,
+  citestyle=authoryear,
+  maxcitenames=2,
+  maxbibnames=99,
+  sorting=nyt,
+  sortcites=true,
+  uniquename=false,
+  uniquelist=false
+]{biblatex}
+
+\AtBeginDocument{%
+  \DeclareDelimFormat[cite]{nameyeardelim}{\addcomma\space}%
+  \DeclareDelimFormat[parencite]{nameyeardelim}{\addcomma\space}%
+  % 한국 학회지 양식: 본문 인용 "저자(연도)" — 괄호 앞 공백 제거 (2026-06-12 권고 반영)
+  \DeclareDelimFormat[textcite]{nameyeardelim}{}%
+}
+
+\DeclareSourcemap{
+  \maps[datatype=bibtex]{
+    \map{\step[typesource=article_foreign, typetarget=article]}
+    \map{\step[typesource=book_domestic, typetarget=book]}
+  }
+}
+\addbibresource{references.bib}
+
+\newcommand{\citep}{\parencite}
+% \citet "저자(연도)" 무공백 양식 (한국 학회지) — 제출본10 반영 확인, 검정 환원
+\DeclareRobustCommand{\citet}[1]{\textcite{#1}}
+
+\DeclareFieldFormat{titlecase}{#1}
+\DeclareFieldFormat{booktitlecase}{#1}
+\DeclareFieldFormat{journaltitlecase}{#1}
+
+% --- 송은정 박사 스타일 적용: ISBN, DOI, URL 제거 ---
+\AtEveryBibitem{%
+  \clearfield{isbn}%
+  \clearfield{issn}%
+  \clearfield{doi}%
+  \clearfield{url}%
+  \clearfield{urldate}%
+  \clearfield{eprint}%
+  \clearfield{eprinttype}%
+  \clearfield{note}%
+}
+% 저널명·서적명 이탤릭 제거 (송은정 스타일: 이탤릭 없음)
+\DeclareFieldFormat{journaltitle}{#1}
+\DeclareFieldFormat{booktitle}{#1}
+\DeclareFieldFormat[book]{title}{#1}
+\DeclareFieldFormat[inbook]{title}{#1}
+% 논문 제목 인용부호 제거
+\DeclareFieldFormat[article]{title}{#1}
+\DeclareFieldFormat[inproceedings]{title}{#1}
+\DeclareFieldFormat[thesis]{title}{#1}
+% pp. → p. 변환
+\DeclareFieldFormat{pages}{p.#1}
+% edition 형식
+\DeclareFieldFormat{edition}{#1}
+
+% Manual numbering macros
+\input{preamble_manual_numbering}
+
+\begin{document}
+\justifying
+\raggedbottom
+
+% ===============================
+% Front matter (Roman numerals)
+% ===============================
+\pagenumbering{roman}
+
+\input{front/01_cover}
+\input{front/02_blank_page}
+\input{front/03_titlepage}
+\input{front/04_inner_title}
+\input{front/05_approval}
+\input{front/06_acknowledgements}
+\input{front/07_kor_abstract}
+\input{front/08_eng_abstract}
+\clearpage
+
+\FrontListTitle{목\ \ 차}
+\tableofcontents
+\clearpage
+\FrontListTitle{그\ \ 림\ \ 목\ \ 차}
+\listoffigures
+\clearpage
+\FrontListTitle{표\ \ 목\ \ 차}
+\listoftables
+
+\clearpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% ─── 본문 (5장 체계, 1차 심사 재편) ───
+\input{chapters/ch1_introduction}  % 제1장 서론
+\input{chapters/ch2_theory}        % 제2장 이론적 배경
+\input{chapters/ch3_method}        % 제3장 연구 방법
+\input{chapters/ch4_results}       % 제4장 연구 결과
+\input{chapters/ch5_discussion}    % 제5장 논의 및 결론
+
+% ─── 참고문헌 (제출본 기준: 부록 앞) ───
+\nocite{iso22301,iso22313,iso31000}
+
+% --- 참고문헌: [국내 문헌] / [국외 문헌] 분리 (송은정 박사 스타일) ---
+% 국내 문헌 키워드 필터
+\defbibcheck{korean}{%
+  \iffieldundef{keywords}{\skipentry}{}%
+  \ifkeyword{korean}{}{\skipentry}%
+}
+\defbibcheck{foreign}{%
+  \ifkeyword{korean}{\skipentry}{}%
+}
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{\PlainTOCtext{참고문헌}}
+\begingroup
+\setstretch{1.6}
+\begin{center}
+{\ChapterFont\bfseries\fontsize{16}{22}\selectfont 참고문헌}
+\end{center}
+\vspace{18pt}
+
+% [국내 문헌]
+\noindent{\JungGothic\bfseries\fontsize{13}{18}\selectfont [국내 문헌]}
+\vspace{6pt}
+\printbibliography[heading=none, check=korean]
+
+\vspace{12pt}
+% [국외 문헌]
+\noindent{\JungGothic\bfseries\fontsize{13}{18}\selectfont [국외 문헌]}
+\vspace{6pt}
+\printbibliography[heading=none, check=foreign]
+\endgroup
+
+% ─── 부록 (제출본 기준: 참고문헌 뒤, 제A·B·C장) ───
+\appendix
+\setlength{\abovedisplayskip}{6pt}
+\setlength{\belowdisplayskip}{6pt}
+\setlength{\abovedisplayshortskip}{3pt}
+\setlength{\belowdisplayshortskip}{3pt}
+\titleformat{\chapter}[hang]
+  {\centering\ChapterFont\bfseries\fontsize{16}{22}\selectfont}
+  {제~\thechapter~장}{0.8em}{}
+\titlespacing*{\chapter}{0pt}{0pt}{18pt}
+\input{appendix/appendices}
+
+\end{document}

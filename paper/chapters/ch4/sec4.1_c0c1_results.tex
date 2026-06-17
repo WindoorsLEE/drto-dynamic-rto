@@ -1,0 +1,110 @@
+
+
+%% ===================================================================
+\section{\vrev{C0와 C1의 관측성 효과}}
+\label{sec:result_c0c1}
+%% ===================================================================
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{정적 기준선 C0}}
+\label{subsec:result_c0}
+%% -------------------------------------------------------------------
+
+\textbf{C0} 조건은 관측성과 불확실성이 모두 비활성화된 정적 기준선으로서,
+$O_{\text{raw}}$, $k_O$, $U_{\text{raw}}$가 모델에 입력되지 않아
+$z_O = 0$, $z_U = 0$이 고정된다. 이 경우 개별 시그모이드 바운딩 함수의
+인자가 $S(0) = 0$이 되어, $\DRTO = R_0 = 6.0$시간이
+결정론적으로 산출된다.
+
+따라서 효율성 비율은 $\eta_{\text{C0}} = \DRTO / R_0 = 1.000$이며,
+표준편차 $\mathrm{SD} = 0.000$, 모든 표본에서 동일한 값이 관측된다.
+C0는 확률적 변동이 존재하지 않는 기준점으로서, C1 이후 조건에서
+나타나는 변동의 크기와 방향을 평가하기 위한 앵커(anchor) 역할을 수행한다.
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{C1의 관측성 기반 동적 조정}}
+\label{subsec:result_c1}
+%% -------------------------------------------------------------------
+
+\textbf{C1} 조건은 관측성($O$, $k_O$)만 활성화하고 불확실성을 비활성화한
+상태($z_U = 0$)로, 관측성이 $\DRTO$에 미치는 순수한 효과를 분리하여
+관측하는 조건이다.
+$\kappa = 1.2$에서 관측성 바운딩 효과 $E_{O,\text{bnd}} = -R_0 \cdot S(\kappa \cdot k_O \cdot O_{\text{raw}})$만
+활성화되어, $\DRTO = R_0 + E_{O,\text{bnd}} \leq R_0$가 보장된다.
+
+\chg{기술통계 측면에서,} C1 조건의 효율성 비율 평균은 $\bar{\eta}_{\text{C1}} = 0.853$,
+$\mathrm{SD} = 0.125$로 나타났다.
+C0의 결정론적 $\eta = 1.000$ 대비 $14.7\%$가 감소한 것으로,
+$\DRTO$ 평균은 $5.115$시간이다.
+관측성이 도입되면 $\DRTO$가 기본 복구시간 $R_0$보다 체계적으로 단축됨을 의미하며,
+이러한 단축 효과는 관측성이 높을수록 이상 징후의 조기 탐지를 통해
+복구 시간을 절감할 수 있다는 실무적 논리와 일치한다.
+
+\chg{효과 크기 측면에서,} C0 대비 C1의 Cohen's $d = -1.180$로서, 이는 \citet{cohen1988power}의
+기준에 따라 \textbf{대효과(large effect)}에 해당한다(대효과 기준값 $|d|=0.80$의 약 $1.48$배).
+방향이 음(-)인 것은 관측성 도입이 $\eta$를 감소(즉, 복구 시간 단축)
+시킨다는 것을 나타낸다.
+$n = 10{,}000$개 표본 전체에서 $\eta_{\text{C1}} \leq \eta_{\text{C0}}$인
+비율이 $100\%$로(\jrev{H3}-a), 관측성의 복구 단축 효과가 예외 없이
+관찰되었다. 이는 H1(관측성 효과 가설)의 충족을 실증적으로 확인한다.
+
+
+%% -------------------------------------------------------------------
+\subsection{\vrev{C0/C1 분포 시각화}}
+\label{subsec:c0c1_visual}
+%% -------------------------------------------------------------------
+
+\figref{fig:eta_c0c1_hist}\refpo{fig:eta_c0c1_hist}{은}{는} C0와 C1 조건의 $\eta$ 분포를 비교한 것이다.
+C0는 $\eta = 1.000$에서의 단일 수직선으로 표현되며,
+C1은 $[0.468,\;1.000]$ 구간에서 좌측으로 치우친 분포를 형성한다.
+\chg{그림에서 적색 점선은 C0 정적 기준선을, 청색 곡선은 C1 관측성 분포의 정규 근사를 나타낸다.}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=0.9\textwidth,
+      height=7cm,
+      xlabel={효율성 비율 $\eta$},
+      ylabel={밀도 (density)},
+      xmin=0.3, xmax=2.2,
+      ymin=0,
+      ymajorgrids=true,
+      grid style={dashed, black},
+      legend style={at={(0.98,0.95)}, anchor=north east, font=\small},
+      legend cell align=left,
+      ]
+      % C0: vertical line at eta=1.0
+      \addplot[red, ultra thick, dashed, domain=0:8, samples=2]
+        coordinates {(1.0,0) (1.0,7.5)};
+      \addlegendentry{C0 ($\eta = 1.000$)}
+
+      % C1: approximate density using beta-like shape (mean=0.853, SD=0.125)
+      % Skewed left distribution
+      \addplot[blue, thick, smooth, domain=0.4:1.0, samples=100]
+        {3.2*exp(-0.5*((x-0.853)/0.125)^2)};
+      \addlegendentry{C1 ($\bar{\eta} = 0.853$)}
+
+      % 우측 하단 메모: C1 범위 및 산출 근거
+      \node[anchor=south east, font=\footnotesize, align=left,
+            text=black] at (rel axis cs:0.97,0.03)
+        {C1: $\eta \in [0.468,\;1.000]$\\
+         $\eta_{\min} = \DRTO_{\min}/R_0 = 2.810/6.0 = 0.468$\\
+         $z_{O,\max} = \kappa \cdot k_O \cdot O_{\text{raw}} = 1.2 \times 1 \times 1$};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{C0/C1 조건의 효율성 비율 $\eta$ 분포 비교}
+  \label{fig:eta_c0c1_hist}
+\end{figure}
+
+\chg{끝으로 H1의 검증 결론을 검증한다.} \mrev{H1은 ``$\DRTO_{\text{C1}} \leq R_0 = 6.0$h가 100\% 표본에서 성립''을
+판정 기준으로 한다. $n = 10{,}000$ 표본 전체에서 $\eta_{\text{C1}} \in
+[0.468, 1.000]$로 1.0을 초과하는 사례가 0건이며, 순서 준수율이 100.0\%로
+H3-a와 결합하여 관측성의 복구 단축 효과가 결정론적으로 확인된다. 효과
+크기 Cohen's $d = -1.180$ (매우 큰 효과; \secref{sec:ch5_effect_size}
+참조)이 동시에 충족되어, \textbf{H1은 채택된다}.}
+
+\chg{이어 H3-a의 검증 결론은 다음과 같다.} \mrev{H3-a는 ``$\eta_{\text{C1}} \leq \eta_{\text{C0}} = 1.0$인 비율
+$\geq 99\%$''를 기준으로 한다. $n = 10{,}000$ 전체에서 100.0\%가 충족되어,
+\textbf{H3-a는 채택된다}.}

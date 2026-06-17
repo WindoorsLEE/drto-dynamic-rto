@@ -1,0 +1,225 @@
+{
+  "model": "KCI-5 파레토 불확실성 (개별 시그모이드, C0→C1→C3)",
+  "parameters": {
+    "R0": 6.0,
+    "R_max": 24.0,
+    "kappa": 1.2,
+    "kappa_star": 1.2,
+    "n": 10000,
+    "rng_engine": "PCG64 (numpy.random.default_rng)",
+    "seeds": {
+      "O_raw": 42,
+      "k_O": 20042,
+      "U_gaussian": 30042,
+      "U_pareto": 40042
+    },
+    "sigmoid": "S(z) = 2/(1+exp(-z)) - 1"
+  },
+  "C0": {
+    "eta_mean": 1.0,
+    "eta_std": 0.0,
+    "DRTO_mean": 6.0
+  },
+  "C1": {
+    "eta_mean": 0.8526,
+    "eta_std": 0.1249,
+    "eta_min": 0.4683,
+    "eta_max": 1.0,
+    "DRTO_mean": 5.1153,
+    "DRTO_std": 0.7496,
+    "DRTO_min": 2.81,
+    "DRTO_max": 6.0,
+    "cohens_d_vs_C0": -1.1802
+  },
+  "C3": {
+    "model": "DRTO_C3 = R0 + E_O_bnd + E_U_bnd (pareto)",
+    "eta_mean": 1.5142,
+    "eta_std": 0.7906,
+    "eta_min": 0.472,
+    "eta_max": 3.9996,
+    "DRTO_mean": 9.0851,
+    "DRTO_std": 4.7433,
+    "DRTO_min": 2.832,
+    "DRTO_max": 23.9977,
+    "pct_above_R0": 70.8,
+    "cohens_d_vs_C0": 0.6504,
+    "cohens_d_vs_C1": 1.169,
+    "order_C1_le_C3_pct": 100.0,
+    "t_test_vs_C0": {
+      "t": 65.04,
+      "p": "0.00e+00"
+    },
+    "regression": {
+      "simple": {
+        "formula": "η = 2.2196 + (-1.3941)·k_O",
+        "R2": 0.2557
+      },
+      "multi": {
+        "formula": "η = 2.0181 + (-1.4079)·k_O + (-0.2494)·O + (0.1117)·U",
+        "R2": 0.694521,
+        "RMSE": 0.4369
+      },
+      "quad_9var": {
+        "R2": 0.857522
+      },
+      "consensus_4var": {
+        "method": "forward_top4 ∩ LASSO(λ=0.005)",
+        "variables": [
+          "U",
+          "k_O",
+          "U²",
+          "k_O·U"
+        ],
+        "formula": "η = 1.5739 + (0.2402)·U + (-1.0528)·k_O + (-0.0018)·U² + (-0.1223)·(k_O·U)",
+        "R2": 0.838566,
+        "RMSE": 0.3176,
+        "coefficients": {
+          "intercept": 1.5739,
+          "U": 0.2402,
+          "k_O": -1.0528,
+          "U_sq": -0.0018,
+          "k_O_times_U": -0.1223
+        }
+      },
+      "forward_selection": {
+        "order": [
+          "U",
+          "k_O",
+          "U²",
+          "k_O·U",
+          "k_O·O",
+          "k_O²",
+          "O·U",
+          "O",
+          "O²"
+        ],
+        "cumulative_R2": [
+          0.423956,
+          0.686259,
+          0.799217,
+          0.838566,
+          0.853323,
+          0.855645,
+          0.857181,
+          0.857517,
+          0.857522
+        ]
+      },
+      "lasso": {
+        "0.00015": {
+          "R2": 0.8575,
+          "n_vars": 9,
+          "survivors": [
+            "k_O",
+            "O",
+            "U",
+            "k_O²",
+            "O²",
+            "U²",
+            "k_O·O",
+            "k_O·U",
+            "O·U"
+          ]
+        },
+        "0.0005": {
+          "R2": 0.8575,
+          "n_vars": 9,
+          "survivors": [
+            "k_O",
+            "O",
+            "U",
+            "k_O²",
+            "O²",
+            "U²",
+            "k_O·O",
+            "k_O·U",
+            "O·U"
+          ]
+        },
+        "0.001": {
+          "R2": 0.8574,
+          "n_vars": 9,
+          "survivors": [
+            "k_O",
+            "O",
+            "U",
+            "k_O²",
+            "O²",
+            "U²",
+            "k_O·O",
+            "k_O·U",
+            "O·U"
+          ]
+        },
+        "0.005": {
+          "R2": 0.8556,
+          "n_vars": 7,
+          "survivors": [
+            "k_O",
+            "U",
+            "k_O²",
+            "U²",
+            "k_O·O",
+            "k_O·U",
+            "O·U"
+          ]
+        },
+        "0.01": {
+          "R2": 0.8523,
+          "n_vars": 6,
+          "survivors": [
+            "k_O",
+            "U",
+            "k_O²",
+            "U²",
+            "k_O·O",
+            "k_O·U"
+          ]
+        }
+      }
+    },
+    "split_regression_P858": {
+      "split_point": "P85.8",
+      "threshold_eta": 2.4194,
+      "core": {
+        "n": 8580,
+        "R2_simple": 0.2626,
+        "R2_multi": 0.6297,
+        "R2_quad": 0.999,
+        "k_O_coef_simple": -0.798,
+        "k_O_coef_multi": -1.0341,
+        "multi_formula": "η = 1.7370 + (-1.0341)·k_O + (-0.2751)·O + (0.1090)·U"
+      },
+      "tail": {
+        "n": 1420,
+        "R2_simple": 0.032,
+        "R2_multi_U": 0.4565,
+        "R2_multi_lnU": 0.8598,
+        "R2_quad": 0.7096,
+        "k_O_coef_simple": -0.4151,
+        "k_O_coef_multi_lnU": -1.6636,
+        "multi_lnU_formula": "η = 1.9927 + (-1.6636)·k_O + (-0.1198)·O + (0.8239)·lnU"
+      },
+      "damping_ratio": 0.52
+    }
+  },
+  "comparison": {
+    "C1_vs_C0": {
+      "delta_eta": -0.1474,
+      "cohens_d": -1.1802
+    },
+    "C3_vs_C1": {
+      "delta_eta": 0.6616,
+      "cohens_d": 1.169
+    },
+    "C3_vs_C0": {
+      "delta_eta": 0.5142,
+      "cohens_d": 0.6504
+    }
+  },
+  "correlations": {
+    "corr_kO_O": 0.016194,
+    "corr_O_U": -0.000639,
+    "corr_kO_U": 0.009852
+  }
+}

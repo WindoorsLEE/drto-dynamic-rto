@@ -1,0 +1,131 @@
+{
+  "model": "KCI-2 바운딩 기법 비교 (클리핑 vs 시그모이드)",
+  "parameters": {
+    "R0": 6.0,
+    "n": 10000,
+    "seed_O_raw": 42,
+    "seed_k_O": 20042,
+    "kappas_tested": [
+      0.2,
+      0.5,
+      1.0,
+      2.0,
+      5.0
+    ]
+  },
+  "linear_reference": {
+    "eta_mean": 0.7471,
+    "DRTO_mean": 4.4828,
+    "below_zero_count": 0,
+    "below_zero_pct": 0.0,
+    "DRTO_min": 0.0753
+  },
+  "clipping": {
+    "eta_mean": 0.7471,
+    "eta_std": 0.2203,
+    "eta_min": 0.0126,
+    "eta_max": 1.0,
+    "DRTO_mean": 4.4828,
+    "DRTO_std": 1.3221,
+    "DRTO_min": 0.0753,
+    "DRTO_max": 6.0,
+    "reduction_mean_pct": 25.29,
+    "reduction_max_pct": 98.74,
+    "cohens_d": -1.1476,
+    "compliance_pct": 100.0,
+    "r2_simple": 1.0,
+    "linear_below_zero_pct": 0.0
+  },
+  "sigmoid": {
+    "0.2": {
+      "kappa": 0.2,
+      "eta_mean": 0.9747,
+      "eta_std": 0.022,
+      "eta_min": 0.9016,
+      "eta_max": 1.0,
+      "DRTO_mean": 5.8484,
+      "DRTO_std": 0.132,
+      "DRTO_min": 5.4094,
+      "DRTO_max": 6.0,
+      "reduction_mean_pct": 2.53,
+      "reduction_max_pct": 9.84,
+      "cohens_d": -1.1486,
+      "compliance_pct": 100.0,
+      "r2_simple": 0.999999,
+      "saturation_rate_pct": 0.0
+    },
+    "0.5": {
+      "kappa": 0.5,
+      "eta_mean": 0.9371,
+      "eta_std": 0.0545,
+      "eta_min": 0.758,
+      "eta_max": 1.0,
+      "DRTO_mean": 5.6226,
+      "DRTO_std": 0.3271,
+      "DRTO_min": 4.5482,
+      "DRTO_max": 6.0,
+      "reduction_mean_pct": 6.29,
+      "reduction_max_pct": 24.2,
+      "cohens_d": -1.1535,
+      "compliance_pct": 100.0,
+      "r2_simple": 0.999963,
+      "saturation_rate_pct": 0.0
+    },
+    "1.0": {
+      "kappa": 1.0,
+      "eta_mean": 0.8761,
+      "eta_std": 0.1059,
+      "eta_min": 0.5428,
+      "eta_max": 1.0,
+      "DRTO_mean": 5.2565,
+      "DRTO_std": 0.6351,
+      "DRTO_min": 3.257,
+      "DRTO_max": 6.0,
+      "reduction_mean_pct": 12.39,
+      "reduction_max_pct": 45.72,
+      "cohens_d": -1.1706,
+      "compliance_pct": 100.0,
+      "r2_simple": 0.999445,
+      "saturation_rate_pct": 0.0
+    },
+    "2.0": {
+      "kappa": 2.0,
+      "eta_mean": 0.7651,
+      "eta_std": 0.1908,
+      "eta_min": 0.2437,
+      "eta_max": 1.0,
+      "DRTO_mean": 4.5907,
+      "DRTO_std": 1.1448,
+      "DRTO_min": 1.4624,
+      "DRTO_max": 6.0,
+      "reduction_mean_pct": 23.49,
+      "reduction_max_pct": 75.63,
+      "cohens_d": -1.2311,
+      "compliance_pct": 100.0,
+      "r2_simple": 0.993059,
+      "saturation_rate_pct": 0.0
+    },
+    "5.0": {
+      "kappa": 5.0,
+      "eta_mean": 0.5378,
+      "eta_std": 0.31,
+      "eta_min": 0.0142,
+      "eta_max": 1.0,
+      "DRTO_mean": 3.2268,
+      "DRTO_std": 1.8599,
+      "DRTO_min": 0.0855,
+      "DRTO_max": 6.0,
+      "reduction_mean_pct": 46.22,
+      "reduction_max_pct": 98.58,
+      "cohens_d": -1.491,
+      "compliance_pct": 100.0,
+      "r2_simple": 0.90799,
+      "saturation_rate_pct": 3.93
+    }
+  },
+  "sigmoid_vs_clipping_comparison": {
+    "max_abs_diff": 5.3341,
+    "mean_abs_diff": 1.3656,
+    "max_diff_at_extreme": 5.3341
+  }
+}

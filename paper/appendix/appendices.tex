@@ -1,0 +1,475 @@
+% =====================================================================
+% appendices.tex -- 박사학위 논문 부록
+% 참조: doctoral/research_model/research_model.tex
+% 빌드: main_doc.tex에서 \appendix 후 \input{appendix/appendices}
+% 핵심 파라미터: κ = 1.2, R₀ = 6.0h, R_max = 24.0h (= 4R₀)
+% 모델: 개별 시그모이드 바운딩, DRTO = R₀ + E_{O,bnd} + E_{U,bnd}
+% =====================================================================
+
+% =====================================================================
+% 부록 A: 기호·용어·수식 목록
+% =====================================================================
+\clearpage
+% ── 부록 간지 ──
+\thispagestyle{plain}
+\phantomsection
+\addcontentsline{toc}{chapter}{\PlainTOCtext{부록}}
+\vspace*{0.35\textheight}
+\begin{center}{\ChapterFont\bfseries\fontsize{16}{22}\selectfont 부록}\end{center}
+\clearpage
+
+\chapter{기호·용어·수식 목록}
+\label{app:notation-list}
+
+\SetAppendixLetter{A}
+
+본 부록은 본 연구에서 사용되는 주요 기호, 용어, 수식을 일람표로 정리한다.
+
+\phantomsection\label{app:notation-overview}
+\AppSection{주요 기호}
+\label{app:symbols}
+
+[표~A-1]은 주요 기호, 용어, 수식의 일람표이다.
+
+\small
+\begin{longtable}{c >{\raggedright\arraybackslash}p{4.8cm} >{\raggedright\arraybackslash}p{8.5cm}}
+\toprule
+\textbf{기호} & \textbf{명칭} & \textbf{정의 / 값} \\
+\midrule
+\endhead
+
+\multicolumn{3}{l}{\textbf{입력 변수 및 매개변수}} \\
+\midrule
+$R_0$           & 기준 RTO (Base RTO)      & $6.0$\,h (BIA 기반 정적 복구 목표) \\
+$R_{\max}$      & MTPD (DRTO 상한)         & $24.0$\,h $= 4R_0$, 최대허용중단기간 \\
+$O_{\text{raw}}$ & 관측성 원시값 (Observability raw value) & $\in [0,\,1]$, 0=블라인드, 1=완전 가시 \\
+$k_O$           & 관측성 가중치 (Observability weight) & $\in [0,\,1]$, 관측성 민감도 \\
+$k_U$           & 불확실성 가중치           & $= 1 - k_O$ (상보적 제약) \\
+$\kappa$        & 곡률 매개변수 (Curvature parameter) & $> 0$, 시그모이드 곡률 \\
+$\kappa^*$      & \jrev{\citet{lee2026drto} 도출 곡률 (본 논문 전제)} & $1.2$ \jrev{(선행연구 C1 환경 $F(\kappa)$ 최대화 결과)} \frev{— \emph{잠정·보수적 실무 기본값}} \\
+$U_{\text{raw}}$ & 불확실성 원시값 (Uncertainty raw value) & C2: $\sim N(3,1)$, C3: $\sim 6 \cdot \text{Pareto}(3)$. 무차원 강도 \\
+$\alpha$        & 파레토 형상 모수          & $3$ (유한 평균/분산, 무한 첨도) \\
+\midrule
+
+\multicolumn{3}{l}{\textbf{함수 및 파생 인자}} \\
+\midrule
+$S(z)$          & 수정 시그모이드 (Sigmoid function) & $2/(1+e^{-z}) - 1 \in (-1,\,1)$ \\
+$z_O$           & 시그모이드 관측성 인자    & $\kappa \cdot k_O \cdot O_{\text{raw}} \geq 0$ \\
+$z_U$           & 시그모이드 불확실성 인자   & $\kappa \cdot k_U \cdot R_0 \cdot U_{\text{raw}} / (R_{\max} - R_0) \geq 0$ (무차원) \\
+$E_{O,\text{raw}}$ & 관측성 원시 효과 (Raw observability effect) & $-R_0 \cdot k_O \cdot O_{\text{raw}}$ \\
+$E_{U,\text{raw}}$ & 불확실성 원시 효과 (Raw uncertainty effect) & $(R_{\max} - R_0) \cdot k_U \cdot U_{\text{raw}}$ \\
+$E_{O,\text{bnd}}$ & 관측성 바운딩 조정량 (Bounded obs.\ effect) & $-R_0 \cdot S(z_O) \in (-R_0,\,0]$ \\
+$E_{U,\text{bnd}}$ & 불확실성 바운딩 조정량 (Bounded unc.\ effect) & $(R_{\max} - R_0) \cdot S(z_U) \in [0,\,R_{\max}-R_0)$ \\
+\midrule
+
+\multicolumn{3}{l}{\textbf{출력 변수}} \\
+\midrule
+$\DRTO$         & 동적 복구목표시간 (Dynamic RTO) & $R_0 + E_{O,\text{bnd}} + E_{U,\text{bnd}} \in (0,\,R_{\max})$ \\
+$\eta$          & 효율비 (Efficiency ratio) & $\DRTO / R_0 \in (0,\,4)$ \\
+$\bar{\eta}$    & 효율비 평균              & 각 조건별 $\eta$ 표본 평균 \\
+$\text{SD}(\eta)$ & 효율비 표준편차         & 각 조건별 $\eta$ 표본 표준편차 \\
+\midrule
+
+\multicolumn{3}{l}{\textbf{최적화 기준 함수}} \\
+\midrule
+$F(\kappa)$     & 다기준 종합점수 (Composite score) & $f_1 \cdot f_2 \cdot f_3 \cdot f_4$ \\
+$f_1(\kappa)$   & 실무 유의성 (Practical significance) & 목표 감소율 15\% 기준 \jrev{(선행연구 C1 환경)} \\
+$f_2(\kappa)$   & 비포화 (Non-saturation)  & 포화율 $< 5\%$ \jrev{(선행연구 C1 환경)} \\
+$f_3(\kappa)$   & 효과 크기 (Effect size)  & $|d| \geq 0.8$ \jrev{(선행연구 C1 환경)} \\
+$f_4(\kappa)$   & 설명력 (Explanatory power) & $R^2 \geq 0.95$ \jrev{(선행연구 C1 환경)} \\
+\midrule
+
+\multicolumn{3}{l}{\textbf{통계 기호}} \\
+\midrule
+$n$             & 표본 크기 (Sample size)   & $10{,}000$ \\
+$R^2$           & 결정계수                & 회귀 모형 설명력 \\
+$R^2_{(1\mathrm{s})}$ & 1차 단순회귀 결정계수 & $\hat{\eta}^{(1\mathrm{s})}$ 모형의 $R^2$ \\
+$R^2_{(1\mathrm{m})}$ & 1차 다중회귀 결정계수 & $\hat{\eta}^{(1\mathrm{m})}$ 모형의 $R^2$ \\
+$R^2_{(2\mathrm{q})}$ & 2차교호작용 결정계수 & $\hat{\eta}^{(2\mathrm{q})}$ 모형의 $R^2$ \\
+$\Delta R^2$    & 결정계수 변화량         & 회귀 단계 간 $R^2$ 증가분 \\
+$d$             & Cohen's $d$            & $(\bar{X}_1 - \bar{X}_2) / s_p$ \\
+$\text{VaR}_q$  & 위험가치 (Value-at-Risk) & $F_\eta^{-1}(q/100)$, $\eta$의 $q$-백분위값 \\
+$\text{CVaR}_q$ & 조건부 꼬리위험          & $E[\eta \mid \eta > \text{VaR}_q]$ \\
+\midrule
+
+\multicolumn{3}{l}{\textbf{모델 조건}} \\
+\midrule
+C0              & 기저 조건 (Baseline)     & $O_{\text{raw}} = 0$, 정적 RTO ($\eta = 1$) \\
+C1              & 관측성 조건 (Observability) & $O_{\text{raw}} > 0$, 단일 채널 \\
+C2              & 가우시안 불확실성 조건    & C1 + $U \sim N(3,1)$, 가우시안(경꼬리) \\
+C3              & 파레토 불확실성 조건      & C1 + $U \sim 6 \cdot \text{Pareto}(3)$, 파레토(중꼬리) \\
+\midrule
+
+\multicolumn{3}{l}{\textbf{가설}} \\
+\midrule
+H1--\jrev{H3}          & L1 시뮬레이션 검증       & H1: 관측성 효과, H2: 경계 보장, H3: 조건 순서 \\
+\jrev{H4}--\jrev{H5}          & L2 회귀 검증             & \jrev{H4}: $R^2_{(2\mathrm{q})} \geq 0.95$, \jrev{H5}: 교호작용 $\Delta R^2$ 유의 \\
+\jrev{H6}--\jrev{H7}          & L3 강건성 검증           & \jrev{H6}: 시드 독립성 ($|r| < 0.02$), \jrev{H7}: 다중 시드 강건성 ($10^8$회) \\
+\jrev{H8}              & L4 이중채널 검증         & Tail/Core $k_O$ 감쇠비 $< 1$ (P85.8 분할) \\
+\jrev{H9}--\jrev{H10}        & L5 전문가 평가           & \jrev{H9}: 정량 평균 $\geq 4.0/5.0$, \jrev{H10}: 정성 동의율 $\geq 80\%$ \\
+\midrule
+
+\multicolumn{3}{l}{\textbf{실무 확장 기호 (Practical Extension)}} \\
+\midrule
+$O_{\mathrm{APM}}$  & APM 관측성              & $w_1 R_{\mathrm{avail}} + w_2 (1-R_{\mathrm{error}}) + w_3 R_{\mathrm{perf}} \in [0,1]$ \\
+$O_{\mathrm{SIEM}}$ & SIEM 관측성             & 보안 이벤트 심각도·대응 상태 기반, $\in [0,1]$ \\
+$R_{\mathrm{avail}}$ & 가용률 (Availability rate) & 서비스 가용성 비율, $\in [0,1]$ \\
+$R_{\mathrm{error}}$ & 오류율 (Error rate)     & 서비스 오류 비율, $\in [0,1]$. $1-R_{\mathrm{error}}$로 반전 사용 \\
+$R_{\mathrm{perf}}$  & 성능 지수 (Performance rate) & 서비스 응답 성능 비율, $\in [0,1]$ \\
+$w_i$               & APM 가중치              & $O_{\mathrm{APM}}$ 구성 요소 가중 계수 ($\sum w_i = 1$) \\
+$\alpha_{\mathrm{obs}}$ & 관측성 혼합비        & $O(t) = \alpha_{\mathrm{obs}} O_{\mathrm{APM}} + (1-\alpha_{\mathrm{obs}}) O_{\mathrm{SIEM}}$, $\in [0.5, 0.8]$ \\
+$T_{\mathrm{actual}}$   & 실제 복구 시간 (Actual recovery time) & $> 0$ (h), 백테스팅 비교 대상 \\
+$\DRTO_{\mathrm{final}}$ & 최종 DRTO 예측값      & $(0, R_{\max})$ (h), 장애 시점 산출값 \\
+$E$                     & 절대 오차 (Absolute error) & $T_{\mathrm{actual}} - \DRTO_{\mathrm{final}}$ (h) \\
+$E_r$                   & 상대 오차 (Relative error) & $E / T_{\mathrm{actual}}$, 무차원 \\
+$R_0(t)$                & 시변 기준 RTO (Time-varying base RTO) & 정적 $R_0$의 시계열 확장, $> 0$ (h) \\
+$\kappa(t)$             & 시변 곡률 매개변수 (Time-varying curvature) & 정적 $\kappa = 1.2$의 시계열 확장, $> 0$ \\
+
+\bottomrule
+\end{longtable}
+
+
+\AppSection{핵심 수식}
+\label{app:key-formulas}
+
+\begin{enumerate}[leftmargin=2em]
+
+\item \textbf{DRTO 개별 시그모이드 바운딩 모델}:
+\[
+  \DRTO = R_0 + E_{O,\text{bnd}} + E_{U,\text{bnd}}
+  = R_0 - R_0 \cdot S(z_O) + (R_{\max} - R_0) \cdot S(z_U)
+\]
+
+\item \textbf{수정 시그모이드 함수}:
+\[
+  S(z) = \frac{2}{1 + e^{-z}} - 1, \quad S(z) \in (-1,\,1), \quad S(0) = 0
+\]
+
+\item \textbf{관측성 인자}: $z_O = \kappa \cdot k_O \cdot O_{\text{raw}}$
+
+\item \textbf{불확실성 인자}: $z_U = \kappa \cdot k_U \cdot \dfrac{R_0 \cdot U_{\text{raw}}}{R_{\max} - R_0}$
+
+\item \textbf{다기준 종합점수}:
+$F(\kappa) = f_1(\kappa) \cdot f_2(\kappa) \cdot f_3(\kappa) \cdot f_4(\kappa)$,
+\quad $F^* = F(1.2) = 0.9997$ \jrev{(\citet{lee2026drto} C1 환경 결과; 본 논문은 \frev{분포 환경 적합성} 종합 명제로 보완 — \secref{sec:ch4_hypothesis_summary} 참조)}
+
+\item \textbf{합의 4변수 간명 모형} (Forward Selection top-4 $\cap$ LASSO):
+\begin{itemize}
+  \item C2: $\hat{\eta} = 1.225 - 0.291\,k_O + 0.467\,U - 0.433\,(k_O \!\cdot\! U) - 0.562\,(k_O \!\cdot\! O)$\quad ($R^2 = 0.996$)
+  \item C3: $\hat{\eta} = 1.574 + 0.240\,U - 1.053\,k_O - 0.002\,U^2 - 0.122\,(k_O \!\cdot\! U)$\quad ($R^2 = 0.839$)
+\end{itemize}
+
+\end{enumerate}
+
+
+\AppSection{핵심 용어}
+\label{app:key-terms}
+
+\begin{longtable}{p{3.5cm} p{4cm} p{7cm}}
+\toprule
+\textbf{한국어} & \textbf{영어} & \textbf{정의 요약} \\
+\midrule
+\endhead
+동적 복구목표시간 & Dynamic RTO & 관측성·불확실성을 반영한 동적 RTO \\
+관측성 & Observability & 시스템 내부 상태를 외부 출력으로 추정 가능한 정도 \\
+불확실성 (가우시안) & Uncertainty (Gaussian) & 정규분포를 따르는 일상적 변동, $U_{\mathrm{raw}} \sim N(3,\,1)$ \\
+불확실성 (파레토) & Uncertainty (Pareto) & 파레토 분포를 따르는 극단적 변동, $U_{\mathrm{raw}} \sim 6 \cdot \mathrm{Pareto}(\alpha=3)$ \\
+개별 시그모이드 바운딩 & Individual Sigmoid Bounding & 채널별 독립 시그모이드로 물리적 경계 보장 \\
+이중채널 감쇠 & Dual-channel Attenuation & 극단적 불확실성(Tail 영역)에서 불확실성 채널이 지배적으로 작용하여 관측성 채널의 복구 단축 효과가 구조적으로 약화되는 현상 ($k_O$ 감쇠비 $0.52\times$) \\
+과다예비 & Over-provisioning & 불확실성 과대 추정으로 필요 이상의 복구 자원을 배정 \\
+과소예비 & Under-provisioning & 불확실성 과소 추정으로 복구 자원이 부족하게 배정 \\
+분할 회귀 & Split Regression & P85.8 기준 Core/Tail 분리 회귀 분석 \\
+CDF 교차점 & CDF Crossover & C2=C3 누적분포 교차 지점 (P85.8, $\eta \approx 2.42$) \\
+효율비 & Efficiency Ratio ($\eta$) & $\DRTO / R_0$, 기준 대비 비율 \\
+불확실성 프리미엄 & Uncertainty Premium & 불확실성에 의한 DRTO 추가 증가분 \\
+에스컬레이션 & Escalation & $\eta$ 수준별 단계적 대응 격상 \\
+\midrule
+\multicolumn{3}{l}{\textbf{산업별 관측성 요소}} \\
+\midrule
+트랜잭션 모니터링 & Transaction Monitoring & 금융 거래를 실시간 감시하여 이상 징후를 탐지하는 시스템 \\
+FDS & Fraud Detection System & 이상거래탐지시스템. 금융 사기·부정거래를 실시간 패턴 분석으로 탐지 \\
+EMR & Electronic Medical Record & 전자의무기록. 환자 진료 정보를 전자적으로 관리하는 시스템 \\
+MES & Manufacturing Execution System & 제조실행시스템. 생산 현장의 작업 지시·실적·품질을 실시간 관리 \\
+SCADA & Supervisory Control and Data Acquisition & 감시제어 데이터수집 시스템. 산업 설비·인프라의 원격 감시·제어 \\
+APM & Application Performance Monitoring & 애플리케이션 응답 시간, 오류율 등을 실시간 모니터링하는 시스템 \\
+SIEM & Security Information and Event Management & 보안 이벤트 수집·분석·대응 통합 관리. $O_{\mathrm{SIEM}}$ 산출 기반 \\
+{IDS} & {Intrusion Detection System} & {침입탐지시스템. 네트워크·호스트의 비정상 활동을 탐지·경고} \\
+{APT} & {Advanced Persistent Threat} & {지능형 지속 위협. 장기간 은닉하며 특정 조직을 표적으로 공격하는 고도화된 사이버 위협} \\
+\midrule
+\multicolumn{3}{l}{{\textbf{업무연속성·재해복구}}} \\
+\midrule
+{BCM} & {Business Continuity Management} & {사업연속성 관리. 중단 상황에서 핵심 업무를 유지·복구하기 위한 관리 체계} \\
+{BCP} & {Business Continuity Plan} & {사업연속성 계획. 업무 중단 시 복구 절차를 문서화한 계획서} \\
+{BCMS} & {Business Continuity Management System} & {사업연속성 관리 체계. \nrev{ISO 22301:2019}에 따른 BCM 구현·운영 통합 시스템} \\
+{BIA} & {Business Impact Analysis} & {업무영향분석. 핵심 업무의 중단 영향도를 분석하여 RTO, RPO 등 복구 목표를 결정하는 프로세스} \\
+{DR} & {Disaster Recovery} & {재해복구. 재난 발생 후 IT 시스템 및 업무 기능을 원래 상태로 복원하는 활동} \\
+{MTPD} & {Maximum Tolerable Period of Disruption} & {최대허용중단시간. 업무 중단이 허용되는 최대 기간 ($= R_{\max}$)} \\
+\midrule
+\multicolumn{3}{l}{{\textbf{리스크 관리·금융}}} \\
+\midrule
+{ERM} & {Enterprise Risk Management} & {전사적 위험관리. 조직 전체 위험을 통합적으로 식별·평가·관리하는 체계} \\
+{KRI} & {Key Risk Indicator} & {주요 위험 지표. $\eta$가 임계값 초과 시 경보를 발생시키는 ERM 연계 지표} \\
+{VaR} & {Value-at-Risk} & {위험가치. 신뢰수준(예: 99\%)에서 최대 손실액을 나타내는 금융 위험 지표} \\
+{CVaR} & {Conditional Value-at-Risk} & {조건부 위험가치. VaR 초과 극단 손실의 평균. 꼬리 위험 평가 지표} \\
+{DaR} & {DRTO-at-Risk} & {VaR 프레임을 DRTO에 적용. ``99\% 신뢰수준에서 DRTO가 X시간 이하'' (E3 제안)} \\
+{Basel} & {Basel Accord / Basel Committee} & {바젤 위원회 규제. 은행 자기자본·운영 위험 기준. DRTO를 운영위험 정량 지표로 활용 가능} \\
+\midrule
+\multicolumn{3}{l}{{\textbf{규제·표준}}} \\
+\midrule
+{\nrev{ISO 22301:2019}} & {ISO 22301:2019} & {사업연속성 관리체계 국제표준. BIA, RTO, 복구 전략 등을 규정} \\
+{NIST CSF} & {NIST Cybersecurity Framework} & {NIST 사이버보안 프레임워크(v2.0). 식별·보호·탐지·대응·복구 5기능. DRTO는 복구 기능 정량 지표} \\
+{DORA} & {Digital Operational Resilience Act} & {EU 디지털 운영 탄력성 규제. 금융기관 사이버 복원력 의무화 (2023년 발효)} \\
+\midrule
+\multicolumn{3}{l}{{\textbf{사이버 보안·위협 인텔리전스}}} \\
+\midrule
+{DDoS} & {Distributed Denial of Service} & {분산 서비스 거부 공격. 대량 트래픽으로 서비스 접근을 차단하는 공격 유형} \\
+{MITRE ATT\&CK} & {Adversarial Tactics, Techniques \& Common Knowledge} & {사이버 공격 기법·전술 분류 체계. 공격 유형별 $U_{\mathrm{raw}}$ 자동 조정에 활용} \\
+{STIX} & {Structured Threat Information Expression} & {사이버 위협 정보 표준 교환 형식. TAXII와 함께 위협 인텔리전스 자동 연동} \\
+{TAXII} & {Trusted Automated Exchange of Intelligence Information} & {STIX 형식 위협 정보의 자동 교환 프로토콜} \\
+\midrule
+\multicolumn{3}{l}{{\textbf{클라우드·DevOps}}} \\
+\midrule
+{GitOps} & {Git-based Operations} & {Git 리포지토리를 SSOT로 인프라·서비스 변경을 코드 기반 자동화. DRTO 파라미터 버전 관리 (E4 제안)} \\
+{IaC} & {Infrastructure as Code} & {인프라를 코드로 정의·관리 (Terraform, Ansible 등). GitOps와 연동하여 인프라 변경 시 DRTO 영향 자동 평가} \\
+{Kubernetes (K8s)} & {Container Orchestration Platform} & {컨테이너 오케스트레이션 플랫폼. Pod·Service·Cluster 단위별 DRTO 파라미터 차별화 필요} \\
+{CI/CD} & {Continuous Integration / Continuous Deployment} & {지속적 통합·배포. 코드 변경의 자동 빌드·테스트·배포 파이프라인} \\
+{Serverless} & {Serverless Computing} & {서버리스 컴퓨팅. 서버 관리 없이 코드 실행 단위로 자원을 할당하는 클라우드 모델. $R_0$ 정의 방법 차별화 필요} \\
+YAML & \vrev{YAML} & 사람이 읽기 쉬운 데이터 직렬화 언어. GitOps에서 DRTO 파라미터 정의에 활용 \\
+\midrule
+\multicolumn{3}{l}{{\textbf{연구 방법론·통계}}} \\
+\midrule
+{CVI} & {Content Validity Index} & {내용타당도 지수. I-CVI(문항 수준, $\geq 0.80$), S-CVI/Ave(척도 수준, $\geq 0.90$)} \\
+{ICC} & {Intraclass Correlation Coefficient} & {급내상관계수. 다수 평가자 간 일치도 측정 통계량} \\
+\bottomrule
+\end{longtable}
+
+%% --- 핵심 용어 상세 설명 및 사례 ---
+
+
+
+
+%%==APPB_START==
+\chapter{조직 성숙도 자가 진단 체크리스트}
+\label{app:eta-dual-use-detail}
+\label{app:self-assessment}
+
+\SetAppendixLetter{B}
+
+현업 담당자가 조직의 $\eta$ 수준을 간접적으로 추정할 수 있는
+15개 항목 자가 진단 체크리스트를 \p{[}표~\ref{tab:app-self-assessment}\p{]}에 제시한다.
+
+\begin{table}[htbp]
+\centering
+\caption{BCMS 성숙도 자가 진단 체크리스트 (15개 항목)}
+\label{tab:app-self-assessment}
+\small
+\begin{tabularx}{\textwidth}{c X c}
+\toprule
+\textbf{No.} & \textbf{진단 항목} & \textbf{영역} \\
+\midrule
+\multicolumn{3}{l}{\textbf{관측성 역량} (체크 수 $\uparrow$ $\to$ $\eta$ $\downarrow$)} \\
+\midrule
+1 & 주요 시스템의 실시간 모니터링 도구가 운영 중인가? & $O$ \\
+2 & 장애 발생 시 자동 알림(alerting) 체계가 작동하는가? & $O$ \\
+3 & MTTR(평균복구시간)을 정기적으로 측정·추적하고 있는가? & $O$ \\
+4 & 장애 원인 분석(RCA)을 체계적으로 수행하는가? & $O$ \\
+5 & 로그·메트릭·트레이스 중 2개 이상의 관측성 축을 확보했는가? & $O$ \\
+6 & 관측성 투자에 대한 정량적 효과 측정을 수행하는가? & $k_O$ \\
+\midrule
+\multicolumn{3}{l}{\textbf{불확실성 관리} (체크 수 $\uparrow$ $\to$ $\eta$ $\downarrow$)} \\
+\midrule
+7 & 복구 절차서(runbook)가 문서화되어 최신 상태로 유지되는가? & $U$ \\
+8 & 연 2회 이상 BCM 훈련/모의 복구를 실시하는가? & $U$ \\
+9 & 외부 공급업체 장애 시 대체 방안(plan~B)이 수립되어 있는가? & $U$ \\
+10 & 극단 시나리오(블랙 스완)에 대한 대응 계획이 있는가? & $U$ \\
+11 & 복구 시간 편차를 추적하고 원인별로 분류하는가? & $U$ \\
+12 & 사후 분석(post-mortem) 결과를 체계적으로 반영하는가? & $U$ \\
+\midrule
+\multicolumn{3}{l}{\textbf{거버넌스}} \\
+\midrule
+13 & BCM 전담 조직 또는 책임자가 지정되어 있는가? & 조직 \\
+14 & BCM KPI가 경영진에게 정기적으로 보고되는가? & 조직 \\
+15 & BIA(업무영향분석)를 정기적으로 갱신하는가? & 조직 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+% 부록 I: 전문가 검증 상세 (기존 부록 H)
+
+
+%%==APPC_START==
+\chapter{전문가 검증 상세 설문 구성}
+\label{app:survey-structure}
+
+\SetAppendixLetter{C}
+
+\AppSection{설문 구조 개요}
+\label{app:survey-overview}
+
+{전문가 평가 설문은 4개 리커트 영역(Section B--E)과 1개 개방형 영역(Section F),
+총 32문항으로 구성되었다(\p{[}표~\ref{tab:app-survey-structure}\p{]}).
+정량 분석 대상은 리커트 5점 척도 27문항(B--E)이다.}
+
+\begin{table}[htbp]
+\centering
+\caption{전문가 평가 설문 구조 (4개 리커트 영역 + 개방형, 32문항)}
+\label{tab:app-survey-structure}
+\small
+\begin{tabular}{c l >{\raggedright\arraybackslash}p{3.8cm} >{\raggedright\arraybackslash}p{4.5cm} r}
+\toprule
+\textbf{영역} & \textbf{코드} & \textbf{명칭} & \textbf{평가 내용} & \textbf{문항 수} \\
+\midrule
+Section B & B1--B6  & 모델 타당성      & 이론적 논리성, 구조적 타당성              & 6 \\
+Section C & C1--C6  & 파라미터 적정성   & 권장 범위의 실무 적합성                    & 6 \\
+{Section D} & {D1--D6}  & {실무 적용성}      & {데이터 수집, BCM 통합, 도입 의향}           & {6} \\
+{Section E} & {E1--E9}  & {산업별 적용 가능성 및 $\eta$ 활용 체계} & {산업 범용성, 에스컬레이션, 성숙도, 환류} & {9} \\
+\midrule
+          &         & {\textbf{리커트 소계}} &                                       & {\textbf{27}} \\
+\midrule
+{Section F} & {F1--F5}  & {개방형 문항}      & {강점, 장벽, 제안, 보완, 기타 의견}          & {5} \\
+\midrule
+          &         & {\textbf{전체 합계}}  &                                        & {\textbf{32}} \\
+\bottomrule
+\end{tabular}
+\vspace{0.5em}
+
+\footnotesize
+{\noindent 리커트 척도 적용 문항: B1--E9의 27문항. 개방형 문항(F1--F5)은 별도 질적 분석 대상.} \\
+\noindent 평가 척도: 1점(전혀 동의하지 않음) -- 5점(매우 동의함).
+\normalsize
+\end{table}
+
+\AppSection{설문 내용}
+\label{app:survey-items}
+
+\AppSubsection{Section B: 모델 타당성 (6문항)}
+\label{app:survey-b}
+
+$\DRTO$ 모델의 이론적 구조와 논리적 타당성을 평가하는 6개 문항이다(\p{[}표~\ref{tab:app-survey-items-b}\p{]}).
+
+\begin{table}[htbp]
+\centering
+\caption{Section B: 모델 타당성 문항}
+\label{tab:app-survey-items-b}
+\small
+\begin{tabularx}{\textwidth}{cX}
+\toprule
+\textbf{문항} & \textbf{내용} \\
+\midrule
+B1 & 관측성($O$)이 높아지면 $\DRTO$가 감소한다는 관계의 논리적 타당성 \\
+B2 & 불확실성($U$)이 높아지면 $\DRTO$가 증가한다는 관계의 논리적 타당성 \\
+B3 & 시그모이드 함수를 활용한 바운딩 메커니즘의 적절성 \\
+B4 & C0--C3 조건 구분의 명확성 및 점진적 복잡도 증가의 유용성 \\
+B5 & $k_O + k_U = 1$ 제약 조건의 해석 용이성 \\
+B6 & $\DRTO$ 프레임워크의 전반적 이론적 타당성 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\AppSubsection{Section C: 파라미터 적정성 (6문항)}
+\label{app:survey-c}
+
+$\DRTO$ 모델의 핵심 매개변수 설정값과 실무 조정 가능성을 평가하는 6개 문항이다(\p{[}표~\ref{tab:app-survey-items-c}\p{]}).
+
+\begin{table}[htbp]
+\centering
+\caption{Section C: 파라미터 적정성 문항}
+\label{tab:app-survey-items-c}
+\small
+\begin{tabularx}{\textwidth}{cX}
+\toprule
+\textbf{문항} & \textbf{내용} \\
+\midrule
+C1 & $k_O \in [0.4, 0.6]$ 권장 범위의 실무 적용 가능성 \\
+C2 & $k_U = 1 - k_O$ 연동 설계의 파라미터 관리 단순화 기여 \\
+C3 & 시그모이드 바운딩 자연 경계 $(0,\; R_{\max})$의 실무 적절성 \\
+C4 & 곡률 파라미터 $\kappa = 1.2$ 설정의 적절성 \\
+C5 & 파레토 분포($\alpha = 3.0$) 꼬리 위험 반영 적절성 \\
+C6 & 파라미터 구조의 직관성 및 조직 맞춤 조정 용이성 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\AppSubsection{Section D: 실무 적용성 (6문항)}
+\label{app:survey-d}
+
+현업 환경에서의 데이터 수집 가능성, 기존 프로세스 통합, 도입 의향을 평가하는 6개 문항이다(\p{[}표~\ref{tab:app-survey-items-d}\p{]}).
+
+\begin{table}[htbp]
+\centering
+\caption{Section D: 실무 적용성 문항}
+\label{tab:app-survey-items-d}
+\small
+\begin{tabularx}{\textwidth}{cX}
+\toprule
+\textbf{문항} & \textbf{내용} \\
+\midrule
+D1 & 현업에서 관측성 및 불확실성 데이터 수집 가능성 \\
+D2 & 기존 BCM/BIA 프로세스와의 통합 가능성 \\
+D3 & $\DRTO$ 결과의 경영진 보고 및 의사결정 활용 적합성 \\
+D4 & 위험 기반 의사결정 지원의 유용성 \\
+D5 & 단계적 도입(C0 $\to$ C3)을 전제로 한 구현 복잡도 수용성 \\
+D6 & 적절한 지원 제공 시 실제 업무 환경 도입 의향 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\AppSubsection{Section E: 산업별 적용 가능성 및 $\eta$ 활용 체계 (9문항)}
+\label{app:survey-e}
+
+{$\DRTO$ 모델의 산업별 적용 가능성과 효율비($\eta$) 기반 활용 체계를 평가하는
+9개 문항이다(\p{[}표~\ref{tab:app-survey-items-e}\p{]}).}
+
+\begin{table}[htbp]
+\centering
+\caption{Section E: 산업별 적용 가능성 및 $\eta$ 활용 체계 문항}
+\label{tab:app-survey-items-e}
+\small
+\begin{tabularx}{\textwidth}{cX}
+\toprule
+\textbf{문항} & \textbf{내용} \\
+\midrule
+{E1} & {산업별 $R_0$/$R_{\max}$ 설정의 현실성} \\
+{E2} & {산업별 관측성 요소의 적절성} \\
+{E3} & {산업별 불확실성 요소의 적절성} \\
+{E4} & {$\eta$ 기반 에스컬레이션 체계의 활용성} \\
+{E5} & {산업 범용성} \\
+{E6} & {가이드라인의 실무 도입 지원 효과} \\
+{E7} & {$\eta$ 기반 BCMS 성숙도 5단계 모델의 활용성} \\
+{E8} & {$\eta$의 평상시·위기시 이중 활용 체계} \\
+{E9} & {진단--향상--대응--환류 선순환 구조} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\AppSubsection{Section F: 개방형 문항 (5문항)}
+\label{app:survey-f}
+
+{$\DRTO$ 모델에 대한 자유 서술형 5개 문항이다. 별도 질적 분석 대상으로,
+리커트 정량 분석에는 포함되지 않는다.}
+\nref{5개 개방형 문항의 상세 내용은 \tabref{tab:app-survey-items-f}에 제시하였다.}
+
+\begin{table}[htbp]
+\centering
+\caption{Section F: 개방형 문항}
+\label{tab:app-survey-items-f}
+\small
+\begin{tabularx}{\textwidth}{cX}
+\toprule
+\textbf{문항} & \textbf{내용} \\
+\midrule
+{F1} & {$\DRTO$ 모델의 가장 큰 강점} \\
+{F2} & {실무 도입 시 예상되는 가장 큰 장벽이나 어려움} \\
+{F3} & {실무 적용성을 높이기 위해 추가로 필요한 것} \\
+{F4} & {모델 보완이 필요한 부분} \\
+{F5} & {기타 의견이나 제안 사항} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+
+
+
+

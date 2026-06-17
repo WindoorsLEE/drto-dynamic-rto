@@ -1,0 +1,355 @@
+
+
+%% ===================================================================
+\section{시그모이드 바운딩의 수학적 성질}
+\label{sec:sigmoid-properties}
+%% ===================================================================
+
+본 절에서는 $\DRTO$ 모델의 기저 함수인 수정 시그모이드 $S(z)$의
+수학적 성질을 체계적으로 분석한다.
+
+%% -------------------------------------------------------------------
+\subsection{기본 해석학적 성질}
+\label{subsec:basic-properties}
+%% -------------------------------------------------------------------
+
+수정 시그모이드 함수 $S(z) = 2/(1+e^{-z}) - 1$은 다음의 성질을 갖는다.
+\chg{앞서 2.5절에서 바운딩 기법의 관점에서 개관한 기본 성질을, 본 절에서는 $\DRTO$ 바운딩 함수로서 2계 도함수와 변곡점, 곡률 거동까지 포함하여 엄밀하게 정리한다.}
+
+\chg{첫째, 전역 미분 가능성($C^{\infty}$) 측면에서 $S(z)$는 지수 함수의 합성으로 구성되므로
+전체 정의역에서 무한 번 미분 가능하며, 1차 도함수가 $S'(z) = 2e^{-z}/(1+e^{-z})^2 > 0$
+($\forall z \in \mathbb{R}$)이므로 전 구간에서 단조증가한다. 둘째, 단조증가성에 의해 입력의
+순서가 출력에 보존되어 $z_1 < z_2$이면 $S(z_1) < S(z_2)$가 성립하며, 이는 관측성이 높을수록
+$\DRTO$가 더 감소하고 불확실성이 클수록 더 증가하는 물리적 직관과 일치한다. 셋째, 경계
+보장 측면에서 $z \to +\infty$일 때 $S(z) \to +1$, $z \to -\infty$일 때 $S(z) \to -1$이므로
+$S: \mathbb{R} \to (-1, 1)$이고, 점근선에 도달하되 등호가 성립하지 않으므로 $\DRTO$가 정확히
+$0$ 또는 $R_{\max}$에 도달하는 것은 불가능하다. 넷째, 원점 대칭성(홀함수)으로서
+$S(-z) = -S(z)$이고 $S(0) = 0$이어서 효과가 없을 때 기준선을 유지하는 중립 조건을 보장하며,
+$z_O = z_U = 0$일 때 $E_{O,\text{bnd}} = E_{U,\text{bnd}} = 0$이 되어 $\DRTO = R_0$로 기준선이
+유지된다. 다섯째, 2계 도함수가 $S''(z) = -2 e^{-z} (1 - e^{-z})/(1 + e^{-z})^3$로서 $z = 0$에서
+부호가 바뀌는 변곡점을 가지며, 이 변곡점이 ``효과 없음'' 지점($S(0)=0$)과 일치하므로 작은
+입력에서는 함수 거동이 선형에 가깝다가 $|z|$가 커질수록 비선형성이 강화되는 구조를 갖는다.}
+
+
+%% -------------------------------------------------------------------
+\subsection{소 $\kappa \cdot z$ 영역에서의 선형 근사}
+\label{subsec:linear-approx}
+%% -------------------------------------------------------------------
+
+$|z|$가 충분히 작을 때, $S(z)$는 1차 테일러 전개로 근사된다.
+
+\begin{equation}
+  S(z) \approx S'(0) \cdot z = \frac{1}{2} z, \quad |z| \ll 1
+  \label{eq:linear-approx}
+\end{equation}
+
+이 근사는 $|z| \leq 0.5$에서 약 $2\%$ 이하의 오차로 성립하며,
+$|z| \leq 0.8$에서는 약 $5\%$ 이하의 오차를 갖는다.
+
+이 근사를 C1 수식에 적용하면
+$E_{O,\text{bnd}} \approx -R_0 \cdot \frac{1}{2} \cdot \kappa \cdot k_O \cdot O_{\text{raw}}$
+$= -\frac{\kappa}{2} \cdot R_0 \cdot k_O \cdot O_{\text{raw}}$가 되어
+선형 모델과의 대응 관계가 명확해진다.
+
+$\kappa = 1.2$일 때 $z_O = \kappa \cdot k_O \cdot O_{\text{raw}} \in [0, 1.2]$이다.
+$z_O$의 상한($k_O = O_{\text{raw}} = 1$일 때 $z_O = 1.2$)에서 $S(1.2) = 0.537$이고
+선형 근사는 $\frac{1}{2} \times 1.2 = 0.600$으로서, 근사 오차는 약 $10.5\%$이다.
+따라서 $\kappa = 1.2$는 선형 영역에서 비선형 전이 영역으로 진입하는 경계에 위치하며,
+시그모이드의 비선형 압축 효과(선형 근사 대비 출력값 감소)가 의미 있게 발현되면서도
+포화에는 도달하지 않는 균형 영역에 해당한다.
+
+\p{[}그림~\ref{fig:sigmoid-curve}\p{]}은 $\kappa = 1.2$에서의 시그모이드 함수
+$S(z)$와 선형 근사 $z/2$를 비교한 것이다.
+\chg{그림에서 관측성 인수 $z_O$의 범위 $[0, 1.2]$가 시그모이드의 선형 영역에서 비선형 전이 영역으로 확장됨을 볼 수 있으며, $S(1.2) = 0.537$로서 선형 근사값 $0.600$ 대비 약 $10.5\%$의 압축이 발생한다.}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.82\textwidth,
+  height=0.50\textwidth,
+  xlabel={$z$},
+  ylabel={$S(z)$},
+  xmin=-4, xmax=4,
+  ymin=-1.15, ymax=1.15,
+  grid=major,
+  grid style={black},
+  legend pos=north west,
+  legend style={font=\small, rounded corners=2pt},
+  axis lines=middle,
+  every axis x label/.style={at={(axis description cs:1.02,0.5)},
+    anchor=west, font=\small},
+  every axis y label/.style={at={(axis description cs:0.5,1.04)},
+    anchor=south, font=\small},
+  clip=false
+]
+  % 시그모이드 곡선
+  \addplot[thick, black, domain=-4:4, samples=200]
+    {2/(1+exp(-x)) - 1};
+  \addlegendentry{$S(z) = 2/(1+e^{-z})-1$}
+
+  % 선형 근사
+  \addplot[thick, dashed, blue!70, domain=-2.2:2.2, samples=100]
+    {0.5*x};
+  \addlegendentry{선형 근사 $z/2$}
+
+  % 경계선
+  \addplot[thin, dashed, black] coordinates {(-4, 1) (4, 1)};
+  \addplot[thin, dashed, black] coordinates {(-4, -1) (4, -1)};
+
+  % κ·k_O·O_raw 범위 표시
+  \draw[thick, red!70, {Stealth[length=2mm]}-{Stealth[length=2mm]}]
+    (axis cs:0, -1.08) -- (axis cs:1.2, -1.08);
+  \node[font=\scriptsize, text=black, anchor=north] at (axis cs:0.6, -1.08)
+    {$\kappa k_O O_{\text{raw}} \in [0, 1.2]$};
+
+  % S(1.2) 표시
+  \draw[thin, dotted, red!50] (axis cs:1.2, 0) -- (axis cs:1.2, 0.537);
+  \node[font=\tiny, text=black, anchor=west] at (axis cs:1.25, 0.537)
+    {$S(1.2)=0.537$};
+  \filldraw[red!70] (axis cs:1.2, 0.537) circle (1.5pt);
+
+  % 경계 라벨
+  \node[font=\scriptsize, text=black, anchor=west] at (axis cs:4.1, 1) {$+1$};
+  \node[font=\scriptsize, text=black, anchor=west] at (axis cs:4.1, -1) {$-1$};
+
+\end{axis}
+\end{tikzpicture}
+\caption{수정 시그모이드 함수 $S(z)$와 선형 근사 $z/2$의 비교}
+\label{fig:sigmoid-curve}
+\end{figure}
+
+
+%% ===================================================================
+\section{최적 곡률 파라미터 $\kappa^{*} = 1.2$}
+\label{sec:kappa-optimization}
+%% ===================================================================
+
+곡률 매개변수 $\kappa$는 시그모이드 바운딩 모델에서 입력 변수의 변화에 대한
+$\DRTO$의 반응 강도를 결정하는 핵심 설계 변수이다.
+$\kappa$가 너무 작으면 시그모이드가 선형 영역에 머물러
+입력 변화에 대한 $\DRTO$의 반응이 미약하고(과소 반응),
+$\kappa$가 너무 크면 적은 입력에서도 $|S|$가 1에 근접하여 다수 표본이
+포화 영역에 진입함으로써 극단값 간의 구분력이 상실된다(조기 포화).
+본 연구는 선행 연구\citep{lee2026drto}의 다기준 최적화(multi-criteria
+optimization) 방법을 적용하여 $\kappa^{*} = 1.2$를 도출하였다.
+
+
+%% -------------------------------------------------------------------
+\subsection{4개 최적화 기준}
+\label{subsec:four-criteria}
+%% -------------------------------------------------------------------
+
+$\kappa$의 최적값 선정을 위해 다음의 4개 기준을 동시에 고려한다.
+
+\chg{첫째는 효과 크기(Effect Size)로서 C1 대 C0의 Cohen's $d$ 절대값
+$|d_{\text{C1vsC0}}|$이며, $\kappa$가 클수록 관측성의 효과가 증가하여 $|d|$가 커지므로
+$|d| \geq 0.8$(대효과)을 기준으로 한다. 둘째는 포화율(Saturation Rate)로서 관측성
+채널에서 $|S(z_O)| \geq 0.99$인 표본의 비율이며, $\kappa$가 너무 크면 다수의 표본이 포화
+영역에 진입하여 입력 변화에 대한 구분력이 상실되므로 포화율 $\leq 5\%$를 기준으로 한다.
+셋째는 회귀 설명력($R^2$)으로서 C1에서의 2차 다항 회귀 결정계수이며, 시그모이드의
+비선형성이 과도하면 2차 다항 근사의 정확도가 저하되므로 $R^2 \geq 0.95$를 기준으로 한다.
+넷째는 RTO 단축률(Reduction Rate)로서 C1 평균 효율비에 의한 단축률
+$(1 - \bar{\eta}_{\text{C1}}) \times 100\%$이며, 실무적으로 의미 있는 단축 효과를 제공하는지를
+평가하기 위해 단축률 $\geq 10\%$를 기준으로 한다.}
+
+
+%% -------------------------------------------------------------------
+\subsection{종합점수 $F(\kappa)$와 격자 탐색}
+\label{subsec:composite-score}
+%% -------------------------------------------------------------------
+
+4개 기준을 종합하는 종합점수(composite score) $F(\kappa)$를
+곱함수(product function)로 정의한다.
+
+\begin{equation}
+  F(\kappa) = f_1(\kappa) \cdot f_2(\kappa) \cdot f_3(\kappa) \cdot f_4(\kappa)
+  \label{eq:composite}
+\end{equation}
+
+여기서 $f_i(\kappa) \in [0, 1]$은 각 기준의 부분 점수이다.
+각 부분 점수는 해당 기준에서 가능한 최대값으로 정규화되어 $f_i \in [0,1]$이며,
+따라서 $F \in [0,1]$이고 $F = 1$은 모든 기준이 동시에 최적치를 달성한 상태를
+의미한다.
+곱 구조를 채택한 근거는 다음과 같다.
+하나의 기준이라도 0이면 $F = 0$이 되어 모든 기준의 동시 충족을 강제하고,
+기준 간 대체(trade-off)를 허용하지 않으며,
+기준별 가중치 결정이 불필요하다.
+$F(\kappa)$가 최대인 $\kappa$를 $\kappa^{*}$로 선정한다.
+
+각 부분 점수 $f_i(\kappa)$의 구체적 함수형은 다음과 같다.
+
+\chg{첫째, 실무 유의성을 나타내는 $f_1$은} 평균 감소율 $\bar{r}(\kappa) = (1 - \bar{\eta}) \times 100$이
+    목표 범위(5--30\%)에 있을 때 최대이며 15\%에서 정점을 갖는다.
+    \begin{equation}
+      f_1(\kappa) = \exp\!\left(-\frac{(\bar{r}(\kappa) - 15)^2}{2 \cdot 10^2}\right)
+      \label{eq:f1}
+    \end{equation}
+    중심값 15\%는 RTO 감소율이 너무 작으면(5\% 미만) 도입 효과가 미미하고 너무 크면
+    (30\% 초과) 비현실적이므로 목표 범위 5--30\%의 중앙값을 채택한 것이다. 분모의 $10^2$은
+    가우시안 커널의 표준편차 $\sigma = 10$에 해당하며, 데이터에서 추정한 값이 아니라 목표 범위의
+    구조에 맞추어 설정한 설계 파라미터이다. 목표 범위의 중심이 15\%이고 하한이 5\%이므로 중심에서
+    하한까지의 거리는 $15 - 5 = 10$\%p이며, 이 거리를 $1\sigma$로 놓으면($\sigma = 10$) 가우시안
+    커널의 확률적 해석과 자연스럽게 대응된다. $\sigma = 10$일 때 중심으로부터의 거리별 $f_1$ 값은
+    \p{[}표~\ref{tab:f1-sigma10}\p{]}과 같다.
+    \begin{table}[htbp]
+    \centering
+    \caption{$\sigma = 10$, 중심($\bar{r}=15\%$)에서 거리별 포화도 가중치 $f_1$}
+    \label{tab:f1-sigma10}
+    \small
+    \begin{tabular}{c c c l}
+    \toprule
+    $\bar{r}$ & 중심 거리 & $f_1$ & 해석 \\
+    \midrule
+    15\% & $0\sigma$ & $e^{0} = 1.000$ & 최적점 (정점) \\
+    5\% 또는 25\% & $1\sigma$ & $e^{-0.5} \approx 0.607$ & 목표 범위 내, 충분히 허용 \\
+    35\% & $2\sigma$ & $e^{-2} \approx 0.135$ & 목표 초과, 강하게 억제 \\
+    45\% & $3\sigma$ & $e^{-4.5} \approx 0.011$ & 사실상 배제 \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+\chg{둘째, 비포화를 나타내는 $f_2$는} 포화율(시그모이드 출력 $> 0.95$인 비율)이 5\% 미만이면 1, 아니면 0이다.
+    \begin{equation}
+      f_2(\kappa) = \begin{cases}
+        1.0 & \text{if sat}(\kappa) < 5\% \\
+        0.0 & \text{otherwise}
+      \end{cases}
+      \label{eq:f2}
+    \end{equation}
+    시그모이드 출력이 0.95를 초과하면 입력 변화에 대한 출력 변화가 거의 없는 포화(saturation)
+    영역에 진입하여 $\DRTO$가 입력 변수의 차이를 변별하지 못하므로, 포화 비율을 5\% 미만으로
+    억제하는 이진 게이트로 설계하여 이 조건을 위반하는 $\kappa$를 후보에서 즉시 배제한다.
+
+\chg{셋째, 효과 크기를 나타내는 $f_3$는} C0 대비 Cohen's $d$의 절대값이 $\geq 0.8$이면 1이다.
+    \begin{equation}
+      f_3(\kappa) = \begin{cases}
+        1.0 & \text{if } |d(\kappa)| \geq 0.8 \\
+        |d(\kappa)| / 0.8 & \text{otherwise}
+      \end{cases}
+      \label{eq:f3}
+    \end{equation}
+    여기서 C0 조건은 $\eta \equiv 1.000$의 결정론적 상수이므로 합동 표준편차 공식의 분모가
+    인위적으로 축소되는 것을 피하기 위해 C1 자체의 표준편차를 분모로 사용하는 일표본 효과
+    크기를 적용한다. $\bar{\eta}_{\text{C1}} = 0.853$, $s_{\text{C1}} = 0.125$이므로
+    $d = (0.853 - 1.000)/0.125 = -1.176 \approx -1.180$이고, $|d| \geq 0.8$이므로 $f_3 = 1.0$이다
+    (Cohen's $d$의 정의와 해석 기준은 \secref{sec:ch5_effect_size} 참조).
+
+\chg{넷째, 설명력을 나타내는 $f_4$는} $\eta_{C1}$에 대한 회귀 $R^2$이 $\geq 0.95$이면 1이다.
+    \begin{equation}
+      f_4(\kappa) = \begin{cases}
+        1.0 & \text{if } R^2(\kappa) \geq 0.95 \\
+        R^2(\kappa) / 0.95 & \text{otherwise}
+      \end{cases}
+      \label{eq:f4}
+    \end{equation}
+
+\p{[}표~\ref{tab:kappa-grid}\p{]}는 $\kappa \in \{0.2, 0.5, 1.0, 1.2, 1.5, 2.0, 3.0, 5.0\}$에
+대한 격자 탐색(grid search) 결과를 정리한 것이다.
+\chg{탐색은 표본 크기 $n = 10{,}000$, seed $= 42$에서 수행하였으며, 표의 $R^2_{(2\mathrm{q})}$는 2차 다항 회귀의 결정계수이다.}
+
+\p{[}표~\ref{tab:kappa-grid}\p{]}에서 확인되듯이, $\kappa = 1.2$에서 종합점수
+$F(\kappa) = 1.000$으로 최대값을 달성한다.
+이 지점에서 Cohen's $|d| = 1.180$(대효과), 포화율 $0.0\%$,
+$R^2 = 0.999$, 단축률 $14.7\%$가 동시에 충족된다.
+
+\begin{table}[htbp]
+\centering
+\caption{$\kappa$ 격자 탐색 결과 ($n = 10{,}000$, seed $= 42$)}
+\label{tab:kappa-grid}
+\small
+\begin{tabularx}{\textwidth}{c c c c c c c}
+\toprule
+$\kappa$ & 평균 $\bar{\eta}_{\text{C1}}$ & 단축률 (\%) & $|d|_{\text{C1vsC0}}$
+  & $R^2_{(2\mathrm{q})}$ & 포화율 (\%) & $F(\kappa)$ \\
+\midrule
+0.2  & 0.975 &  2.5 & 1.150 & 1.000 &  0.0 & 0.813 \\
+0.5  & 0.937 &  6.3 & 1.150 & 1.000 &  0.0 & 0.855 \\
+1.0  & 0.876 & 12.4 & 1.170 & 0.999 &  0.0 & 0.957 \\
+\rowcolor{green!10}
+1.2  & 0.853 & 14.7 & 1.180 & 0.999 &  0.0 & \textbf{1.000} \\
+1.5  & 0.818 & 18.2 & 1.200 & 0.997 &  0.0 & 0.947 \\
+2.0  & 0.765 & 23.5 & 1.230 & 0.993 &  0.0 & 0.859 \\
+3.0  & 0.673 & 32.7 & 1.310 & 0.975 &  0.0 & 0.858 \\
+5.0  & 0.538 & 46.2 & 1.490 & 0.908 &  3.9 & 0.566 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+$\kappa < 1.2$인 영역에서는 효과 크기와 단축률이 부족하고,
+$\kappa > 1.2$인 영역에서는 포화가 시작되어 $R^2$가 하락한다.
+$\kappa = 1.2$는 이 두 영역의 균형점(trade-off point)에 정확히 위치한다.
+\p{[}표~\ref{tab:kappa-optimal}\p{]}는 $\kappa^{*} = 1.2$에서 4개 부분 점수의 개별
+달성값과 종합점수 $F^{*}$를 분해한 것이다.
+
+\begin{table}[htbp]
+\centering
+\caption{$\kappa^{*} = 1.2$에서의 4가지 기준 달성값}
+\label{tab:kappa-optimal}
+\begin{tabular}{llrrl}
+\toprule
+\textbf{기준} & \textbf{지표} & \textbf{달성값} & \textbf{$f_i$ 점수} & \textbf{판정} \\
+\midrule
+$f_1$ (실무 유의성)  & 평균 감소율      & 14.74 & 0.9997 & 목표 15\%에 근접 \\
+$f_2$ (비포화)       & 포화율           & 0.0   & 1.000 & 포화 완전 회피 \\
+$f_3$ (효과 크기)    & Cohen's $d$     & $-1.18$ & 1.000 & 대효과 달성 \\
+$f_4$ (설명력)       & $R^2$           & 0.999   & 1.000 & 고설명력 달성 \\
+\midrule
+\multicolumn{2}{l}{\textbf{종합점수 $F^*$}} & & \textbf{0.9997} & \textbf{유일 극대} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\p{[}그림~\ref{fig:kappa-composite}\p{]}은 종합점수 $F(\kappa)$의 곡선을
+도시한 것으로, $\kappa^{*} = 1.2$에서 최대값을 달성하는 것을 보여준다.
+\chg{이 지점에서 효과 크기와 비포화, $R^2$, 단축률의 네 기준이 균형을 이루어 $F = 1.000$을 달성하며, $\kappa < 1.0$은 과소 반응 영역에, $\kappa > 2.0$은 조기 포화 영역에 해당한다.}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.80\textwidth,
+  height=0.48\textwidth,
+  xlabel={$\kappa$},
+  ylabel={$F(\kappa)$},
+  xmin=0, xmax=5.5,
+  ymin=0.4, ymax=1.05,
+  grid=major,
+  grid style={black},
+  axis lines=left,
+  every axis x label/.style={at={(axis description cs:1.02,0.0)},
+    anchor=west, font=\small},
+  every axis y label/.style={at={(axis description cs:-0.02,1.02)},
+    anchor=south, font=\small},
+  clip=false,
+  xtick={0, 0.5, 1.0, 1.2, 1.5, 2.0, 3.0, 5.0},
+  xticklabels={0, 0.5, 1.0, \textbf{1.2}, 1.5, 2.0, 3.0, 5.0}
+]
+  % 데이터 점 연결 곡선 (smooth)
+  \addplot[thick, black, smooth, mark=*, mark size=2pt]
+    coordinates {
+      (0.2, 0.813) (0.5, 0.855) (1.0, 0.957) (1.2, 1.000)
+      (1.5, 0.947) (2.0, 0.859) (3.0, 0.858) (5.0, 0.566)
+    };
+
+  % 최적점 강조
+  \filldraw[red!80] (axis cs:1.2, 0.996) circle (3pt);
+  \node[font=\small, text=black, anchor=south west] at (axis cs:1.3, 0.996)
+    {$\kappa^{*} = 1.2$, $F = 1.000$};
+
+  % 과소 반응 영역
+  \draw[thick, blue!50, {Stealth[length=2mm]}-] (axis cs:0.1, 0.45) -- (axis cs:0.8, 0.45);
+  \node[font=\scriptsize, text=black, anchor=north] at (axis cs:0.45, 0.45)
+    {과소 반응};
+
+  % 조기 포화 영역
+  \draw[thick, orange!60, -{Stealth[length=2mm]}] (axis cs:2.5, 0.45) -- (axis cs:5.3, 0.45);
+  \node[font=\scriptsize, text=black, anchor=north] at (axis cs:3.9, 0.45)
+    {조기 포화};
+
+\end{axis}
+\end{tikzpicture}
+\caption{$\kappa$ 격자 탐색에 의한 종합점수 $F(\kappa)$ 곡선}
+\label{fig:kappa-composite}
+\end{figure}

@@ -1,0 +1,75 @@
+% front/01_cover.tex
+% 모든 페이지와 동일 geometry(4/4/5cm) 사용
+
+\thispagestyle{empty}
+
+\begingroup
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{0pt}
+
+% --------------------------------
+% 0) 박사 학위 논문  – 상단에서 0.5cm
+% (top=4cm 이 이미 적용되어 있으니, 텍스트 블록 위에서 0.5cm만 더 내려감)
+% --------------------------------
+\vspace*{0.5cm}
+{\fontsize{14}{20}\selectfont 박사 학위 논문}
+
+% --------------------------------
+% 1) 국문 제목 – 상단에서 3.5cm
+% → 이미 0.5cm 내려왔으니, 3.5 - 0.5 = 3.0cm 더 내려주면 됨
+% --------------------------------
+\vspace*{3.0cm}
+
+\begin{center}
+  \begin{minipage}{13cm}  % 한글/영문 제목 폭 = 13cm
+    \centering
+    {\fontsize{18}{18}\selectfont\bfseries
+    관측성과 불확실성 기반 동적\par
+    복구목표시간(DRTO) 프레임워크 연구\par}
+  \end{minipage}
+\end{center}
+
+% --------------------------------
+% 2) 영문 제목 – 한글 제목 블록과 1cm 간격
+% --------------------------------
+\vspace*{1.0cm}
+
+\begin{center}
+  \begin{minipage}{13cm}
+    \centering
+    {\fontsize{18}{18}\selectfont\bfseries
+      A Dynamic RTO Framework\par
+      Based on Observability and Uncertainty\par}
+  \end{minipage}
+\end{center}
+
+% --------------------------------
+% 3) 아래 정보 (날짜 ~ 이름)
+%    간격: 날짜-숭실대 3.5cm, 숭실대-학과 1.5cm, 학과-이름 1.5cm
+%    "박스 하단 → 이름 1.5cm"는 보고 눈으로 미세조정하는 쪽이 현실적이라
+%    아래 마지막 \vspace* 값을 조금씩 조절해 쓰시면 됩니다.
+% --------------------------------
+
+% 영문 제목 아래에서 날짜까지 여백 (눈으로 맞춰볼 값, 대략 3.0~3.5cm 정도에서 시작)
+\vspace*{3.0cm}
+
+\begin{center}
+  {\fontsize{14}{20}\selectfont 2026년 6월}\par
+
+  \vspace{2.0cm} % 날짜 → 숭실대 대학원 (3.5cm)
+  {\fontsize{16}{22}\selectfont\bfseries 숭실대학교 대학원}\par
+
+  \vspace{1.0cm} % 숭실대 대학원 → 학과 (1.5cm)
+  {\fontsize{14}{20}\selectfont 재난안전관리학과}\par
+
+  \vspace{1.0cm} % 학과 → 이름 (1.5cm)
+  {\fontsize{14}{20}\selectfont 이\ \ \ 창\ \ \ 호}\par
+
+  % 박스 하단에서 이름까지 1.5cm 목표
+  % 부족하거나 넘치면 여기 값을 ±0.5cm 정도씩 조절해 보세요.
+  \vspace*{1.5cm}
+\end{center}
+
+\endgroup
+
+\clearpage

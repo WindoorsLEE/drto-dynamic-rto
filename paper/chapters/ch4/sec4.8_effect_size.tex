@@ -1,0 +1,240 @@
+\section{\vrev{조건 간 효과 크기 분석}}
+\label{sec:ch5_effect_size}
+%% ===================================================================
+
+4개 조건의 효율성 비율 $\eta = \DRTO / R_0$를 두 갈래 경로---가우시안
+경로(C0$\to$C1$\to$C2)와 파레토 경로(C0$\to$C1$\to$C3)---로 구분하여
+비교하면, 관측성, 불확실성, 분포 형태라는 세 요인의 효과가
+구조적으로 분리된다.
+\jrev{\tabref{tab:ch5_effect_size_summary}\refpo{tab:ch5_effect_size_summary}{은}{는}} 각 경로의 단계별 효과 크기와
+분포 형태 간 교차비교를 종합한 것이다.
+
+\begin{table}[htbp]
+  \centering
+  \caption{\jrev{효율성 비율 $\eta$의 경로별 효과 크기 종합}}
+  \label{tab:ch5_effect_size_summary}
+  \small
+  \begin{tabular}{ll rr cc l}
+    \toprule
+    & \textbf{비교 쌍} & $\Delta\bar{\eta}$ & Cohen's $d$ &
+    $|d|$ & 해석 & \textbf{실무적 의미} \\
+    \midrule
+    \multicolumn{7}{l}{\textit{1단: 가우시안 경로 (C0 $\to$ C1 $\to$ C2)}} \\
+    & C0 $\to$ C1 & $-0.147$ & $-1.180$ & $1.180$ & \jrev{매우 큰} & 관측성의 복구 단축 \\
+    & C1 $\to$ C2 & $+0.830$ & $+1.871$ & $1.871$ & \jrev{매우 큰} & 가우시안 불확실성 프리미엄 \\
+    & C0 $\to$ C2 (순효과) & $+0.682$ & $+1.110$ & $1.110$ & \jrev{매우 큰} & 관측성$+$가우시안 결합 \\
+    \midrule
+    \multicolumn{7}{l}{\textit{2단: 파레토 경로 (C0 $\to$ C1 $\to$ C3)}} \\
+    & C0 $\to$ C1 & $-0.147$ & $-1.180$ & $1.180$ & \jrev{매우 큰} & 관측성의 복구 단축 (동일) \\
+    & C1 $\to$ C3 & $+0.662$ & $+1.169$ & $1.169$ & \jrev{매우 큰} & 파레토 불확실성 프리미엄 \\
+    & C0 $\to$ C3 (순효과) & $+0.514$ & $+0.650$ & $0.650$ & \jrev{중간} & 관측성$+$파레토 결합 \\
+    \midrule
+    \multicolumn{7}{l}{\textit{3단: 분포 형태 비교}} \\
+    & C2 $\leftrightarrow$ C3 & $-0.168$ & $-0.238$ & $0.238$ & \jrev{작은} & 평균 수준 비차별 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\noindent
+경로별 효과 크기에서 다음의 구조적 패턴이 도출된다.
+
+%% --- 1단: 공통 단계 ---
+\chg{먼저 C0에서 C1로의 관측성 복구 단축 효과는 양 경로에 공통으로 작용한다.}
+Cohen's $d = -1.180$으로 \jrev{대효과(large effect)}의 음의 효과가 관찰되었다.
+\citet{cohen1988power}의 기준에 따르면 $|d| \geq 0.80$이 \jrev{대효과}에
+해당하므로, $|d| = 1.180$은 그 기준을 크게 초과하는 극대 효과이다.
+음의 방향은 관측성 도입이 $\eta$를 체계적으로 감소시킨다는 것,
+즉 $\DRTO$가 기본 복구시간 $R_0$보다 단축됨을 의미한다.
+개별 시그모이드 바운딩 모델에서 C1의 $E_{U,\text{bnd}} = 0$이므로,
+$\DRTO_{\text{C1}} = R_0 + E_{O,\text{bnd}} \leq R_0$가 해석적으로 보장되며,
+이러한 구조적 필연은 $n = 10{,}000$ 전체 표본에서 예외 없이(100\%) 확인되었다.
+이 C0$\to$C1 단계는 가우시안 경로와 파레토 경로 양쪽 모두에 공통으로 작용하는
+기저 효과(baseline effect)이다.
+
+%% --- 1단: 가우시안 경로 ---
+\chg{1단 가우시안 경로에서 C1에서 C2로의 불확실성 프리미엄을 보면,}
+C1$\to$C2 전환의 Cohen's $d = +1.871$은 전체 비교 중 가장 큰 효과 크기이며,
+방향이 양(+)으로 반전되었다.
+가우시안 불확실성의 도입은 $\bar{\eta}$를 $0.853$에서 $1.682$로
+$97.2\%$ 증가시켜, $\DRTO$가 $R_0$를 초과하게 한다.
+이 초과분이 \textbf{불확실성 프리미엄(uncertainty premium)}으로서,
+복구 과정의 불확실성을 사전에 반영한 안전 마진(safety margin)에 해당한다.
+C0$\to$C1의 음의 효과($d = -1.180$)와 C1$\to$C2의 양의 효과($d = +1.871$)가
+\jrev{대조적으로 상반되어}, 관측성과 불확실성이 $\DRTO$에 구조적으로 반대 방향의
+힘을 가한다는 개별 시그모이드 바운딩 모델의 설계 의도가 실험적으로 확인되었다.
+가우시안 경로의 순효과(C0$\to$C2)는 $d = +1.110$으로, 불확실성 프리미엄이
+관측성 단축을 압도하여 $\bar{\eta}$가 기준선 $1.0$을 $0.682$만큼 초과한다.
+
+%% --- 2단: 파레토 경로 ---
+\chg{2단 파레토 경로에서 C1에서 C3로의 불확실성 프리미엄을 보면,}
+C1$\to$C3 전환의 Cohen's $d = +1.169$ 역시 \jrev{대효과}의 양의 효과이다.
+파레토 불확실성 프리미엄($\Delta\bar{\eta} = +0.662$)은 가우시안($+0.830$)보다
+$20.2\%$ 작으며, 이는 파레토 분포의 우측 비대칭이 평균을 좌측으로 편향시키기
+때문이다. 파레토 경로의 순효과(C0$\to$C3)는 $d = +0.650$으로
+\jrev{중효과(medium effect)}에 해당하여, 가우시안 경로의 순효과($d = +1.110$)에 비해
+관측성 단축의 상대적 기여가 더 크다. 이 차이는 파레토 환경에서
+관측성 투자의 실효성이 가우시안 환경보다 높음을 시사한다.
+
+%% --- 3단: 분포 형태 비교 ---
+\chg{3단 분포 형태 비교로 C2와 C3의 평균 수준 비차별성을 보면,}
+Cohen's $d = -0.238$로 사실상 \jrev{소효과(small effect)}에 해당한다.
+C2와 C3의 불확실성 분포는 $E[U_{\text{raw}}] = 3.0$으로 동일한 평균을
+가지므로, 평균 수준에서의 차이가 미미한 것은 모델의 이론적 예측과 부합한다.
+그러나 이 결과는 파레토 효과가 ``존재하지 않는다''는 것을 의미하지 않는다.
+C3의 표준편차($0.791$)가 C2($0.615$)의 $1.29$배로서, 파레토 효과가
+평균이 아닌 분산과 극단 영역에 집중되어 있음을 시사한다.
+이 점은 \jrev{\secref{sec:ch5_dual_channel}}에서 P85.8 교차점과
+이중채널 감쇠 메커니즘을 통해 상세히 규명된다.
+
+\chg{끝으로 실무적 유의성(practical significance) 측면에서,}
+경로별 효과 크기 비교에서 실무적으로 주목할 점은 세 가지이다.
+\textbf{첫째}, C0$\to$C1의 $|d| = 1.180$은 양 경로에 공통으로 작용하므로,
+불확실성의 유형과 무관하게 관측성 투자가 즉각적이고 체계적인
+복구 시간 단축을 제공한다는 정량적 근거이다.
+\textbf{둘째}, 불확실성 프리미엄의 효과가 가우시안($d = +1.871$)과
+파레토($d = +1.169$) 양쪽 모두에서 매우 크므로, 불확실성을 무시하는 것이
+$\DRTO$ 추정에 가장 큰 왜곡을 초래한다.
+\textbf{셋째}, 순효과의 격차\chg{(}가우시안 $d = +1.110$ vs.\ 파레토 $d = +0.650$\chg{)}는
+동일한 관측성 투자가 불확실성 유형에 따라 상이한 순효과를 산출함을 보여주며,
+이는 조직의 불확실성 프로파일 진단이 BCM 전략 수립의 전제 조건임을 함의한다.
+
+\jrev{\figref{fig:ch5_cohens_d_bar}\refpo{fig:ch5_cohens_d_bar}{은}{는}} 경로별 Cohen's $d$를
+효과 크기 기준선과 함께 시각화한 것이다.
+\chg{막대 색상은 C0$\to$C1(녹색, 관측성), C1$\to$C2(파란색, 가우시안 불확실성), C0$\to$C2(연파란, 순효과),
+C1$\to$C3(빨간색, 파레토 불확실성), C0$\to$C3(연빨간, 순효과), C2$\leftrightarrow$C3(주황색, 분포 비교)를
+나타내며, 수직 점선은 큰 효과 기준 $|d| = 0.80$을, 좌측($d < 0$)은 $\bar{\eta}$ 감소를, 우측($d > 0$)은
+$\bar{\eta}$ 증가를 가리킨다.}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[
+    lbl/.style={font=\small, anchor=east},
+    val/.style={font=\scriptsize\bfseries, anchor=west, xshift=3pt},
+    sechead/.style={font=\small\bfseries, anchor=west},
+  ]
+    %% 좌표 설정: x = Cohen's d, y = 행 (위→아래)
+    \def\xscale{2.6}   % cm per unit of d
+    \def\xorigin{5.8}  % cm position of d=0
+    \def\barht{0.28}    % bar half-height in cm
+
+    %% --- 배경: d=0 기준 좌/우 동일 (3차 수정: 검정→흰색) ---
+    \fill[white] (-0.3, 1.20) rectangle (13.0, -8.80);
+
+    %% --- x축 그리드 + 라벨 ---
+    \foreach \d in {-2.0,-1.5,-1.0,-0.5,0,0.5,1.0,1.5,2.0} {
+      \draw[black, thin] ({\xorigin+\d*\xscale}, 1.20)
+        -- ({\xorigin+\d*\xscale}, -8.80);
+      \node[font=\tiny, black, below] at ({\xorigin+\d*\xscale}, -8.80) {\d};
+    }
+    %% --- Cohen's d 축 라벨 (중앙) ---
+    \node[font=\small, below] at ({\xorigin}, -9.30) {Cohen's $d$};
+
+    %% --- 좌/우 방향 의미 (축 라벨 아래 별도 행) ---
+    \node[font=\scriptsize, black, anchor=east]
+      at ({\xorigin-0.5}, -9.30)
+      {$\longleftarrow$ $\bar{\eta}$ 감소};
+    \node[font=\scriptsize, black, anchor=west]
+      at ({\xorigin+0.5}, -9.30)
+      {$\bar{\eta}$ 증가 $\longrightarrow$};
+
+    %% --- 효과 크기 기준선 |d|=0.80 ---
+    \draw[dashed, black, thick]
+      ({\xorigin+0.80*\xscale}, 1.20) -- ({\xorigin+0.80*\xscale}, -8.80);
+    \draw[dashed, black, thick]
+      ({\xorigin-0.80*\xscale}, 1.20) -- ({\xorigin-0.80*\xscale}, -8.80);
+    \node[font=\tiny, black, fill=white, inner sep=1pt]
+      at ({\xorigin+0.80*\xscale}, 1.35) {$|d|=0.80$};
+    \node[font=\tiny, black, fill=white, inner sep=1pt]
+      at ({\xorigin-0.80*\xscale}, 1.35) {$|d|=0.80$};
+
+    %% --- 영 기준선 ---
+    \draw[ black, thin] (\xorigin, 1.20) -- (\xorigin, -8.80);
+
+    %% --- 구간 구분선 ---
+    \draw[black, densely dotted] (-0.3, -0.05) -- (13.0, -0.05);
+    \draw[black, densely dotted] (-0.3, -3.30) -- (13.0, -3.30);
+    \draw[black, densely dotted] (-0.3, -6.10) -- (13.0, -6.10);
+
+    %% ============================================================
+    %% 공통: C0→C1 (양 경로 공통)
+    %% ============================================================
+    \node[sechead, green!50!black] at (-0.1, 0.85)
+      {공통: 관측성 (C0$\to$C1)};
+
+    \def\yR{0.15}
+    \node[lbl] at ({\xorigin-0.25}, \yR) {C0 $\to$ C1};
+    \fill[fill=green!45, draw=green!70!black, thick]
+      ({\xorigin+(-1.180)*\xscale}, {\yR-\barht})
+      rectangle (\xorigin, {\yR+\barht});
+    \node[val, anchor=east, xshift=-3pt] at ({\xorigin+(-1.180)*\xscale}, \yR)
+      {$-1.180$};
+
+    %% ============================================================
+    %% 1단: 가우시안 경로 (C1→C2)
+    %% ============================================================
+    \node[sechead, blue!60!black] at (-0.1, -0.55)
+      {1단: 가우시안 경로};
+
+    %% Row: C1→C2  d = +1.871
+    \def\yR{-1.30}
+    \node[lbl] at ({\xorigin-0.25}, \yR) {C1 $\to$ C2};
+    \fill[blue!60, draw=blue!80, thick]
+      (\xorigin, {\yR-\barht})
+      rectangle ({\xorigin+(1.871)*\xscale}, {\yR+\barht});
+    \node[val] at ({\xorigin+(1.871)*\xscale}, \yR) {$+1.871$};
+
+    %% Row: C0→C2 순효과  d = +1.110
+    \def\yR{-2.15}
+    \node[lbl] at ({\xorigin-0.25}, \yR) {C0 $\to$ C2};
+    \fill[blue!30, draw=blue!50, thick]
+      (\xorigin, {\yR-\barht})
+      rectangle ({\xorigin+(1.110)*\xscale}, {\yR+\barht});
+    \node[val] at ({\xorigin+(1.110)*\xscale}, \yR) {$+1.110$};
+    \node[font=\tiny, black, anchor=west] at ({\xorigin+(1.110)*\xscale+1.5}, \yR)
+      {(순효과)};
+
+    %% ============================================================
+    %% 2단: 파레토 경로 (C1→C3)
+    %% ============================================================
+    \node[sechead, red!60!black] at (-0.1, -3.80)
+      {2단: 파레토 경로};
+
+    %% Row: C1→C3  d = +1.169
+    \def\yR{-4.55}
+    \node[lbl] at ({\xorigin-0.25}, \yR) {C1 $\to$ C3};
+    \fill[red!60, draw=red!80, thick]
+      (\xorigin, {\yR-\barht})
+      rectangle ({\xorigin+(1.169)*\xscale}, {\yR+\barht});
+    \node[val] at ({\xorigin+(1.169)*\xscale}, \yR) {$+1.169$};
+
+    %% Row: C0→C3 순효과  d = +0.650
+    \def\yR{-5.40}
+    \node[lbl] at ({\xorigin-0.25}, \yR) {C0 $\to$ C3};
+    \fill[red!30, draw=red!50, thick]
+      (\xorigin, {\yR-\barht})
+      rectangle ({\xorigin+(0.650)*\xscale}, {\yR+\barht});
+    \node[val] at ({\xorigin+(0.650)*\xscale}, \yR) {$+0.650$};
+    \node[font=\tiny, black, anchor=west] at ({\xorigin+(0.650)*\xscale+1.5}, \yR)
+      {(순효과)};
+
+    %% ============================================================
+    %% 3단: 분포 비교 (C2↔C3)
+    %% ============================================================
+    \node[sechead, black] at (-0.1, -6.60)
+      {3단: 분포 비교};
+
+    %% Row: C2↔C3  d = -0.238
+    \def\yR{-7.40}
+    \node[lbl] at ({\xorigin-0.85}, \yR) {C2 $\leftrightarrow$ C3};
+    \fill[fill=orange!50, draw=orange!70, thick]
+      ({\xorigin+(-0.238)*\xscale}, {\yR-\barht})
+      rectangle (\xorigin, {\yR+\barht});
+    \node[val, anchor=west] at ({\xorigin+0.15}, \yR)
+      {$-0.238$};
+    \node[font=\tiny, black, anchor=west] at ({\xorigin+1.65}, \yR)
+      {(소효과)};
+
+  \end{tikzpicture}
+  \caption{\jrev{경로별 Cohen's $d$ 수평 포레스트 플롯}}
+  \label{fig:ch5_cohens_d_bar}
+\end{figure}

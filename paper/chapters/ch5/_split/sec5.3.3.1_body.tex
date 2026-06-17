@@ -1,0 +1,167 @@
+%% --- 위기시: 에스컬레이션 대응 체계 ---
+\subsubsection{\syncr{위기시 에스컬레이션 대응 체계}}
+\label{subsubsec:escalation-detail}
+
+위기시에는 \chg{사고와 재난}이 이미 발생한 상태이므로,
+규모를 알 수 없는 큰 불확실성이 현존한다.
+이때 $\eta$는 이 불확실성의 크기를 실시간으로 반영하는 위험 수준 지표가 되며,
+조직이 불확실성을 얼마나 빠르게 정량화하여 $\eta$에 반영하느냐가
+적시 대응의 관건이 된다.
+$\eta$ 값에 따라 4단계 에스컬레이션 체계가 자동 결정된다.
+\p{[}표~\vref{tab:ch6-eta-escalation}\p{]}는 $\eta$ 구간별 대응 체계를 정의하며,
+\p{[}그림~\vref{fig:ch6-escalation-zones}\p{]}는 이를 시각화한 것이다.
+
+\begin{table}[htbp]
+\centering
+\caption{$\eta$ 기반 에스컬레이션 임계값 및 대응 체계}
+\label{tab:ch6-eta-escalation}
+\small
+\begin{tabularx}{\textwidth}{c c l l X}
+\toprule
+\textbf{단계} & \textbf{$\eta$ 범위} & \textbf{등급} & \textbf{보고 대상} & \textbf{대응 조치} \\
+\midrule
+1 & $\eta < 0.8$ & 안정 (Green) & 복구 팀 자체 & 정상 복구 절차 수행; 관측성에 의한 $\DRTO$ 단축 효과 활성 \\
+\addlinespace
+2 & $0.8 \leq \eta < 1.0$ & 주의 (Yellow) & 팀장 보고 & 불확실성 증가 모니터링; $\DRTO$ 갱신 주기 단축 (15분); 추가 자원 대기 \\
+\addlinespace
+3 & $1.0 \leq \eta < 1.5$ & 경고 (Orange) & 부서장 보고 & $\DRTO > R_0$로 기준 RTO 초과; 추가 자원 투입; 외부 지원 요청; 이해관계자 긴급 통보 \\
+\addlinespace
+4 & $\eta \geq 1.5$ & 위기 (Red) & 경영진 보고 & 위기관리 모드 전환; 사업 연속성 비상 계획(BCP) 전면 가동; CVaR$_{99}$ 기준 최악 시나리오 대비 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\chg{에스컬레이션 트리거는 $\eta$ 급등(30\% 이상 증가), 조건 상향 전환(C2 $\to$ C3), 에스컬레이션 임계값
+접근($\eta > 1.4$), 불확실성 급등($U > 0.8$)의 네 가지이다.}
+
+\begin{figure}[htbp]
+\centering
+\resizebox{0.95\textwidth}{!}{%
+\begin{tikzpicture}
+% 배경 영역
+\fill[green!15]  (0,0)   rectangle (3.2,3.5);
+\fill[yellow!20] (3.2,0) rectangle (6.4,3.5);
+\fill[orange!20] (6.4,0) rectangle (11.2,3.5);
+\fill[red!20]    (11.2,0) rectangle (14.4,3.5);
+
+% 경계선
+\draw[thick, black] (3.2,0) -- (3.2,3.5);
+\draw[thick, black] (6.4,0) -- (6.4,3.5);
+\draw[thick, black] (11.2,0) -- (11.2,3.5);
+
+% 축
+\draw[thick, -{Stealth[length=3mm]}] (0,0) -- (15,0) node[right, font=\small] {$\eta$};
+\draw[thick] (0,0) -- (0,3.5);
+
+% η 값 레이블
+\node[below, font=\footnotesize] at (0, -0.15) {$0$};
+\node[below, font=\footnotesize\bfseries] at (3.2, -0.15) {$0.8$};
+\node[below, font=\footnotesize\bfseries] at (6.4, -0.15) {$1.0$};
+\node[below, font=\footnotesize\bfseries] at (11.2, -0.15) {$1.5$};
+
+% 영역 레이블 (상단)
+\node[font=\small\bfseries, green!50!black] at (1.6, 3.0) {안정};
+\node[font=\small\bfseries, yellow!60!black] at (4.8, 3.0) {주의};
+\node[font=\small\bfseries, orange!60!black] at (8.8, 3.0) {경고};
+\node[font=\small\bfseries, red!60!black] at (12.8, 3.0) {위기};
+
+% 영문 등급
+\node[font=\scriptsize, green!40!black] at (1.6, 2.5) {Green};
+\node[font=\scriptsize, yellow!50!black] at (4.8, 2.5) {Yellow};
+\node[font=\scriptsize, orange!50!black] at (8.8, 2.5) {Orange};
+\node[font=\scriptsize, red!50!black] at (12.8, 2.5) {Red};
+
+% 핵심 조건 설명
+\node[font=\scriptsize, align=center] at (1.6, 1.5)
+  {관측성에 의한\\$\DRTO$ 단축\\$E_{O,bnd}$ 지배};
+\node[font=\scriptsize, align=center] at (4.8, 1.5)
+  {불확실성 증가\\관측성 효과 상쇄\\$E_{O,bnd} + E_{U,bnd} \approx 0$};
+\node[font=\scriptsize, align=center] at (8.8, 1.5)
+  {$\DRTO > R_0$\\불확실성 프리미엄\\C2 기반 자원 추가};
+\node[font=\scriptsize, align=center] at (12.8, 1.5)
+  {파레토 활성화\\$0.52$배 감쇠\\BCP 전면 가동};
+
+% R₀ 기준선 표시
+\draw[dashed, blue!60, thick] (6.4, -0.5) -- (6.4, -0.9)
+    node[below, font=\scriptsize, blue!60] {$\eta = 1.0$: $\DRTO = R_0$ 기준};
+
+\end{tikzpicture}
+}% end resizebox
+\caption{$\eta$ 기반 에스컬레이션 임계값 다이어그램 (Green / Yellow / Orange / Red)}
+\label{fig:ch6-escalation-zones}
+\end{figure}
+
+에스컬레이션 임계값의 설정 근거는 다음과 같다.
+$\eta = 0.8$은 C1 조건에서의 평균 $\eta = 0.853$보다 낮은 값으로,
+관측성의 단축 효과가 충분히 발현되어 추가 대응이 불필요한 안정 상태를 의미한다.
+$\eta = 1.0$은 $\DRTO = R_0$, 즉 DRTO가 기준 RTO와 동일한 지점으로,
+이 이상에서는 불확실성 프리미엄에 의해 복구 시간이 기준을 초과한다.
+$\eta = 1.5$은 $\DRTO = 1.5 \times R_0 = 9.0$\,h에 대응하며,
+이 이상에서는 시그모이드 바운딩의 포화 영역에 진입하여
+위기관리 모드 전환이 필요하다.
+이러한 단계별 에스컬레이션은 SRE의 에러 예산 소진율 기반
+인시던트 대응 체계~\citep{beyer2016sre}와 유사한 구조를 가지나,
+$\eta$가 관측성과 불확실성의 결합 효과를 단일 지표로 포착한다는 점에서
+BCM 맥락에 최적화된 확장이다.
+
+\chg{나아가 2단계 프레임워크와의 복합 에스컬레이션이 가능하다.}
+$\eta$ 기반 4단계 등급은 \subsubsecref{subsec:two-stage-framework}의
+2단계 프레임워크(Core C2 + Tail C3)와 결합하여 더욱 정교한 대응이 가능하다.
+동일한 $\eta$ 등급이라도 불확실성 분포가 가우시안(C2)인지
+파레토(C3)인지에 따라 위험의 성격이 질적으로 다르기 때문이다.
+예컨대, $\eta = 1.3$(Orange 등급)이 Core 영역(C2)에서 관측되면
+가우시안 불확실성의 일시적 증가로 해석되어 추가 자원 투입과 모니터링 강화가
+1차 대응이 된다. 그러나 동일 $\eta$가 Tail 영역(C3)에서 관측되면
+파레토 꼬리 위험이 활성화된 상태이므로, $k_O$ 계수의 $0.52$배 감쇠로 인해
+관측성 효과가 제한적이며, CVaR$_{99}$가 $+24.0\%$ 높은 극단 시나리오에
+대비한 선제적 BCP 점검이 필요하다.
+
+이를 운영 규칙으로 정리하면 다음과 같다.
+\chg{먼저 Core 영역(P85.8 이하)에서는 $\eta$ 등급에 따른 표준 에스컬레이션 절차를 적용하고,
+Tail 영역(P85.8 초과)에서는 동일 $\eta$ 등급이라도 한 단계 높은 대응 수준을
+적용하며(예: Tail에서의 Orange $\to$ Red 수준 대응),
+Core에서 Tail로의 조건 전환(C2 $\to$ C3) 자체를
+에스컬레이션 트리거로 취급한다.}
+이러한 복합 에스컬레이션은 $\eta$라는 단일 축의 한계를 보완하여,
+불확실성의 분포 특성까지 반영한 입체적 위기 대응을 가능하게 한다.
+
+\chg{또한 국가 위기경보 체계와도 대응된다.}
+본 연구의 $\eta$ 기반 에스컬레이션 4단계는 ``재난 및 안전관리 기본법''에 근거한
+\textbf{국가 위기경보 4단계}(관심--주의--경계--심각)와 구조적으로 대응된다.
+\p{[}표~\vref{tab:eta-crisis-alert-mapping}\p{]}은 양 체계의 매핑을 보여준다.
+
+\begin{table}[htbp]
+\centering
+\caption{$\eta$ 기반 에스컬레이션과 국가 위기경보 4단계 대응}
+\label{tab:eta-crisis-alert-mapping}
+\small
+\begin{tabularx}{\textwidth}{c c c c c X}
+\toprule
+\textbf{$\eta$ 범위} & \textbf{DRTO 등급} & \textbf{색상} & \textbf{위기경보} & \textbf{색상} & \textbf{대응 원칙의 공통점} \\
+\midrule
+$\eta < 0.8$ & 안정 & Green & 관심 & 파랑 &
+  징후 감지 수준; 정상 운영 유지, 모니터링 강화 \\
+\addlinespace
+$0.8 \leq \eta < 1.0$ & 주의 & Yellow & 주의 & 노랑 &
+  위험 가능성 증가; 자원 점검, 갱신 주기 단축 \\
+\addlinespace
+$1.0 \leq \eta < 1.5$ & 경고 & Orange & 경계 & 주황 &
+  기준 초과 확인; 추가 자원 투입, 이해관계자 통보 \\
+\addlinespace
+$\eta \geq 1.5$ & 위기 & Red & 심각 & 빨강 &
+  총력 대응; BCP 전면 가동, 경영진 의사결정 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+두 체계는 \chg{위험 강도에 따른 단계적 격상(graduated response),
+색상 코드 기반 직관적 커뮤니케이션,
+각 단계별 보고 대상 및 대응 수준의 명확한 구분}이라는
+공통 설계 원칙을 공유한다.
+차이점은 국가 위기경보가 질적 판단에 기반하는 반면,
+$\eta$ 기반 에스컬레이션은 $\DRTO / R_0$라는 \textbf{정량적 지표}에
+의해 자동으로 등급이 결정된다는 점이다.
+이러한 정량적 트리거는 주관적 판단 편향을 배제하고
+일관된 의사결정을 지원하며, 기존 위기경보 체계에 보완적으로
+통합될 수 있다.
+

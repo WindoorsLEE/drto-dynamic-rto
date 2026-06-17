@@ -1,0 +1,45 @@
+% =====================================================================
+% 5.5 결론 및 향후 연구 — 5단계 5-2 (clean subsection wrapper)
+% 본문 텍스트 무수정. 분할 본문 파일을 3항 구조로 재배치.
+%   5.5.1 연구 요약       ← 현 sec5.5.1_summary.tex
+%   5.5.2 주요 연구 성과  ← 현 sec5.5.2_achievements.tex (5.7.x → 5.5.2.x로 강등)
+%   5.5.3 향후 연구 방향  ← 현 sec5.5.3_future_work.tex
+% =====================================================================
+
+\section{\vrev{결론 및 향후 연구}}
+\label{sec:conclusion-future-merged}
+
+\begin{p5add}
+본 절에서는 본 연구의 전체 흐름을 압축
+요약하고(5.5.1항), 핵심 성과 5개를 정리하며(5.5.2항), 한계점에서 도출된
+향후 연구 방향(5.5.3항)을 제시한다. 이로써 본 연구의 학술적 기여
+범위와 실무적 적용 가능성을 명확히 하고, 후속 연구의 출발점을 마련한다.
+\end{p5add}
+
+% --- 5.5.1 연구 요약 ---
+\subsection{\vrev{연구 요약}}
+\label{subsec:conclusion-summary-merged}
+
+\begingroup
+  \renewcommand{\section}[1]{}
+  \input{chapters/ch5/sec5.5.1_summary}
+\endgroup
+
+% --- 5.5.2 주요 연구 성과 ---
+\subsection{\vrev{주요 연구 성과}}
+\label{subsec:conclusion-achievements-merged}
+
+\begingroup
+  \renewcommand{\section}[1]{}
+  \renewcommand{\subsection}[1]{\subsubsection{#1}}
+  \input{chapters/ch5/sec5.5.2_achievements}
+\endgroup
+
+% --- 5.5.3 향후 연구 방향 ---
+\subsection{\vrev{향후 연구 방향}}
+\label{subsec:conclusion-future-merged-future}
+
+\begingroup
+  \renewcommand{\section}[1]{}
+  \input{chapters/ch5/sec5.5.3_future_work}
+\endgroup

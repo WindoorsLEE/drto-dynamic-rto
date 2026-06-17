@@ -1,0 +1,183 @@
+
+
+%% [분량보존 복원] 9변수 완전 모형 전체 계수 및 LASSO 경로 상세 (구 부록 G)
+\subsubsection{9변수 완전 모형의 전체 계수와 LASSO 경로}
+\label{subsec:full-coeff-detail}
+앞서 요약한 9변수 완전 2차 모형과 LASSO 변수 선택의 전체 계수를 제시하는데, i) \p{[}표~\ref{tab:app-c2-full-quad}\p{]}과 \p{[}표~\ref{tab:app-c3-full-quad}\p{]}는 C2와 C3 각 조건의 \chg{9변수 계수와 $t$-통계량, 전진 선택 진입 순서}를, ii) \p{[}표~\ref{tab:app-c2-lasso-path}\p{]}과 \p{[}표~\ref{tab:app-c3-lasso-path}\p{]}은 정규화 강도 $\lambda$별 \chg{생존 변수와 제거 변수}를 보인다.
+
+\chg{먼저 C2 조건의} 9변수 완전 2차 모형($R^2 = 0.998$)에서 각 변수의 회귀 계수,
+$t$-통계량, 전진 선택법 진입 순서를 \p{[}표~\ref{tab:app-c2-full-quad}\p{]}에 제시한다.
+
+C2의 9변수 완전 모형에서 가장 큰 $|t|$를 보이는 변수는
+$k_O \cdot U$ ($|t| = 476.1$)로, 관측성 가중치와 불확실성의
+교호작용이 C2의 $\eta$ 변동에서 가장 결정적인 역할을 한다.
+$U$의 주효과($|t| = 415.4$)가 그 다음으로 크며,
+$k_O \cdot O$ ($|t| = 170.8$)가 뒤를 잇는다.
+한편 $k_O$는 전진 선택에서 1순위로 진입하지만($k_O$ 단독 시 관측성 효과를 포착),
+완전 모형에서는 교호작용 항($k_O \cdot U$, $k_O \cdot O$)에 주효과가 흡수되어
+$|t| = 2.4$로 비유의해진다.
+$O \cdot U$ ($|t| = 1.4$) 역시 완전 모형에서 비유의하다.
+
+\begin{table}[htbp]
+\centering
+\caption{C2 전체 9변수 2차 회귀 계수 ($R^2 = 0.998$)}
+\label{tab:app-c2-full-quad}
+\small
+\begin{tabular}{lrrl}
+\toprule
+\textbf{변수} & \textbf{계수 $\hat{\beta}$} & \textbf{$t$-통계량} & \textbf{진입 순서} \\
+\midrule
+절편 & $1.082$ & $379.4$ & --- \\
+$k_O$ & $0.012$ & $2.4$ & 1 \\
+$O$ & $-0.034$ & $-7.0$ & 7 \\
+$U$ & $0.542$ & $415.4$ & 2 \\
+$k_O^2$ & $-0.307$ & $-86.5$ & 5 \\
+$O^2$ & $0.019$ & $5.3$ & 8 \\
+$U^2$ & $-0.013$ & $-67.3$ & 6 \\
+$k_O \cdot O$ & $-0.545$ & $-170.8$ & 4 \\
+$k_O \cdot U$ & $-0.433$ & $-476.1$ & 3 \\
+$O \cdot U$ & $0.001$ & $1.4$ & 9 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+
+\chg{이어 C3 조건의} 9변수 완전 2차 모형($R^2 = 0.858$)에서 각 변수의 회귀 계수,
+$t$-통계량, 전진 선택법 진입 순서를 \p{[}표~\ref{tab:app-c3-full-quad}\p{]}에 제시한다.
+
+\begin{table}[htbp]
+\centering
+\caption{C3 전체 9변수 2차 회귀 계수 ($R^2 = 0.858$)}
+\label{tab:app-c3-full-quad}
+\small
+\begin{tabular}{lrrl}
+\toprule
+\textbf{변수} & \textbf{계수 $\hat{\beta}$} & \textbf{$t$-통계량} & \textbf{진입 순서} \\
+\midrule
+절편 & $1.430$ & $88.6$ & --- \\
+$k_O$ & $-0.216$ & $-4.7$ & 2 \\
+$O$ & $0.085$ & $1.9$ & 8 \\
+$U$ & $0.256$ & $126.6$ & 1 \\
+$k_O^2$ & $-0.513$ & $-12.7$ & 6 \\
+$O^2$ & $0.022$ & $0.5$ & 9 \\
+$U^2$ & $-0.002$ & $-85.9$ & 3 \\
+$k_O \cdot O$ & $-0.627$ & $-17.4$ & 5 \\
+$k_O \cdot U$ & $-0.126$ & $-53.7$ & 4 \\
+$O \cdot U$ & $-0.025$ & $-11.4$ & 7 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+C3에서는 $U$가 최대 $|t| = 126.6$으로 1순위 진입하여,
+C2와 달리 불확실성의 주효과가 지배적임을 보여준다.
+$U^2$ ($|t| = 85.9$)이 3순위로 진입하여 파레토 분포의
+비선형적 $U$ 효과가 2차 항으로 포착됨을 확인한다.
+$O^2$ ($|t| = 0.5$)와 $O$ ($|t| = 1.9$)는 사실상 유의하지 않으며,
+C3에서 관측성의 개별 효과보다 $k_O \cdot O$ 교호작용이
+훨씬 중요함을 시사한다.
+
+
+\chg{다음으로 LASSO 경로를 상세히 본다.} 정규화 강도 $\lambda$를 증가시키면서 제거되는 변수와 잔존 $R^2$의 변화를
+C2(\p{[}표~\ref{tab:app-c2-lasso-path}\p{]})와 C3(\p{[}표~\ref{tab:app-c3-lasso-path}\p{]}) 조건 각각에 대해 제시한다.
+
+\begin{table}[htbp]
+\centering
+\caption{C2 LASSO 경로의 $\lambda$별 생존 변수와 제거 변수}
+\label{tab:app-c2-lasso-path}
+\small
+\begin{tabular}{c c l l}
+\toprule
+$\lambda$ & $R^2$ & 생존 변수 & 제거 변수 \\
+\midrule
+0.00015 & 0.998 & $O$, $U$, $k_O^2$, $O^2$, $U^2$, $k_O \cdot O$, $k_O \cdot U$ (7) & $k_O$, $O \cdot U$ \\
+0.0005 & 0.998 & $O$, $U$, $k_O^2$, $U^2$, $k_O \cdot O$, $k_O \cdot U$ (6) & $k_O$, $O^2$, $O \cdot U$ \\
+0.001 & 0.998 & $k_O$, $O$, $U$, $k_O^2$, $U^2$, $k_O \cdot O$, $k_O \cdot U$ (7) & $O^2$, $O \cdot U$ \\
+0.005 & 0.997 & $k_O$, $U$, $k_O^2$, $k_O \cdot O$, $k_O \cdot U$ (5) & $O$, $O^2$, $U^2$, $O \cdot U$ \\
+0.01 & 0.995 & $k_O$, $U$, $k_O^2$, $k_O \cdot O$, $k_O \cdot U$ (5) & $O$, $O^2$, $U^2$, $O \cdot U$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{C3 LASSO 경로의 $\lambda$별 생존 변수와 제거 변수}
+\label{tab:app-c3-lasso-path}
+\small
+\begin{tabular}{c c l l}
+\toprule
+$\lambda$ & $R^2$ & 생존 변수 & 제거 변수 \\
+\midrule
+0.00015 & 0.858 & 전체 9개 & --- \\
+0.0005 & 0.858 & 전체 9개 & --- \\
+0.001 & 0.857 & 전체 9개 & --- \\
+0.005 & 0.856 & $k_O$, $U$, $k_O^2$, $U^2$, $k_O \cdot O$, $k_O \cdot U$, $O \cdot U$ (7) & $O$, $O^2$ \\
+0.01 & 0.852 & $k_O$, $U$, $k_O^2$, $U^2$, $k_O \cdot O$, $k_O \cdot U$ (6) & $O$, $O^2$, $O \cdot U$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+C2에서는 $\lambda = 0.005$ 이상에서 $O \cdot U$, $O^2$, $O$, $U^2$가 순차적으로
+제거되어도 $R^2$가 $0.997$ 이상을 유지하는 반면,
+C3에서는 $\lambda = 0.005$에서야 처음으로 변수 제거($O$, $O^2$)가 시작되며,
+$R^2$ 감소 폭도 미미하다($0.858 \to 0.856$).
+이는 C3의 9변수 모형이 C2보다 덜 과적합(over-fitted)되어 있으며,
+파레토 분포의 복잡한 비선형성을 포착하기 위해 더 많은 변수가 구조적으로
+필요함을 보여준다.
+
+
+%% [코드릴리스→본문 복원] C1 완전계수표 + C3 Tail 전체계수표 (구 부록 F 유일분)
+\chg{C1 조건의 2차 회귀 전체 계수는 다음과 같다.} C1 조건은 불확실성이 없는 순수 관측성 모델로서, $U$ 관련 항($\beta_3$, $\beta_6$, $\beta_8$, $\beta_9$)이
+제외된 5개 계수의 2차 회귀 결과를 \p{[}표~\ref{tab:app-c1-quad}\p{]}에 제시한다.
+시그모이드 입력 $z_O = \kappa \cdot k_O \cdot O_{\text{raw}}$가 $\kappa = 1.2$ 영역에서
+사실상 선형으로 작동하므로, $k_O \cdot O$ 교호작용 단일 항이 $\eta_{C1}$의 변동을 결정론적으로 포착한다.
+
+\begin{table}[htbp]
+\centering
+\caption{C1 조건 2차 회귀 전체 계수 ($n = 10{,}000$)}
+\label{tab:app-c1-quad}
+\begin{tabular}{lrrrl}
+\toprule
+\textbf{항} & \textbf{계수} & \textbf{SE} & \textbf{$t$} & \textbf{비고} \\
+\midrule
+절편 ($\beta_0$)      & 1.000  & $<$0.001 & ---     & 이론치 1.000 \\
+$k_O$ ($\beta_1$)     & 0.000  & $<$0.001 & ---     & 주 효과 흡수됨 \\
+$O$ ($\beta_2$)       & 0.000  & $<$0.001 & ---     & 주 효과 흡수됨 \\
+$k_O^2$ ($\beta_4$)   & 0.000  & $<$0.001 & ---     & 비유의 \\
+$O^2$ ($\beta_5$)     & 0.000  & $<$0.001 & ---     & 비유의 \\
+$k_O \cdot O$ ($\beta_7$) & $-0.30$ & $<$0.001 & ---  & \textbf{핵심 교호작용} \\
+\midrule
+$R^2$                 & \multicolumn{3}{c}{\textbf{1.000}} & 결정론적 구조 완전 포착 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\chg{이 결과는 C1 조건에서 모델이 $\eta_{C1} \approx 1 - 0.30 \cdot k_O \cdot O_{\text{raw}}$로 근사됨을 보여주며,
+이는 시그모이드 입력 $z_O = \kappa \cdot k_O \cdot O_{\text{raw}}$의 선형 근사가 $\kappa = 1.2$ 영역에서
+사실상 정확함(비선형 오차 $\approx 0$)을 반영한다.}
+
+\chg{끝으로 Tail 2차 회귀 전체 계수를 제시한다.} P85.8 이상의 Tail 영역($n \approx 1{,}420$)에서 $\ln(U)$ 변환을 적용한
+2차 회귀의 전체 계수를 \p{[}표~\ref{tab:app-c3-tail-quad}\p{]}에 제시한다.
+$k_O \cdot \ln U$ 교호작용이 꼬리 영역에서의
+관측성 효과 변화를 설명하는 핵심 항이다.
+
+\begin{table}[htbp]
+\centering
+\caption{C3 Tail 영역 2차 회귀 전체 계수 ($>$ P85.8)}
+\label{tab:app-c3-tail-quad}
+\begin{tabular}{lrl}
+\toprule
+\textbf{항} & \textbf{계수} & \textbf{비고} \\
+\midrule
+절편          & 0.50   & \\
+$k_O$        & 2.42   & 양의 주 효과 (교호작용과 결합) \\
+$\ln U$      & 0.10   & 로그 변환된 불확실성 \\
+$k_O \cdot \ln U$ & $-1.25$ & \textbf{핵심 교호작용 (증폭 원인)} \\
+\midrule
+$R^2$        & 0.710  & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\chg{표에서 $k_O \cdot \ln U$ 교호작용($-1.25$)이 꼬리 영역에서 $k_O$ 효과의 수학적 원인이며,
+$\ln U$가 커질수록(극단 불확실성) $k_O$의 효과가 비선형적으로 변화한다.}

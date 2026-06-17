@@ -1,0 +1,40 @@
+% 제4장 연구 결과
+% 1차 심사 반영: 구 제3장 결과 부분(3.2--3.8) + 구 제4장 교차분석(4.1--4.6) 통합
+% 3차 심사 반영: 파일명을 실제 절 번호와 일치시키도록 정리 (2026-05-09)
+
+\chapter{\vrev{연구 결과}}
+\label{ch:results}
+
+\vrev{%
+본 장에서는 4단계 조건 체계(C0--C3)별 시뮬레이션 결과를 순차적으로 보고하고,
+\chg{회귀분석, 강건성, 수렴 진단}을 통해 모델의 통계적 타당성을 검증한다.
+이어서 가설 검증 종합과 조건 간 교차분석(효과 크기, 회귀 설명력,
+이중채널 감쇠), 전문가 검증 결과, 선행연구와의 교차 정합성을 제시한다.
+}
+% 3차 심사 (2026-05-09): 파일명을 실제 절 번호와 일치시키기 위해 ch4 7개 파일 일괄 rename.
+% sec4.7_hypothesis → sec4.13_hypothesis (실제 4.13절)
+% sec4.8_c2_c3_synthesis → sec4.7_c2_c3_synthesis (실제 4.7절)
+% sec4.9_effect_size → sec4.8_effect_size, sec4.10_r2_progression → sec4.9_r2_progression
+% sec4.11_dual_channel → sec4.10_dual_channel, sec4.12_expert_verify → sec4.11_expert_verify
+% sec4.13_cross_consistency → sec4.12_cross_consistency
+
+% 조건별 시뮬레이션 결과
+\input{chapters/ch4/sec4.1_c0c1_results}        % 4.1 C0/C1 결과
+\input{chapters/ch4/sec4.2_c2_results}          % 4.2 C2 결과
+\input{chapters/ch4/sec4.3_c3_results}          % 4.3 C3 결과
+
+% 통계 분석
+\input{chapters/ch4/sec4.4_regression}          % 4.4 회귀분석
+\input{chapters/ch4/sec4.5_descriptive_summary} % 4.5 기술통계 종합
+\input{chapters/ch4/sec4.6_convergence}         % 4.6 수렴 진단
+
+% 교차 분석 (3차 심사: 파일명을 실제 절 번호와 일치)
+\input{chapters/ch4/sec4.7_c2_c3_synthesis}     % 4.7 C2 vs C3 종합 비교
+\input{chapters/ch4/sec4.8_effect_size}         % 4.8 조건 간 효과 크기
+\input{chapters/ch4/sec4.9_r2_progression}      % 4.9 회귀 설명력 구조
+\input{chapters/ch4/sec4.10_dual_channel}       % 4.10 이중채널 감쇠
+\input{chapters/ch4/sec4.11_expert_verify}      % 4.11 전문가 검증
+\input{chapters/ch4/sec4.12_cross_consistency}  % 4.12 선행연구 교차 정합성
+
+% 가설 검증 종합 (마지막 절)
+\input{chapters/ch4/sec4.13_hypothesis}         % 4.13 가설 검증 종합

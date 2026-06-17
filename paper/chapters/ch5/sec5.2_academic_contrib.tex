@@ -1,0 +1,92 @@
+% =====================================================================
+% 5.2 학술적 기여 — 5단계 5-2 (clean subsection wrapper)
+% 본문 텍스트 무수정. 분할 본문 파일을 새 subsection 구조로 결합.
+%   5.2.1 이론적 기여  ← 5.1.2 + 5.2(전체) + 5.8.1 본문
+%   5.2.2 방법론적 기여 ← 5.3(전체) + 5.8.2 본문
+% =====================================================================
+
+\section{\vrev{학술적 기여}}
+\label{sec:academic-contrib}
+
+\begin{p5add}
+본 절은 본 연구가 BCM\chg{과 재해복구}(DR) 학문 분야의
+지식 체계에 새롭게 기여한 바를 \chg{i) 이론적, ii) 방법론적, 그리고 iii) 실증적} 세 차원에서
+종합한다. 이론적 기여(5.2.1항)에서는 $\DRTO$ 모델의 수학적 구조와
+이중채널 감쇠 메커니즘의 신규성을, 방법론적 기여(5.2.2항)에서는 비중첩
+대역 시드 체계와 분할 회귀 방법론을, 실증적 기여(5.2.3항)에서는 \jrev{10개
+가설} 전원 채택과 다중 검증 프레임워크의 결과\jrev{, 그리고 \textbf{분포 환경
+적합성 종합 명제}(\secref{sec:ch4_hypothesis_summary})}를 다룬다.
+\end{p5add}
+
+% --- 5.2.1 이론적 기여 ---
+\subsection{\vrev{이론적 기여}}
+\label{subsec:academic-theoretical}
+
+\begingroup
+  % 원본 파일의 \section, \subsection 헤더만 시각적으로 억제 (label은 유지)
+  \renewcommand{\section}[1]{}
+  \renewcommand{\subsection}[1]{}
+  \renewcommand{\subsubsection}[1]{\paragraph{#1}}
+
+  % --- 주축: 5.1.2 이론적 기여 (간결한 intro + 1)/2)/3) 형식) ---
+  \input{chapters/ch5/_split/sec5.2.1_body}
+
+  % --- 보완: 5.2 이론적 시사점 (기술적 세부 설명 보완) ---
+  \input{chapters/ch5/sec5.2.1_theoretical}
+
+  % --- 5.8.1 (이론적 기여) — 5.1.2와 3중 주제 중복으로 5-2 삭제 ---
+  \begin{p5del}{현 5.8.1 이론적 기여 — 5.1.2의 1)/2)/3)과 동일 주제 중복}
+  \input{chapters/ch5/_split/sec5.2.1_contributions}
+  \end{p5del}
+\endgroup
+
+% --- 5.2.2 방법론적 기여 ---
+\subsection{\vrev{방법론적 기여}}
+\label{subsec:academic-methodological}
+
+\begingroup
+  \renewcommand{\section}[1]{}
+  \renewcommand{\subsection}[1]{}
+  \renewcommand{\subsubsection}[1]{\paragraph{#1}}
+
+  \input{chapters/ch5/sec5.2.2_methodological}
+  \input{chapters/ch5/_split/sec5.2.2_contributions}
+\endgroup
+
+% --- 5.2.3 실증적 기여 (5-2단계 신규 작성) ---
+\subsection{\vrev{실증적 기여}}
+\label{subsec:academic-empirical}
+
+\begin{p5add}
+본 항은 본 연구가 시뮬레이션과 전문가 평가의 결합 검증을 통해 달성한
+실증적 기여를 정리한다.
+
+첫째, \textbf{\jrev{10개 연구가설}(H1--\jrev{H10})이 사전 설정 기준을 모두 충족하여 모두
+채택}되었다. 시뮬레이션 검증(H1--\jrev{H3}), 회귀 검증(\jrev{H4}--\jrev{H5}), 강건성 검증(\jrev{H6}--\jrev{H7}),
+이중채널 검증(\jrev{H8}), 전문가 평가(\jrev{H9}--\jrev{H10})의 6단계 다층 검증 프레임워크에서
+계층적 의존 구조가 모두 만족됨으로써, $\DRTO$ 모델의 내부 정합성과
+외부 타당성이 동시에 확인되었다.
+
+둘째, \textbf{$10{,}000$개 마스터 시드에 걸친 $10^8$회 다중 시드 검증}을
+통해 결과의 시드 의존성을 완전히 배제하였다. Bonferroni 보정 $z$-검정에서
+45개 회귀계수 중 기각이 0개로, 시뮬레이션 결과가 특정 난수열에 의존하지 않는
+강건성을 정량적으로 입증하였다.
+
+셋째, \textbf{BCM/DR 분야 전문가 5명에 의한 \chg{정량적 및 정성적} 혼합 검증}을 통해
+실무 타당성을 확보하였다. 27문항 5점 리커트 척도에서 전체 평균
+$4.46/5.0$($t(4) = 3.68$, $p = 0.011$, Cohen's $d = 1.65$)을 기록하였으며,
+S-CVI/Ave $= 0.985$, Cronbach's $\alpha = 0.89$로 내용 타당도와 내적
+일관성이 확인되었다. 심층 인터뷰에서는 5대 주제 15개 하위 주제 모두에서
+$\geq 80\%$ 동의가 달성되어, 시뮬레이션 결과가 실무자의 경험적 관찰과
+부합함을 삼각검증하였다.
+
+\jrev{넷째, \textbf{\frev{분포 환경 적합성} 종합 명제}를 도출하였다. \chg{\citet{lee2026drto}에서 격자
+탐색으로 도출하여 출판한} $\kappa^{*} = 1.2$를 본 연구의
+새로운 분포 환경에 적용한 결과,
+9개 가설(\jrev{H2--H10})의 PASS가 \chg{i)} 물리적 안전성, \chg{ii)} 이론적 일치, \chg{iii)} 통계적
+설명력, \chg{iv)} 결과 안정성, \chg{v)} 메커니즘 발현, \chg{vi)} 외부 검증의 6가지 측면에서
+$\kappa = 1.2$의 \jrev{\frev{분포 환경 적합성}}을 집합적으로 \frev{시사한다} (\secref{sec:ch4_hypothesis_summary} 참조).
+신규 격자 탐색을 직접 수행하지 않고도 다중 가설 PASS의 통합 해석을 통해
+\chg{\citet{lee2026drto}의 매개변수의} 본 연구 환경 적용성을 학술적으로 정직하게 \frev{시사한 것이}
+본 연구의 \chg{방법론적 및 실증적} 차별점이다.}
+\end{p5add}
