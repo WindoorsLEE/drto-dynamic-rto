@@ -74,8 +74,8 @@ ax.set_ylim(1e-5, 1.5)
 ax.grid(True, alpha=0.3, which='both')
 
 plt.tight_layout()
-plt.savefig('/home/windoorslee/DRTO/drto_v2/doctoral/appendix/figures/tail_comparison.pdf',
+plt.savefig('tail_comparison.pdf',
             bbox_inches='tight', dpi=300)
-plt.savefig('/home/windoorslee/DRTO/drto_v2/doctoral/appendix/figures/tail_comparison.png',
+plt.savefig('tail_comparison.png',
             bbox_inches='tight', dpi=150)
 print("그림 생성 완료: tail_comparison.pdf / .png")

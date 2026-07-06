@@ -188,7 +188,7 @@ print(f"\nCVaR99:")
 print(f"  C2={results['cvar99']['C2']:.3f}h, C3={results['cvar99']['C3']:.3f}h, C_env={results['cvar99']['C_env']:.3f}h")
 
 # JSON 저장
-with open('/home/windoorslee/DRTO/drto_v2/doctoral/appendix/figures/envelope_results.json', 'w') as f:
+with open('envelope_results.json', 'w') as f:
     json.dump(results, f, indent=2, ensure_ascii=False)
 
 # ── 그림 생성 ──
@@ -254,8 +254,8 @@ ax.set_ylim(1e-4, 1.5)
 ax.grid(True, alpha=0.3, which='both')
 
 plt.tight_layout()
-plt.savefig('/home/windoorslee/DRTO/drto_v2/doctoral/appendix/figures/envelope_analysis.pdf',
+plt.savefig('envelope_analysis.pdf',
             bbox_inches='tight', dpi=300)
-plt.savefig('/home/windoorslee/DRTO/drto_v2/doctoral/appendix/figures/envelope_analysis.png',
+plt.savefig('envelope_analysis.png',
             bbox_inches='tight', dpi=150)
 print("\n그림 생성 완료: envelope_analysis.pdf / .png")
