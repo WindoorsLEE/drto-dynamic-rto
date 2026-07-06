@@ -1,0 +1,12 @@
+% =====================================================================
+% main_doc_revised.tex — 수정본(정오표 반영 완전본)
+%
+% 공개본(main_doc.tex)과 동일한 소스를 공유하되, 정오(errata) 6건을
+% 올바른 표기로 출력한다. \ERRATAFIX 플래그를 정의한 뒤 main_doc.tex를
+% 그대로 불러오면 \erf{오류형}{정정형} 매크로가 정정형(#2)을 출력한다.
+% 정오 항목의 목록·위치·설명은 main_doc_error_report_final.tex 참조.
+%
+% 빌드: latexmk -xelatex main_doc_revised.tex
+% =====================================================================
+\def\ERRATAFIX{}
+\input{main_doc.tex}

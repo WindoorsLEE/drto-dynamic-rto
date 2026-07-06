@@ -1,0 +1,86 @@
+% =====================================================================
+% main_doc_error_report_final.tex
+% dCollection 공개본(최종 PDF)에 존재하는 오류 보고서
+% 빌드: latexmk -xelatex main_doc_error_report_final.tex
+% =====================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[a4paper,top=25mm,bottom=25mm,left=25mm,right=25mm]{geometry}
+\usepackage{xeCJK}
+\xeCJKsetup{CJKspace=true}
+\setCJKmainfont[UprightFont=*, BoldFont=* Bold]{Noto Serif CJK KR}
+\setmainfont{TeX Gyre Termes}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{ragged2e}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+\renewcommand{\arraystretch}{1.35}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+\definecolor{errred}{rgb}{0.80,0,0}
+\newcommand{\err}[1]{{\color{errred}\textbf{#1}}}
+
+\title{\textbf{공개 PDF(최종본) 오류 보고서}\\[4pt]
+\large 관측성과 불확실성 기반 동적복구목표시간(DRTO) 프레임워크 연구}
+\author{이창호 (숭실대학교 대학원 재난안전관리학과)}
+\date{작성: 2026년 6월}
+
+\begin{document}
+\maketitle
+
+\section*{1. 문서의 목적}
+
+본 보고서는 dCollection 디지털 학술정보 유통시스템 및 도서관을 통해 공개된
+학위논문 최종 PDF(이하 ``공개본'')에 존재하는 오류를 투명하게 밝히기 위한 것이다.
+공개본은 정식 제출·등록된 판본이므로 사후 수정이 불가능하며, 본 저장소(GitHub)에
+공개하는 \LaTeX{} 소스는 이 공개본과 동일한 내용(오류 포함)을 담는 것을 원칙으로 한다.
+따라서 아래에 열거한 오류는 공개본과 \LaTeX{} 소스 양쪽에 동일하게 존재하며,
+독자는 본 보고서를 통해 그 위치와 올바른 표기를 확인할 수 있다.
+
+\section*{2. 검증 방법}
+
+각 오류는 공개 PDF의 페이지별 추출 텍스트와 원본 한글 파일(\texttt{.hwpx})의
+본문 XML(\texttt{Contents/section*.xml})을 대조하여 확정하였다.
+PDF 추출 과정에서 발생하는 수식·기호·첨자 탈락, 표·그림 셀의 재배치,
+줄바꿈에 의한 단어 분리 등은 실제 오류가 아니므로 제외하였다.
+그 결과 아래 6건이 원본에서 실재하는 오류로 확인되었다.
+(쪽 번호는 공개본의 \emph{인쇄 쪽 번호} 기준이다.)
+
+\section*{3. 확인된 오류 목록}
+
+\renewcommand{\arraystretch}{1.5}
+\begin{longtable}{@{}c c >{\RaggedRight}p{4.6cm} >{\RaggedRight}p{3.0cm} >{\RaggedRight}p{3.4cm} c@{}}
+\toprule
+\textbf{\#} & \textbf{인쇄쪽} & \textbf{공개본 원문(오류)} & \textbf{올바른 표기} & \textbf{설명} & \textbf{확신} \\
+\midrule
+\endhead
+1 & 61 & H1--H3까지는 모형의 기본 동작을, 회귀 검증인 ``\err{H5}는 DRTO 모델의 비선형 응답 곡면이 2차 다항식으로 충분히 근사될 수 있는지를 검증한다.'' & ``\err{H4}는 DRTO 모델의 비선형 응답 곡면\ldots'' & 가설 라벨 오기. 회귀 설명력(2차 다항 근사)은 H4의 내용이나 라벨이 H5로 표기되어 H5가 두 번 등장한다. & high \\
+\addlinespace
+2 & 147 & 정량적 결과와 정성적 결과가 동일한 ``결\err{론을} 서로 다른 경로로 도달하는 수렴'' & ``결\err{론에} 서로 다른 경로로 도달하는'' & 조사 오류. `도달하다'는 목적어가 아닌 부사어(에)를 취한다. & high \\
+\addlinespace
+3 & 213 & 결론적으로, 본 연구는 ``\err{BCMgownj} 분야에서 정적 RTO의 근본적 한계를\ldots'' & ``\err{BCM} 분야에서'' & 문자열 오손. `BCM' 뒤에 무의미한 문자열 `gownj'가 삽입되었다(입력 오류로 추정). & high \\
+\addlinespace
+4 & 부록 B & 부록 B 자가진단 체크리스트 9번 ``외부 공급업체 \err{장애시} 대체 방안(plan B)이 수립되어 있는가?'' & ``\err{장애 시} 대체 방안'' & 띄어쓰기. 의존명사 `시'는 앞말과 띄어 쓴다. & high \\
+\addlinespace
+5 & 212 & 장애 이벤트 관측 시마다 ``예측-갱신(\err{pict-update}) 사이클''을 통해 & ``예측-갱신(\err{predict-update}) 사이클'' & 영문 철자 오류. `predict'의 철자 일부(\texttt{redi})가 누락되었다. & high \\
+\addlinespace
+6 & 119 & 두 불확실성 분포의 CDF가 교차하는 ``\err{교차점(P85.8, $\eta \approx 2.42$)는} 영역 2 내부에서'' & ``교차점(P85.8, $\eta \approx 2.42$)\err{은}'' & 조사 오류. 주어 `교차점'은 받침으로 끝나므로 조사 `은'을 취한다. & medium \\
+\bottomrule
+\end{longtable}
+
+\section*{4. 참고 사항}
+
+\begin{itemize}
+\item 위 6건 외에 초록, 참고문헌(국내 4편/국외 59편), 그리고 대부분의 본문은
+      오류 없이 정제되어 있음을 페이지 단위 대조로 확인하였다.
+\item 본 보고서에 열거한 오류는 모두 원본 한글 파일에서 실재가 검증된 것이며,
+      단순 추출 아티팩트(예: 표 캡션의 글자 분해, 수식 기호 탈락)로 판명된
+      의심 항목은 오류 목록에서 제외하였다.
+\item 공개하는 \LaTeX{} 소스는 위 오류를 임의로 수정하지 않고 공개본과 동일하게 유지하며,
+      정정이 필요한 독자는 본 보고서의 ``올바른 표기'' 열을 참조하기 바란다.
+\end{itemize}
+
+\end{document}

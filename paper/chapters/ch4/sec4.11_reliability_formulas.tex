@@ -2,10 +2,10 @@
 \subsubsection{\chg{타당도와 신뢰도} 지표 산출 공식}
 \label{app:reliability-formulas}
 
-본 절에서는 본문 \subsecref{subsec:ch5_validity_reliability}에서 보고한
-각 \chg{타당도와 신뢰도} 지표의 계산 공식과 산출 근거를 제시한다.
+4.11.3(검증 도구의 타당도 및 신뢰도)에서 보고한 각 타당도와 신뢰도
+지표의 계산 공식과 산출 근거를 제시한다.
 
-\chg{\textbf{내용타당도지수(CVI)}의 문항별 I-CVI는 5점 리커트 척도에서 4점 이상을 ``적합''으로 이분화하여 산출한다.}
+\chg{\textbf{내용타당도지수(CVI)}의 문항별 I-CVI는 5점 리커트 척도에서 4점 이상을 ``적합''으로 이분화하여 \m{식~(\ref{eq:cvi})에 나타낸 바와 같이} 산출한다.}
 \begin{equation}
   \text{I-CVI}_i = \frac{n_{e,i}}{N}, \qquad
   \text{S-CVI/Ave} = \frac{1}{k}\sum_{i=1}^{k} \text{I-CVI}_i
@@ -18,7 +18,7 @@ $k$는 문항 수({$= 27$})이다.
 2개 문항(D1, E4)에서 $n_{e,i} = 4$ (I-CVI $= 0.80$)이므로
 S-CVI/Ave $= (25 \times 1.00 + 2 \times 0.80)/27 = 0.985$이다.}
 
-\padd{\textbf{내용타당도비율(CVR)}은 본 연구에 적용하지 않았으나, 정의를 참조용으로 다음과 같이 제시한다.}
+\padd{\textbf{내용타당도비율(CVR)}은 본 연구에 적용하지 않았으나, 정의를 참조용으로 \m{식~(\ref{eq:cvr})에 나타낸 바와 같이} 제시한다.}
 \begin{equation}
   \text{CVR}_i = \frac{n_{e,i} - N/2}{N/2}
   \label{eq:cvr}
@@ -32,7 +32,7 @@ S-CVI/Ave $= (25 \times 1.00 + 2 \times 0.80)/27 = 0.985$이다.}
 Lawshe~\citep{lawshe1975quantitative} 원표에서 $N = 5$일 때
 임계값은 $0.99$이며, 본 결과는 이를 충족한다.}
 
-\chg{\textbf{Cronbach's $\alpha$}는 내적 일관성을 평가하며, 다음과 같이 산출한다.}
+\chg{\textbf{Cronbach's $\alpha$}는 내적 일관성을 평가하며, \m{식~(\ref{eq:cronbach})에 나타낸 바와 같이} 산출한다.}
 \begin{equation}
   \alpha = \frac{k}{k - 1}\left(1 - \frac{\displaystyle\sum_{i=1}^{k} \sigma_i^2}{\sigma_T^2}\right)
   \label{eq:cronbach}
@@ -40,21 +40,21 @@ Lawshe~\citep{lawshe1975quantitative} 원표에서 $N = 5$일 때
 $k = 27$ (문항 수), $\sigma_i^2$는 $i$번째 문항의 분산, $\sigma_T^2$는
 전문가별 총점의 분산이다.
 
-산출 결과 27개 문항 $\times$ 5명 평가자의 응답 행렬로부터
-$\alpha = 0.89$\chg{로 산출되어 양호한 수준이다}.
+산출 결과 27개 문항에 각각 5명 평가자의 응답 행렬로부터
+$\alpha = 0.89$(양호)\chg{로 산출되어 양호한 수준이다}.
 
 영역별 구성은 모델 타당성(B, $k{=}6$),
 파라미터 적정성(C, $k{=}6$),
 실무 적용성(D, $k{=}6$),
 \chg{산업적용과 $\eta$ 활용}(E, $k{=}9$)이다.
 
-\chg{\textbf{ICC(2,1)}~\citep{shrout1979icc}은 절대 일치(two-way random, single measures)를 평가하며, 다음과 같이 산출한다.}
+\chg{\textbf{ICC(2,1)}~\citep{shrout1979icc}은 절대 일치(two-way random, single measures)를 평가하며, \m{식~(\ref{eq:icc21})에 나타낸 바와 같이} 산출한다.}
 \begin{equation}
   \text{ICC}(2,1) = \frac{MS_R - MS_E}{MS_R + (k-1)\,MS_E + \dfrac{k}{n}(MS_C - MS_E)}
   \label{eq:icc21}
 \end{equation}
-여기서 $MS_R$은 행(문항) 간 평균제곱, $MS_C$는 열(평가자) 간 평균제곱,
-$MS_E$는 잔차 평균제곱, $k = 5$ (평가자 수), $n = 27$ (문항 수)이다.
+여기서 $MS_R$은 행(문항) 간 평균 제곱, $MS_C$는 열(평가자) 간 평균 제곱,
+$MS_E$는 잔차 평균 제곱, $k = 5$ (평가자 수), $n = 27$ (문항 수)이다.
 
 산출 결과 ICC(2,1)은 $0.003$이다.
 135개 응답 중 98.5\%가 4--5점에 집중하는 \textbf{천장효과(ceiling effect)}로 인해
@@ -62,7 +62,7 @@ $MS_C$와 $MS_E$의 차이가 극히 작아 ICC가 역설적으로 낮게 산출
 이는 전문가 간 불일치가 아닌 일관되게 높은 합의의 통계적 부산물이므로,
 CVI(S-CVI/Ave $= 0.985$)를 주된 타당도 지표로 보고한다.
 
-\chg{\textbf{ICC(3,1)}은 일관성(two-way mixed, single measures)을 평가하며, 다음과 같이 산출한다.}
+\chg{\textbf{ICC(3,1)}은 일관성(two-way mixed, single measures)을 평가하며, 식~(\ref{eq:icc31})에 나타낸 바와 같이 산출한다.}
 \begin{equation}
   \text{ICC}(3,1) = \frac{MS_R - MS_E}{MS_R + (k-1)\,MS_E}
   \label{eq:icc31}
@@ -88,7 +88,7 @@ $k = 5$를 대입한 \emph{형식적} 결과는 $0.156/0.266 \approx 0.59$이며
 이는 천장효과로 분자 $(MS_R - MS_E)$가 작아져 형성된 부산물 수치로서
 실질적 일치도 해석에 사용하지 않는다.}
 
-\chg{\textbf{Krippendorff's $\alpha$}는 다음과 같이 산출한다.}
+\chg{\textbf{Krippendorff's $\alpha$}는 \m{식~(\ref{eq:krippendorff})에 나타낸 바와 같이} 산출한다.}
 \begin{equation}
   \alpha_K = 1 - \frac{D_o}{D_e}
   \label{eq:krippendorff}
@@ -99,19 +99,19 @@ $D_o$는 관측된 불일치(observed disagreement), $D_e$는 우연에 의한
 \[
   D_o = \frac{1}{n \cdot k(k-1)} \sum_{u} \sum_{c \neq c'} (c - c')^2
 \]
-여기서 $n$은 평가 대상 수({27} 문항), $k$는 평가자 수(5)이다.
+여기서 $n$은 평가 대상 수(27문항), $k$는 평가자 수(5)이다.
 
 산출 결과 $D_o = 0.058$, $D_e = 0.276$이므로
 $\alpha_K = 1 - 0.058/0.276 = 0.79$\chg{로 산출되었다}.
 \citet{krippendorff2011agreement}의 기준에서 $\alpha_K \geq 0.67$은
 잠정적 결론이 가능한 수준이며, $\geq 0.80$에 근접하여 수용 가능하다.
 
-\chg{\textbf{Fleiss' $\kappa$}~\citep{fleiss1971nominal}는 범주형 인터뷰 데이터에 대해 다음과 같이 산출한다.}
+\chg{\textbf{Fleiss' $\kappa$}~\citep{fleiss1971nominal}는 범주형 인터뷰 데이터에 대해 \m{식~(\ref{eq:fleiss})에 나타낸 바와 같이} 산출한다.}
 \begin{equation}
   \kappa = \frac{\bar{P} - \bar{P}_e}{1 - \bar{P}_e}
   \label{eq:fleiss}
 \end{equation}
-$\bar{P}$는 관측된 평균 일치율, $\bar{P}_e$는 우연에 의한 기대 일치율이다.
+$\bar{P}$는 관측된 평균 일치율, $\bar{P}_e$는 우연에 의한 기대 일치율이며, \m{각각 식~(\ref{eq:fleiss-p}) 및 (\ref{eq:fleiss-pe})에 나타낸 바와 같이 산출된다}.
 \begin{align}
   \bar{P} &= \frac{1}{N} \sum_{i=1}^{N} \frac{1}{k(k-1)}
     \sum_{j=1}^{q} n_{ij}(n_{ij} - 1) \label{eq:fleiss-p} \\
@@ -121,7 +121,7 @@ $\bar{P}$는 관측된 평균 일치율, $\bar{P}_e$는 우연에 의한 기대 
 $N = 15$ (하위 주제 수), $k = 5$ (평가자 수), $q = 2$ (동의/비동의 범주),
 $n_{ij}$는 $i$번째 하위 주제에 $j$범주를 선택한 평가자 수이다.
 
-산출 근거로, {12}개 하위 주제에서 만장일치(5/5 동의), {3}개 하위 주제에서 4/5 동의이므로 \chg{다음과 같이 계산된다.}
+산출 근거로 12개 하위 주제에서 만장일치(5/5 동의), 3개 하위 주제에서 4/5 동의이므로 \chg{다음과 같이 계산된다.}
 \begin{itemize}
   \item {$\bar{P} = \frac{1}{15}\left[12 \times \frac{5 \times 4}{5 \times 4}
     + 3 \times \frac{4 \times 3 + 1 \times 0}{5 \times 4}\right]

@@ -172,12 +172,20 @@
 \newcommand{\chg}[1]{#1}                          % 평문화
 \newcommand{\del}[1]{}                            % 삭제 완전 제거
 % ── 최종제출본7 정합 라운드: 잔존 오류 표시 활성 (2026-06-12) ──
-\definecolor{subred}{rgb}{0,0,0}                  % 공개본: 리뷰 마커 검정 환원
+\definecolor{subred}{rgb}{0,0,0}                  % 교수수정본(0622) 정합: 전체 검정 환원
 \newcommand{\pdferr}[1]{{\color{subred}#1}}      % 제출본 PDF 오류 정정 (빨강)
 % 참조형 오류 정정 (내부 ref 매크로의 p2red(검정)에 덮이지 않도록 전용 정의)
 \newcommand{\pdferrsubsub}[1]{\begingroup\hypersetup{linkcolor=subred}\color{subred}\ref{#1}목\endgroup}
 \newcommand{\pdferrsec}[1]{\begingroup\hypersetup{linkcolor=subred}\color{subred}\ref{#1}절\endgroup}
 \newcommand{\pdferrappch}[1]{\begingroup\hypersetup{linkcolor=subred}\color{subred}부록~\ref{#1}장\endgroup}
+\newcommand{\pdferrR}[1]{\begingroup\hypersetup{linkcolor=subred}\color{subred}#1\endgroup} % HWP 참조오류 빨강(제출본12)
+% ── 14버전(0622): 지도교수 의도를 제출본13에 적용 — 수정 대상 빨강 마킹 ──
+\definecolor{m14}{rgb}{0,0,0}                  % 공개본: \m 검정 환원
+\newcommand{\m}[1]{{\color{m14}#1}}               % 교수 의도 반영(추가/교체) — 빨강
+% ── 정오(errata) 토글: #1=공개본 오류형, #2=정정형 ──
+% main_doc.tex(오류본)은 #1을, main_doc_revised.tex(수정본)은 #2를 출력
+\ifdefined\ERRATAFIX\newcommand{\erf}[2]{#2}\else\newcommand{\erf}[2]{#1}\fi
+\newcommand{\mdel}[1]{{\color{m14}\sout{#1}}}     % 삭제 대상 — 빨강 취소선
 % 4차 진입: trevred 기반 helper도 검정 환원 (frevred 4차 신설은 위 참조)
 \newcommand{\tsecref}[1]{\ref{#1}절}
 \newcommand{\tsubsecref}[1]{\ref{#1}항}
@@ -344,7 +352,7 @@
   \refstepcounter{appsection}%
   \def\@currentlabel{\CurrentAppendixLetter.\arabic{appsection}}%
   \phantomsection
-  \addcontentsline{toc}{subsection}{\protect\numberline{\CurrentAppendixLetter.\arabic{appsection}}#1}%
+  % [제출본13 정합] 부록 하위는 목차 미등재
   {\par\noindent\hspace{2em}\JungGothic\bfseries\fontsize{12}{16}\selectfont
   \CurrentAppendixLetter.\arabic{appsection}\ #1\par}\vspace{6pt}}
 \newcommand{\AppSubsection}[1]{%
@@ -352,7 +360,7 @@
   \refstepcounter{appsubsection}%
   \def\@currentlabel{\CurrentAppendixLetter.\arabic{appsection}.\arabic{appsubsection}}%
   \phantomsection
-  \addcontentsline{toc}{subsubsection}{\protect\numberline{\CurrentAppendixLetter.\arabic{appsection}.\arabic{appsubsection}}#1}%
+  % [제출본13 정합] 부록 하위는 목차 미등재
   {\par\noindent\hspace{3em}\JungGothic\bfseries\fontsize{11}{14}\selectfont
   \CurrentAppendixLetter.\arabic{appsection}.\arabic{appsubsection}\ #1\par}\vspace{4pt}}
 \newcommand{\AppSubsubsection}[1]{%
