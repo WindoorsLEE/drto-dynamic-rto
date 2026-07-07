@@ -10,6 +10,7 @@
 \xeCJKsetup{CJKspace=true}
 \setCJKmainfont[UprightFont=*, BoldFont=* Bold]{Noto Serif CJK KR}
 \setmainfont{TeX Gyre Termes}
+\usepackage{amsmath}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -44,12 +45,14 @@
 
 각 오류는 공개 PDF의 페이지별 추출 텍스트와 원본 한글 파일(\texttt{.hwpx})의
 본문 XML(\texttt{Contents/section*.xml})을 대조하여 확정하였다.
-PDF 추출 과정에서 발생하는 수식·기호·첨자 탈락, 표·그림 셀의 재배치,
-줄바꿈에 의한 단어 분리 등은 실제 오류가 아니므로 제외하였다.
-그 결과 아래 6건이 원본에서 실재하는 오류로 확인되었다.
-(쪽 번호는 공개본의 \emph{인쇄 쪽 번호} 기준이다.)
+PDF 추출 과정에서 발생하는 표·그림 셀의 재배치, 쪽번호 유출, 줄바꿈에 의한 단어 분리
+등 \emph{추출 아티팩트}는 실제 오류가 아니므로 제외하였다.
+다만 원본 문서 자체에서 영문 글자 일부가 수식 이탤릭 글리프로 잘못 조판된 경우(예: 정상
+문자열 중 한 글자만 다른 서체로 표시)는 공개본에 실재하는 오류이므로 포함하였다.
+1차 검토에서 6건(제3.1절), 2차 정밀 재검토(2026년 7월)에서 10건(제3.2절)이 추가로 확인되어 총 16건이 원본에서 실재하는 오류로 확인되었다.
+(쪽 번호는 공개본의 \emph{인쇄 쪽 번호} 기준이며, 전면부는 해당 부명으로 표기한다.)
 
-\section*{3. 확인된 오류 목록}
+\section*{3.1 1차 검토 확인 오류 (6건)}
 
 \renewcommand{\arraystretch}{1.5}
 \begin{longtable}{@{}c c >{\RaggedRight}p{4.6cm} >{\RaggedRight}p{3.0cm} >{\RaggedRight}p{3.4cm} c@{}}
@@ -71,16 +74,52 @@ PDF 추출 과정에서 발생하는 수식·기호·첨자 탈락, 표·그림 
 \bottomrule
 \end{longtable}
 
+\section*{3.2 2차 정밀 재검토 확인 오류 (10건)}
+
+2026년 7월 전면 재대조에서 추가로 확인된 오류이다. 페이지·본문 위치 및 원본 한글
+파일과의 대조를 거쳐 실재를 검증하였다.
+
+\renewcommand{\arraystretch}{1.5}
+\begin{longtable}{@{}c c >{\RaggedRight}p{4.6cm} >{\RaggedRight}p{3.0cm} >{\RaggedRight}p{3.4cm} c@{}}
+\toprule
+\textbf{\#} & \textbf{인쇄쪽} & \textbf{공개본 원문(오류)} & \textbf{올바른 표기} & \textbf{설명} & \textbf{확신} \\
+\midrule
+\endhead
+7 & 감사의 글 & 사랑하는 가족에게, 그저 감사한 ``\err{마음 뿐}입니다.'' & ``\err{마음뿐}입니다.'' & 띄어쓰기. 보조사 `뿐'은 앞말에 붙여 쓴다. & high \\
+\addlinespace
+8 & 56 & ``\err{식 (2.15)는 중심값 15\%는} RTO 감소율이 너무 작으면…'' & ``\err{식 (2.15)에서 중심값 15\%는}…'' & 조사 오류. 이중 주제격(`는…는')으로 `식 (2.15)는'이 서술어를 잃는다(병렬문은 `…에서'를 취함). & high \\
+\addlinespace
+9 & 71 & ``\err{표본 크기 $n=10{,}000$의 표본 크기는} 다음의 세 가지 기준에 의해 결정되었다.'' & ``\err{표본 크기 $n=10{,}000$은} 다음의…'' & 중복 표현. 한 문장에 `표본 크기'가 이중으로 나타나 주어부가 중복된다. & high \\
+\addlinespace
+10 & 73 & 신 API인 ``\err{Generato\textit{r}}(NumPy 1.17 이상)는…'' & ``\err{Generator}'' & 수식 이탤릭 글리프 오손. `Generator'의 마지막 `r'만 수학 이탤릭 글리프로 조판되었다(같은 쪽 다른 3곳은 정상). & high \\
+\addlinespace
+11 & 75 & 파레토 $U_{\mathrm{raw}}$ 상세통계 ``SD $=$ \err{5.303}, $P_{99}=$ \err{23.402} … \err{23.402}$/3.0=$ \err{7.80}, 가우시안 대비 \err{4.39}배'' & ``SD $=$ \err{4.64}, $P_{99}=$ \err{21.85} … \err{21.85}$/3.0=$ \err{7.28}, \err{4.1}배'' & 수치 오류. C3 DRTO \emph{출력값}의 $P_{99}(\approx 23.28)$가 원시입력 통계 자리에 혼입되었다. 나머지 6곳은 원시입력 $P_{99}=21.85$로 정합하며, 정본 난수열 실측은 $21.13$이다. & high \\
+\addlinespace
+12 & 139 & 신뢰성 4대 기준 표기 ``신빙성(\err{Cibility})'' & ``신빙성(\err{Credibility})'' & 영문 철자 누락. `Credibility'에서 `red'가 탈락하였다(나머지 3기준 Transferability 등은 정상). & high \\
+\addlinespace
+13 & 225 & 부록 기호표 ``효과 크기(Effect si\textit{z}e)'', ``표본 크기(Sample si\textit{z}e)'' & ``Effect size'', ``Sample size'' & 수식 이탤릭 글리프 오손. `size'의 `z'만 수학 이탤릭 글리프로 조판되었다(2개소). & high \\
+\addlinespace
+14 & 231 & 부록 약어표 ``STIX \err{Structu} Threat Information Expression'' & ``\err{Structured} Threat Information Expression'' & 영문 철자 누락. `Structured'에서 `red'가 탈락하였다. & high \\
+\addlinespace
+15 & 232 & 부록 약어표 정의 셀 ``…강조하여 \err{사용중}'' & ``\err{사용 중}'' & 띄어쓰기. 진행·경과를 뜻하는 의존명사 `중'은 앞말과 띄어 쓴다. & high \\
+\addlinespace
+16 & 182 & \S5.3.3.5 종합 불확실성 $U(t)=\beta\,U_{\mathrm{hist}}+(1-\beta)\,$\err{$U_{\mathrm{threat}}$} 및 미래 위험 강도 \err{$U_{\mathrm{threat}}$}(2개소) & \err{$U_{\mathrm{ext}}$}로 통일(표 5-11·5.3.4·표 5-13과 동일 기호) & 기호 표기 불일치. 동일한 외부 위협 지수(CVE/CVSS/MITRE 기반)를 \S5.3.3.5는 $U_{\mathrm{threat}}$, \S5.3.4 이하는 $U_{\mathrm{ext}}$로 혼용하였다. & medium \\
+\bottomrule
+\end{longtable}
+
 \section*{4. 참고 사항}
 
 \begin{itemize}
-\item 위 6건 외에 초록, 참고문헌(국내 4편/국외 59편), 그리고 대부분의 본문은
+\item 위 16건 외에 초록, 참고문헌(국내 4편/국외 59편), 그리고 대부분의 본문은
       오류 없이 정제되어 있음을 페이지 단위 대조로 확인하였다.
 \item 본 보고서에 열거한 오류는 모두 원본 한글 파일에서 실재가 검증된 것이며,
-      단순 추출 아티팩트(예: 표 캡션의 글자 분해, 수식 기호 탈락)로 판명된
-      의심 항목은 오류 목록에서 제외하였다.
-\item 공개하는 \LaTeX{} 소스는 위 오류를 임의로 수정하지 않고 공개본과 동일하게 유지하며,
-      정정이 필요한 독자는 본 보고서의 ``올바른 표기'' 열을 참조하기 바란다.
+      단순 추출 아티팩트(예: 표 셀 병합, 쪽번호 유출, 줄바꿈에 의한 단어 결합)로 판명된
+      의심 항목(예: 표 4-31 `2$-$0.150', 부록 소제목 `2C.2.2', `같이정의된다')은
+      오류 목록에서 제외하였다.
+\item 공개하는 \LaTeX{} 소스의 \emph{오류본}(\texttt{main\_doc.pdf})은 위 오류를 공개본과
+      동일하게 유지하며, \emph{수정본}(\texttt{main\_doc\_revised.pdf})은 본 보고서의
+      ``올바른 표기''를 반영한 정정본이다. 다만 항목 10·13의 수식 이탤릭 글리프 오손은
+      \LaTeX{} 조판에서 정상 문자로 표시되므로 오류본에서도 정상 렌더링된다.
 \end{itemize}
 
 \end{document}
