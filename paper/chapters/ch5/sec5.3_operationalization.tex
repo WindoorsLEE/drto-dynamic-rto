@@ -127,8 +127,8 @@ APM(Datadog)과 SIEM(Splunk)을 \chg{구축하여 운영한다}.}
 $R_{\text{avail}} = 0.994$, $R_{\text{error}} = 0.015$, $R_{\text{perf}} = 0.82$,
 $E_{\text{high}} = 0.08$, $T_{\text{mttr}} = 0.65$, 커버리지율 $= 0.72$로 산출하였다.}
 
-\syncr{합성 결과는 다음과 같다\chg{.} $O_{\text{APM}} = 0.933$, $O_{\text{SIEM}} = 0.785$,
-$O_{\text{raw}} = 0.889$, $k_O = 0.72$, $U = 0.55$로 산출되어
+\syncr{합성 결과는 다음과 같다\chg{.} $O_{\text{APM}} = 0.933$, $O_{\text{SIEM}} = \erf{0.785}{0.635}$,
+$O_{\text{raw}} = \erf{0.889}{0.844}$, $k_O = 0.72$, $U = 0.55$로 산출되어
 $\eta \approx 1.05$ (Level 2 Repeatable) 판정된다. 모니터링 커버리지 확대 및
 미대응 이벤트 축소가 개선 필요 영역으로 도출된다.}
 
@@ -171,7 +171,7 @@ $T{+}3$h(Red) 경영진 \chg{긴급 보고와 BCP 전면 가동을 거쳐,} $T{+
 
 \syncr{\chg{4단계인 복구와 환류(T+24h--T+72h)의} 사후 분석에서는 실제 복구 시간 $T_{\text{actual}} = 8.2$h vs $\DRTO$ 예측 7.6h
 → 상대 오차 $E_r = 7.3\%$ (수용 범위)이다. $O(t)$ 사각지대로 전원계통 센서
-커버리지 부족을 식별하고, 성숙도 ``Managed → Optimized'' 이행 로드맵에
+커버리지 부족을 식별하고, 성숙도 ``\erf{Managed → Optimized}{Defined → Managed}'' 이행 로드맵에
 반영한다. 이번 사건을 $U_{\text{hist}}$ DB에 환류하여 내년도 진단의 입력으로 사용한다.}
 
 \syncr{\chg{다만} 본 시나리오의 모든 수치는 중견 제조업 일반 특성에서

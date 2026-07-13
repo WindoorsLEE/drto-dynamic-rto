@@ -20,9 +20,9 @@
 $\hat{\eta}_{\text{C1}}^{(1s)} = 0.997 - 0.285\,k_O$ ($R^2 = 0.428$, $p < 0.001$)\chg{로서,}
 관측성 가중치 $k_O$만으로 분산의 $42.8\%$를 설명하며, $k_O$가
 증가할수록 관측성의 복구 단축 효과가 강화되는 선형 관계가 확인되었다.
-\chg{둘째, 1차 다중 회귀는} $\hat{\eta}_{\text{C1}}^{(1m)} = 1.07 - 0.15\,k_O - 0.15\,O$ ($R^2 = 0.869$)\chg{로서,}
+\chg{둘째, 1차 다중 회귀는} $\hat{\eta}_{\text{C1}}^{(1m)} = \erf{1.07 - 0.15\,k_O - 0.15\,O}{1.137 - 0.280\,k_O - 0.288\,O}$ ($R^2 = 0.869$)\chg{로서,}
 관측성 원시 점수 $O$를 추가하면 설명력이 $86.9\%$로 두 배 이상
-증가한다. $k_O$와 $O$의 회귀 계수 크기가 $-0.15$로 거의 동일하여,
+증가한다. $k_O$와 $O$의 회귀 계수 크기가 $\erf{-0.15}{-0.28}$로 거의 동일하여,
 두 관측성 변수가 $\eta$ 감소에 동등하게 기여함을 보여준다.
 \chg{셋째, \pdferr{2차 회귀}는 식 (4.1) 및 (4.2)에 나타낸 바와 같다.}
 \begin{equation}
@@ -71,6 +71,16 @@ $k_O$의 회귀 계수가 C1의 $-0.285$에서 $-1.878$로 $6.6$배 증가하였
     + \sum_{j<k} \hat{\beta}_{jk} (x_j \cdot x_k)
   \quad (R^2 = 0.998)
 \end{equation}
+\ifdefined\ERRATAFIX
+\begin{equation}
+  \begin{aligned}
+    = 1.082
+    &+ 0.012\,k_O - 0.034\,O + 0.542\,U \\
+    &- 0.307\,k_O^2 + 0.019\,O^2 - 0.013\,U^2 \\
+    &- 0.545\,(k_O \cdot O) - 0.433\,(k_O \cdot U) + 0.001\,(O \cdot U)
+  \end{aligned}
+\end{equation}
+\else
 \begin{equation}
   \begin{aligned}
     = 1.011
@@ -79,6 +89,7 @@ $k_O$의 회귀 계수가 C1의 $-0.285$에서 $-1.878$로 $6.6$배 증가하였
     &- 0.546\,(k_O \cdot O) - 0.593\,(k_O \cdot U) + 0.001\,(O \cdot U)
   \end{aligned}
 \end{equation}
+\fi
 정밀 표기 시 $R^2 = 0.9982$이며,
 9개 변수($k_O$, $O$, $U$, $k_O^2$, $O^2$, $U^2$,
 $k_O \cdot O$, $k_O \cdot U$, $O \cdot U$)를 포함한다.
@@ -278,7 +289,8 @@ Tail 영역에서 $R^2 = 0.710$을 달성하여, 분할 회귀가 C3의
 
 \begin{figure}[htbp]
   \centering
-  \begin{tikzpicture}
+  \ifdefined\ERRATAFIX\def\CoefCone{(절편, 1.14) ($k_O$, -0.28) ($O$, -0.29) ($U$, 0)}\else\def\CoefCone{(절편, 1.07) ($k_O$, -0.15) ($O$, -0.15) ($U$, 0)}\fi
+\begin{tikzpicture}
     \begin{axis}[
       ybar,
       width=0.88\textwidth,
@@ -302,7 +314,7 @@ Tail 영역에서 $R^2 = 0.710$을 달성하여, 분할 회귀가 C3의
       legend style={at={(0.98,0.98)}, anchor=north east, font=\small},
       ]
       \addplot[fill=blue!25, draw=blue!60] coordinates {
-        (절편, 1.07) ($k_O$, -0.15) ($O$, -0.15) ($U$, 0)
+        \CoefCone
       };
       \addlegendentry{C1}
 
